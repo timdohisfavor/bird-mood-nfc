@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "今日鸟签",
+    "navigationBarBackgroundColor": "#fffaf1",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#fffaf1"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
