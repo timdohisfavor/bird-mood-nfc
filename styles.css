@@ -22,12 +22,13 @@
 
 html {
   min-height: 100%;
-  background: var(--bg);
+  background: #1a1a1a;
 }
 
 body {
   min-height: 100%;
-  margin: 0;
+  max-width: 390px;
+  margin: 0 auto;
   overflow-x: hidden;
   color: var(--ink);
   background: linear-gradient(180deg, #dfecef 0%, #f6f5e9 52%, #dce8d7 100%);
@@ -55,7 +56,11 @@ img {
 
 .habitat-bg {
   position: fixed;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 390px;
+  transform: translateX(-50%);
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
@@ -241,8 +246,8 @@ h1 {
 
 .draw-stage {
   position: relative;
-  min-height: 620px;
-  padding: 18px;
+  min-height: auto;
+  padding: 18px 18px 20px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 30px;
@@ -303,6 +308,10 @@ h1 {
   text-align: center;
 }
 
+.bird-sign.revealed {
+  min-height: 500px;
+}
+
 .ambient-ring {
   position: absolute;
   top: 28px;
@@ -331,7 +340,8 @@ h1 {
 }
 
 .sign-back {
-  padding: 0 22px;
+  justify-content: flex-start;
+  padding: 136px 22px 0;
 }
 
 .sign-front {
@@ -351,22 +361,31 @@ h1 {
 }
 
 .seal-mark {
+  position: relative;
   display: grid;
-  width: 116px;
-  height: 116px;
+  width: 54px;
+  height: 54px;
   place-items: center;
-  border: 1px solid rgba(18, 50, 37, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.34);
   border-radius: 50%;
-  color: var(--deep);
   background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.75) 0 32%, transparent 33%),
-    conic-gradient(from 20deg, rgba(47, 111, 69, 0.12), rgba(194, 170, 104, 0.42), rgba(121, 169, 157, 0.15), rgba(47, 111, 69, 0.12));
-  font-size: 24px;
-  font-weight: 950;
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.34), transparent 35%),
+    var(--deep);
+  box-shadow:
+    0 16px 30px rgba(18, 50, 37, 0.18),
+    0 0 0 9px rgba(18, 50, 37, 0.08);
+}
+
+.seal-mark::before {
+  content: none;
+}
+
+.seal-mark::after {
+  content: none;
 }
 
 .seal-title {
-  margin-top: 22px;
+  margin-top: 112px;
   font-size: 28px;
   font-weight: 950;
 }
@@ -383,7 +402,7 @@ h1 {
   display: grid;
   width: min(86vw, 330px);
   height: 238px;
-  margin: 2px auto 0;
+  margin: 4px auto 0;
   place-items: center;
 }
 
@@ -421,6 +440,10 @@ h1 {
   font-weight: 900;
 }
 
+.sign-front .state-label {
+  margin-top: 4px;
+}
+
 .daily-name {
   margin-top: 6px;
   font-size: 38px;
@@ -429,18 +452,24 @@ h1 {
 }
 
 .look-line {
-  margin-top: 7px;
+  display: block;
+  width: min(100%, 320px);
+  min-height: 86px;
+  margin: 9px auto 0;
   color: var(--leaf);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 900;
-  line-height: 1.4;
+  line-height: 1.55;
+  text-align: center;
 }
 
 .quote {
+  display: block;
+  min-height: 56px;
   max-width: 310px;
-  margin-top: 13px;
+  margin: 10px auto 0;
   color: #39443d;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   line-height: 1.5;
 }
@@ -484,6 +513,7 @@ h1 {
   display: grid;
   z-index: 2;
   gap: 10px;
+  margin-top: 14px;
 }
 
 .primary,
@@ -549,6 +579,26 @@ h1 {
   color: var(--muted);
   font-size: 14px;
   line-height: 1.5;
+}
+
+.preview-tools {
+  display: none;
+  margin-top: 12px;
+}
+
+.is-preview .preview-tools {
+  display: block;
+}
+
+.preview-reset {
+  width: 100%;
+  min-height: 40px;
+  border: 1px dashed rgba(18, 50, 37, 0.24);
+  border-radius: 14px;
+  color: var(--deep);
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  font-weight: 900;
 }
 
 .icon-button {
@@ -839,13 +889,13 @@ h1 {
 
 .tabbar {
   position: fixed;
-  right: auto;
   bottom: max(14px, env(safe-area-inset-bottom));
-  left: 16px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 5;
   display: grid;
-  width: min(448px, calc(100vw - 32px));
-  grid-template-columns: repeat(3, 1fr);
+  width: min(358px, calc(390px - 32px));
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   padding: 8px;
   border: 1px solid rgba(18, 50, 37, 0.08);
@@ -933,6 +983,7 @@ h1 {
   }
 }
 
+/* Desktop layout disabled — always show mobile H5 view
 @media (min-width: 760px) {
   .app-shell {
     width: min(100%, 1040px);
@@ -1004,6 +1055,7 @@ h1 {
     transform: none !important;
   }
 }
+*/
 
 @media (max-width: 380px) {
   .app-shell {
@@ -1016,12 +1068,16 @@ h1 {
   }
 
   .draw-stage {
-    min-height: 604px;
+    min-height: auto;
     padding: 15px;
   }
 
   .bird-sign {
     min-height: 420px;
+  }
+
+  .bird-sign.revealed {
+    min-height: 492px;
   }
 
   .daily-name,

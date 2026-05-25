@@ -7,10 +7,12 @@ const state = {
   revealed: false,
   currentScreen: "home",
   unlockedBirdIds: new Set(),
+  unlockedBirdTimes: new Map(),
   playingCallId: null
 };
 
 const els = {};
+const embeddedBirds = Array.isArray(window.BIRD_SIGN_DATA) ? window.BIRD_SIGN_DATA : [];
 const callBirdIds = new Set(["sparrow", "egret", "zebra-dove", "moorhen", "white-headed-duck"]);
 const habitatByBirdId = {
   sparrow: "城市与村落",
@@ -79,6 +81,14 @@ function safeStorageSet(key, value) {
   }
 }
 
+function safeStorageRemove(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // Keep preview reset non-fatal when storage is unavailable.
+  }
+}
+
 function parseJson(value, fallback) {
   if (!value) return fallback;
   try {
@@ -94,6 +104,25 @@ function withBirdMeta(bird) {
     habitat: habitatByBirdId[bird.id] || "常见栖息地",
     call: callBirdIds.has(bird.id) ? `assets/bird-calls/${bird.id}.mp3` : ""
   };
+}
+
+async function loadBirds() {
+  try {
+    const response = await fetch("./web/assets/meta/birds.json");
+    if (!response.ok) {
+      throw new Error("鸟签数据暂时飞丢了，请稍后再试。");
+    }
+    return await response.json();
+  } catch (error) {
+    if (embeddedBirds.length) {
+      return embeddedBirds;
+    }
+    throw error;
+  }
+}
+
+function isPreviewMode() {
+  return ["localhost", "127.0.0.1", ""].includes(location.hostname) || location.protocol === "file:";
 }
 
 function showToast(message) {
@@ -127,17 +156,39 @@ function getStoredDailyBird() {
 }
 
 function loadUnlockedBirdIds() {
-  const ids = parseJson(safeStorageGet(UNLOCKED_KEY), []);
-  state.unlockedBirdIds = new Set(Array.isArray(ids) ? ids : []);
+  const saved = parseJson(safeStorageGet(UNLOCKED_KEY), []);
+  const entries = Array.isArray(saved) ? saved : [];
+  const fallbackBaseTime = Date.now() - entries.length;
+
+  state.unlockedBirdIds = new Set();
+  state.unlockedBirdTimes = new Map();
+
+  entries.forEach((entry, index) => {
+    const id = typeof entry === "string" ? entry : entry?.id;
+    if (!id) return;
+
+    const unlockedAt =
+      typeof entry === "object" && Number.isFinite(entry.unlockedAt)
+        ? entry.unlockedAt
+        : fallbackBaseTime + index;
+
+    state.unlockedBirdIds.add(id);
+    state.unlockedBirdTimes.set(id, unlockedAt);
+  });
 }
 
 function saveUnlockedBirdIds() {
-  safeStorageSet(UNLOCKED_KEY, JSON.stringify([...state.unlockedBirdIds]));
+  const entries = [...state.unlockedBirdIds].map((id) => ({
+    id,
+    unlockedAt: state.unlockedBirdTimes.get(id) || Date.now()
+  }));
+  safeStorageSet(UNLOCKED_KEY, JSON.stringify(entries));
 }
 
 function unlockBird(bird) {
   if (!bird || state.unlockedBirdIds.has(bird.id)) return;
   state.unlockedBirdIds.add(bird.id);
+  state.unlockedBirdTimes.set(bird.id, Date.now());
   saveUnlockedBirdIds();
 }
 
@@ -174,31 +225,22 @@ function renderActiveBird() {
 
   els.drawCard.classList.toggle("revealed", state.revealed);
   els.drawCard.classList.toggle("unrevealed", !state.revealed);
-  els.dailyStatus.textContent = state.revealed ? "今日已揭晓" : "待揭晓";
-  els.drawButton.textContent = state.revealed ? "今日鸟签已固定" : "翻开今日鸟签";
-  els.drawButton.disabled = state.revealed;
-  els.shareButton.disabled = !state.revealed;
+  els.dailyStatus.textContent = state.revealed ? "今日已揭晓" : "待翻开";
+  els.drawButton.textContent = state.revealed ? "已收录，查看图鉴" : "翻开今日鸟签";
+  els.drawButton.disabled = false;
 
   if (!state.revealed || !bird) {
-    els.habitatLabel.textContent = "晨雾栖息地";
-    els.activeBirdName.textContent = "鸟签待揭晓";
+    els.activeBirdName.textContent = "鸟签待翻开";
     els.activeBirdLook.textContent = "先轻点翻开";
     els.activeBirdQuote.textContent = "今天的鸟还在晨雾里，等你把它叫出来。";
-    els.fishMeter.textContent = "---";
-    els.socialMeter.textContent = "---";
-    els.meetingMeter.textContent = "---";
     renderPoster(null);
     return;
   }
 
   setImage(els.activeBirdImage, bird, "鸟签插画");
-  els.habitatLabel.textContent = bird.habitat;
   els.activeBirdName.textContent = bird.name;
   els.activeBirdLook.textContent = bird.look;
   els.activeBirdQuote.textContent = bird.quote;
-  els.fishMeter.textContent = bird.fishText;
-  els.socialMeter.textContent = bird.socialText;
-  els.meetingMeter.textContent = bird.meetingText;
   renderPoster(bird);
 }
 
@@ -208,7 +250,7 @@ function renderPoster(bird) {
   if (!bird || !state.revealed) {
     els.posterBirdImage.removeAttribute("src");
     els.posterBirdImage.alt = "";
-    els.posterBirdName.textContent = "鸟签待揭晓";
+    els.posterBirdName.textContent = "鸟签待翻开";
     els.posterBirdLook.textContent = "先翻开今日鸟签";
     els.posterBirdQuote.textContent = "今天的鸟还在晨雾里。";
     return;
@@ -225,19 +267,32 @@ function renderProgress() {
   const total = state.birds.length || 30;
   const percent = total ? Math.round((count / total) * 100) : 0;
   els.unlockCount.textContent = `${count} / ${total}`;
-  els.guideCount.textContent = `${count} / ${total}`;
+  els.guideCount.textContent = `${count}`;
   els.guideProgress.style.width = `${percent}%`;
 }
 
 function renderGrid() {
-  els.birdGrid.innerHTML = state.birds
+  const orderedBirds = [...state.birds].sort((a, b) => {
+    const aUnlocked = state.unlockedBirdIds.has(a.id);
+    const bUnlocked = state.unlockedBirdIds.has(b.id);
+
+    if (aUnlocked && bUnlocked) {
+      return (state.unlockedBirdTimes.get(b.id) || 0) - (state.unlockedBirdTimes.get(a.id) || 0);
+    }
+
+    if (aUnlocked) return -1;
+    if (bUnlocked) return 1;
+    return a.rank - b.rank;
+  });
+
+  els.birdGrid.innerHTML = orderedBirds
     .map((bird) => {
       const unlocked = state.unlockedBirdIds.has(bird.id);
       return `
         <article class="bird-tile ${unlocked ? "unlocked" : "locked"} ${bird.call && unlocked ? "has-call" : ""}" data-bird-id="${bird.id}">
           <div class="tile-topline">
-            <span>${unlocked ? `No.${bird.rank}` : "未点亮"}</span>
-            <strong>${unlocked ? bird.habitat : "等待今日签"}</strong>
+            <span>${unlocked ? `No.${bird.rank}` : "未收录"}</span>
+            ${unlocked ? `<strong>${bird.habitat}</strong>` : ""}
           </div>
           ${
             bird.call && unlocked
@@ -251,11 +306,11 @@ function renderGrid() {
               : ""
           }
           <div class="tile-art">
-            <img src="${bird.image}" data-fallback="${bird.fallbackImage || ""}" alt="${unlocked ? `${bird.name}插画` : "未点亮鸟类剪影"}" loading="lazy" decoding="async" />
+            <img src="${bird.image}" data-fallback="${bird.fallbackImage || ""}" alt="${unlocked ? `${bird.name}插画` : "未收录鸟类剪影"}" loading="lazy" decoding="async" />
           </div>
           <h2 class="tile-title">${unlocked ? bird.name : "栖息地剪影"}</h2>
           <p class="tile-look">${unlocked ? bird.look : "这只鸟还藏在晨雾里"}</p>
-          <p class="tile-copy">${unlocked ? bird.quote : "继续每天翻开鸟签，等它飞进你的鸟窝。"}</p>
+          <p class="tile-copy">${unlocked ? bird.quote : "继续翻鸟签，等它飞进鸟窝"}</p>
         </article>
       `;
     })
@@ -280,7 +335,7 @@ function renderAll() {
 }
 
 function goScreen(screen) {
-  if (!["home", "nest", "poster"].includes(screen)) return;
+  if (!["home", "nest"].includes(screen)) return;
   state.currentScreen = screen;
   location.hash = screen === "home" ? "" : screen;
   renderRoute();
@@ -289,7 +344,7 @@ function goScreen(screen) {
 
 function drawBird() {
   if (state.revealed) {
-    showToast("今日鸟签已经固定，明天再来翻新的一张");
+    goScreen("nest");
     return;
   }
 
@@ -305,6 +360,21 @@ function drawBird() {
   }, 520);
 }
 
+function resetPreviewState() {
+  safeStorageRemove(DAILY_KEY);
+  safeStorageRemove(UNLOCKED_KEY);
+  state.activeBird = null;
+  state.revealed = false;
+  state.unlockedBirdIds = new Set();
+  state.unlockedBirdTimes = new Map();
+  state.playingCallId = null;
+  callAudio.pause();
+  callAudio.currentTime = 0;
+  renderAll();
+  goScreen("home");
+  showToast("已回到未抽签预览状态");
+}
+
 function bindEvents() {
   els.drawButton.addEventListener("click", drawBird);
   els.drawCard.addEventListener("click", () => {
@@ -314,16 +384,10 @@ function bindEvents() {
     }
     playBirdCall(state.activeBird);
   });
-  els.shareButton.addEventListener("click", () => {
-    if (!state.revealed) {
-      showToast("先翻开今日鸟签，再生成海报");
-      return;
-    }
-    goScreen("poster");
-  });
   els.backHome.addEventListener("click", () => goScreen("home"));
   els.posterBackHome.addEventListener("click", () => goScreen("home"));
   els.savePoster.addEventListener("click", () => showToast("用系统截图保存这张海报"));
+  els.resetPreviewButton.addEventListener("click", resetPreviewState);
   els.birdGrid.addEventListener("click", (event) => {
     const button = event.target.closest(".call-button");
     if (!button) return;
@@ -345,7 +409,7 @@ function bindEvents() {
   });
   window.addEventListener("hashchange", () => {
     const route = location.hash.replace("#", "");
-    state.currentScreen = ["nest", "poster"].includes(route) ? route : "home";
+    state.currentScreen = route === "nest" ? "nest" : "home";
     renderRoute();
   });
 }
@@ -357,16 +421,12 @@ function cacheElements() {
     dailyStatus: $("#daily-status"),
     drawCard: $("#draw-card"),
     activeBirdImage: $("#active-bird-image"),
-    habitatLabel: $("#habitat-label"),
     activeBirdName: $("#active-bird-name"),
     activeBirdLook: $("#active-bird-look"),
     activeBirdQuote: $("#active-bird-quote"),
-    fishMeter: $("#fish-meter"),
-    socialMeter: $("#social-meter"),
-    meetingMeter: $("#meeting-meter"),
     drawButton: $("#draw-button"),
-    shareButton: $("#share-button"),
     unlockCount: $("#unlock-count"),
+    resetPreviewButton: $("#reset-preview-button"),
     backHome: $("#back-home"),
     guideCount: $("#guide-count"),
     guideProgress: $("#guide-progress"),
@@ -384,14 +444,10 @@ function cacheElements() {
 
 async function init() {
   cacheElements();
+  document.body.classList.toggle("is-preview", isPreviewMode());
   els.todayText.textContent = todayText();
 
-  const response = await fetch("./web/assets/meta/birds.json");
-  if (!response.ok) {
-    throw new Error("鸟签数据暂时飞丢了，请稍后再试。");
-  }
-
-  state.birds = (await response.json()).map(withBirdMeta);
+  state.birds = (await loadBirds()).map(withBirdMeta);
   loadUnlockedBirdIds();
 
   const storedBird = getStoredDailyBird();
@@ -402,7 +458,7 @@ async function init() {
   }
 
   const route = location.hash.replace("#", "");
-  state.currentScreen = ["nest", "poster"].includes(route) ? route : "home";
+  state.currentScreen = route === "nest" ? "nest" : "home";
 
   const url = new URL(location.href);
   const tag = url.searchParams.get("tag") || url.pathname.match(/\/nfc\/([^/]+)/)?.[1];

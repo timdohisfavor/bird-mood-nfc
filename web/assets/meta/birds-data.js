@@ -1,4 +1,4 @@
-[
+window.BIRD_SIGN_DATA = [
   {
     "id": "sparrow",
     "rank": 1,
@@ -611,4 +611,4 @@
     "image": "assets/birds-final-webp/robin.webp",
     "fallbackImage": "assets/birds-final/robin.png"
   }
-]
+];

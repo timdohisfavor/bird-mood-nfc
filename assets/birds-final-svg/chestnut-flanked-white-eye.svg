@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="720" viewBox="0 0 720 720" role="img">
+  <title>chestnut-flanked-white-eye</title>
+  <defs>
+    <filter id="soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="28" stdDeviation="24" flood-color="#13251a" flood-opacity="0.20"/>
+    </filter>
+    <linearGradient id="body" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#a8bf52"/>
+      <stop offset="1" stop-color="#6f8f45"/>
+    </linearGradient>
+  </defs>
+  <g filter="url(#soft-shadow)">
+    <path d="M290 378 C220 340 150 318 96 308 C127 356 152 404 232 418 Z" fill="#6f8f45" opacity="0.96"/>
+    <ellipse cx="328" cy="356" rx="157" ry="118" fill="url(#body)"/>
+    <ellipse cx="408" cy="273" rx="92" ry="72" fill="#a8bf52"/>
+    <ellipse cx="374" cy="414" rx="120" ry="76" fill="#f4f1c9" opacity="0.9"/>
+    <ellipse cx="285" cy="376" rx="98" ry="67" fill="#6f8f45" opacity="0.78"/>
+    
+      <ellipse cx="338" cy="405" rx="82" ry="45" fill="#f4f1c9" opacity="0.96"/>
+      <ellipse cx="254" cy="390" rx="54" ry="36" fill="#a6533c" opacity="0.92"/>
+      <circle cx="425" cy="268" r="28" fill="#fbffe8" opacity="0.95"/>
+    <path d="M246 366 C294 394 355 407 421 396" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="0.30"/>
+    <path d="M252 390 C305 419 354 426 410 416" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.24"/>
+    <circle cx="425" cy="268" r="15" fill="#101513"/>
+    <circle cx="419" cy="262" r="5" fill="#ffffff" opacity="0.88"/>
+    <path d="M472 286 L542 299 L472 320 Z" fill="#243829"/>
+    <path d="M322 474 L302 540" stroke="#243829" stroke-width="10" stroke-linecap="round"/>
+    <path d="M378 472 L397 540" stroke="#243829" stroke-width="10" stroke-linecap="round"/>
+    <path d="M302 540 L258 552" stroke="#243829" stroke-width="7" stroke-linecap="round"/>
+    <path d="M397 540 L438 552" stroke="#243829" stroke-width="7" stroke-linecap="round"/>
+  </g>
+</svg>

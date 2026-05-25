@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#e8f1e9" />
     <title>NFC 今日鸟签</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="./styles.css?v=20260519e" />
+    <link rel="stylesheet" href="./styles.css?v=20260519i" />
   </head>
   <body>
     <div class="habitat-bg" aria-hidden="true">
@@ -26,57 +26,37 @@
     <main id="app" class="app-shell">
       <section id="home-screen" class="screen active" aria-label="今日鸟签">
         <header class="home-head">
-          <p class="eyebrow" id="entry-label">NFC 已唤醒</p>
+          <p class="eyebrow" id="entry-label">NFC碰一碰抽签</p>
           <h1>今日鸟签</h1>
-          <p class="subcopy">让一只鸟替你记录今天的精神气候。</p>
+          <p class="subcopy">每天翻开一张鸟签，查看你的好运指南</p>
         </header>
 
         <section class="draw-stage" aria-label="抽取今日鸟签">
           <div class="stage-topline">
             <span id="today-text">今日</span>
-            <span id="daily-status" class="status-pill">待揭晓</span>
+            <span id="daily-status" class="status-pill">待翻开</span>
           </div>
 
           <button id="draw-card" class="bird-sign unrevealed" type="button" aria-label="翻开今日鸟签">
             <span class="ambient-ring"></span>
             <span class="sign-back">
-              <span class="seal-mark">今日</span>
-              <span class="seal-title">鸟签待揭晓</span>
-              <span class="seal-copy">轻点，让今天的鸟从栖息地里出现。</span>
+              <span class="seal-mark" aria-hidden="true"></span>
+              <span class="seal-title">鸟签待翻开</span>
+              <span class="seal-copy">轻点一下，让小鸟从栖息地里出现吧</span>
             </span>
             <span class="sign-front">
+              <span class="state-label">今日鸟签</span>
               <span class="bird-frame">
                 <img id="active-bird-image" src="" alt="" />
               </span>
-              <span class="habitat-chip">
-                <span>常见地点</span>
-                <strong id="habitat-label">城市与村落</strong>
-              </span>
-              <span class="state-label">今日精神状态</span>
               <strong id="active-bird-name" class="daily-name">麻雀</strong>
               <span id="active-bird-look" class="look-line">褐背、黑喉、小圆身</span>
               <span id="active-bird-quote" class="quote">今天像麻雀：事很多，但每件都能啄两口。</span>
             </span>
           </button>
 
-          <div class="meter-grid" aria-label="今日指数">
-            <div class="meter">
-              <span>摸鱼指数</span>
-              <strong id="fish-meter">---</strong>
-            </div>
-            <div class="meter">
-              <span>社交电量</span>
-              <strong id="social-meter">---</strong>
-            </div>
-            <div class="meter">
-              <span>开会耐受</span>
-              <strong id="meeting-meter">---</strong>
-            </div>
-          </div>
-
           <div class="primary-actions">
             <button id="draw-button" class="primary" type="button">翻开今日鸟签</button>
-            <button id="share-button" class="secondary" type="button">生成分享海报</button>
           </div>
         </section>
 
@@ -85,11 +65,14 @@
             <span>本地记录</span>
             <strong id="unlock-count">0 / 30</strong>
           </div>
-          <p>每天固定一签，抽到的鸟会在这台设备上点亮。</p>
+          <p>每天固定一签，翻开过的鸟会在这台设备上收录。</p>
+          <div class="preview-tools" aria-label="本地预览工具">
+            <button id="reset-preview-button" class="preview-reset" type="button">重置预览状态</button>
+          </div>
         </section>
       </section>
 
-      <section id="nest-screen" class="screen" aria-label="鸟窝图鉴">
+      <section id="nest-screen" class="screen" aria-label="鸟类图鉴">
         <header class="page-head">
           <button id="back-home" class="icon-button" type="button" aria-label="返回今日鸟签">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -97,17 +80,17 @@
             </svg>
           </button>
           <div>
-            <p class="eyebrow">鸟窝图鉴</p>
-            <h1>被今日签点亮的鸟</h1>
+            <p class="eyebrow">已收集的鸟签合集</p>
+            <h1>鸟类图鉴</h1>
           </div>
         </header>
 
         <section class="guide-summary">
           <div>
-            <span>已点亮</span>
-            <strong id="guide-count">0 / 30</strong>
+            <span>已收录</span>
+            <strong id="guide-count">0</strong>
           </div>
-          <p>未点亮的鸟会先藏在晨雾里，等某一天被你抽到。</p>
+          <p>翻开过的鸟签，被收录在鸟类图鉴</p>
           <div class="progress-track">
             <span id="guide-progress"></span>
           </div>
@@ -135,8 +118,8 @@
           <div class="poster-art">
             <img id="poster-bird-image" src="" alt="" />
           </div>
-          <p class="state-label">今日精神状态</p>
-          <h2 id="poster-bird-name">鸟签待揭晓</h2>
+          <p class="state-label">今日鸟签</p>
+          <h2 id="poster-bird-name">鸟签待翻开</h2>
           <p id="poster-bird-look" class="poster-look">先翻开今日鸟签</p>
           <p id="poster-bird-quote" class="poster-quote">今天的鸟还在晨雾里。</p>
           <div class="poster-foot">
@@ -152,10 +135,10 @@
     <nav class="tabbar" aria-label="页面切换">
       <button class="tab active" data-screen="home" type="button">今日</button>
       <button class="tab" data-screen="nest" type="button">鸟窝</button>
-      <button class="tab" data-screen="poster" type="button">分享</button>
     </nav>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <script src="./script.js" type="module"></script>
+    <script src="./web/assets/meta/birds-data.js"></script>
+    <script src="./script.js" defer></script>
   </body>
 </html>
