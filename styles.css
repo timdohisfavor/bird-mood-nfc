@@ -688,15 +688,15 @@ h1 {
 
 .tile-art {
   display: grid;
-  height: 100px;
+  height: 80px;
   margin: 8px 0 16px;
   overflow: visible;
   place-items: center;
 }
 
 .tile-art img {
-  width: 85%;
-  height: 85%;
+  width: 70%;
+  height: 70%;
   object-fit: contain;
   filter: drop-shadow(0 10px 12px rgba(18, 50, 37, 0.14));
 }
