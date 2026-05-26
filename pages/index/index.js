@@ -472,7 +472,7 @@ const rawBirds = [
   {
     id: "chestnut-flanked-white-eye",
     rank: 32,
-    name: "红协绣眼",
+    name: "红胁绣眼",
     heat: "63万",
     rarity: "热榜 32",
     look: "白眼圈、栗红胁、黄绿身",

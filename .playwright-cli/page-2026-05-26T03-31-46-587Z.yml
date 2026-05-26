@@ -1,0 +1,34 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - region "今日鸟签" [ref=e3]:
+      - generic [ref=e4]:
+        - paragraph [ref=e5]: NFC碰一碰抽签
+        - heading "今日鸟签" [level=1] [ref=e6]
+        - paragraph [ref=e7]: 每天翻开一张鸟签，查看你的好运指南
+      - region "抽取今日鸟签" [ref=e8]:
+        - generic [ref=e9]:
+          - generic [ref=e10]: 5月26日 周二
+          - generic [ref=e11]: 今日已揭晓
+        - button "翻开今日鸟签" [ref=e12] [cursor=pointer]:
+          - generic [ref=e14]:
+            - generic [ref=e16]: 鸟签待翻开
+            - generic [ref=e17]: 轻点一下，让小鸟从栖息地里出现吧
+          - generic [ref=e18]:
+            - generic [ref=e19]: 今日鸟签
+            - img "双角犀鸟鸟签插画" [ref=e36]
+            - strong [ref=e21]: 双角犀鸟
+            - generic [ref=e22]: 巨大黄盔、黑白身、长喙
+            - generic [ref=e23]: 【今日宜大吃】 做生活的嚼嚼者
+        - button "已收录，查看图鉴" [active] [ref=e37] [cursor=pointer]
+      - region "今日鸟签说明" [ref=e26]:
+        - generic [ref=e27]:
+          - generic [ref=e28]: 本地记录
+          - strong [ref=e29]: 1 / 34
+        - paragraph [ref=e30]: 每天固定一签，翻开过的鸟会在这台设备上收录。
+        - generic "本地预览工具" [ref=e31]:
+          - button "重置预览状态" [ref=e32] [cursor=pointer]
+    - text: BIRD SIGN
+  - navigation "页面切换" [ref=e33]:
+    - button "今日" [ref=e34] [cursor=pointer]
+    - button "鸟窝" [ref=e35] [cursor=pointer]
+  - status: 双角犀鸟飞进了今天

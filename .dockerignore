@@ -1,0 +1,13 @@
+.git
+.netlify
+dist
+node_modules
+.venv
+venv
+__pycache__
+.DS_Store
+Thumbs.db
+*.log
+tmp-*
+outputs
+project.private.config.json
