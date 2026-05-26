@@ -400,14 +400,14 @@ h1 {
 .bird-frame {
   display: grid;
   width: min(86vw, 330px);
-  height: 200px;
+  height: 180px;
   margin: 4px auto 0;
   place-items: center;
 }
 
 .bird-frame img {
-  width: 85%;
-  height: 85%;
+  width: 75%;
+  height: 75%;
   object-fit: contain;
   filter: drop-shadow(0 22px 25px rgba(15, 35, 24, 0.18));
 }
