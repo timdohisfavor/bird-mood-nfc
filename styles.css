@@ -1,19 +1,20 @@
 :root {
-  --bg: #e8f1e9;
+  --bg: #1a2a1a;
   --ink: #142019;
-  --muted: #647168;
-  --deep: #123225;
-  --leaf: #2f6f45;
-  --moss: #8aa96b;
-  --reed: #c2aa68;
-  --water: #79a99d;
-  --cream: #fbfbf3;
-  --mist: rgba(255, 255, 255, 0.72);
-  --surface: rgba(255, 255, 255, 0.72);
-  --surface-strong: rgba(255, 255, 255, 0.92);
-  --line: rgba(18, 50, 37, 0.12);
-  --shadow: 0 26px 70px rgba(18, 50, 37, 0.16);
-  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --muted: rgba(255,255,255,0.55);
+  --deep: #2d4a3e;
+  --leaf: #4a7c59;
+  --gold: #d4a84b;
+  --moss: #6b9b72;
+  --reed: #8aad80;
+  --water: rgba(255,255,255,0.12);
+  --cream: rgba(255,255,255,0.06);
+  --mist: rgba(255,255,255,0.68);
+  --surface: rgba(255,255,255,0.68);
+  --surface-strong: rgba(255,255,255,0.88);
+  --line: rgba(255,255,255,0.10);
+  --shadow: 0 4px 24px rgba(0,0,0,0.14);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
 }
 
 * {
@@ -22,7 +23,7 @@
 
 html {
   min-height: 100%;
-  background: #1a1a1a;
+  background: #0d1a0d;
 }
 
 body {
@@ -30,7 +31,7 @@ body {
   margin: 0;
   overflow-x: hidden;
   color: var(--ink);
-  background: linear-gradient(180deg, #dfecef 0%, #f6f5e9 52%, #dce8d7 100%);
+  background: url("assets/backgrounds/forest-photo-seedream-v2.png") center/cover no-repeat fixed;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -64,125 +65,10 @@ img {
   overflow: hidden;
   pointer-events: none;
 }
-
-.sky {
+.forest-image {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 70% 13%, rgba(255, 255, 255, 0.9) 0 8%, transparent 24%),
-    radial-gradient(circle at 22% 28%, rgba(250, 236, 188, 0.38), transparent 28%),
-    linear-gradient(180deg, #dcebee 0%, #f4f4e7 48%, #d8e6d4 100%);
-}
-
-.sun {
-  position: absolute;
-  top: 86px;
-  right: 34px;
-  width: 78px;
-  height: 78px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.74);
-  filter: blur(4px);
-}
-
-.mist {
-  position: absolute;
-  left: -15%;
-  right: -15%;
-  height: 160px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.5), transparent 68%);
-  filter: blur(16px);
-}
-
-.mist-one {
-  top: 26%;
-  transform: rotate(-4deg);
-}
-
-.mist-two {
-  top: 48%;
-  opacity: 0.72;
-  transform: rotate(5deg);
-}
-
-.ridge {
-  position: absolute;
-  left: -22%;
-  right: -22%;
-  height: 210px;
-  border-radius: 50% 50% 0 0;
-}
-
-.ridge-back {
-  bottom: 108px;
-  background: linear-gradient(145deg, rgba(163, 190, 151, 0.42), rgba(92, 132, 103, 0.16));
-  transform: rotate(-3deg);
-}
-
-.ridge-front {
-  bottom: 52px;
-  height: 180px;
-  background: linear-gradient(145deg, rgba(74, 120, 75, 0.48), rgba(211, 225, 190, 0.32));
-  transform: rotate(4deg);
-}
-
-.water {
-  position: absolute;
-  left: -10%;
-  right: -10%;
-  bottom: -42px;
-  height: 150px;
-  border-radius: 50% 50% 0 0;
-  background:
-    linear-gradient(180deg, rgba(174, 207, 193, 0.04), rgba(75, 129, 118, 0.34)),
-    repeating-linear-gradient(170deg, rgba(255, 255, 255, 0.22) 0 4px, transparent 4px 18px);
-}
-
-.forest,
-.reeds {
-  position: absolute;
-  bottom: 7px;
-  opacity: 0.62;
-}
-
-.forest {
-  width: 170px;
-  height: 150px;
-  background:
-    radial-gradient(ellipse at 22% 70%, rgba(26, 75, 39, 0.62) 0 16%, transparent 17%),
-    radial-gradient(ellipse at 44% 56%, rgba(58, 107, 49, 0.76) 0 17%, transparent 18%),
-    radial-gradient(ellipse at 68% 64%, rgba(36, 91, 52, 0.7) 0 15%, transparent 16%),
-    linear-gradient(180deg, transparent 0 54%, rgba(32, 87, 45, 0.36) 55% 100%);
-  filter: blur(0.4px);
-}
-
-.forest-left {
-  left: -54px;
-}
-
-.forest-right {
-  right: -70px;
-  transform: scale(1.16);
-}
-
-.reeds {
-  width: 132px;
-  height: 170px;
-  background:
-    linear-gradient(80deg, transparent 0 45%, rgba(34, 89, 44, 0.58) 46% 48%, transparent 49%),
-    linear-gradient(96deg, transparent 0 38%, rgba(102, 128, 65, 0.56) 39% 41%, transparent 42%),
-    linear-gradient(108deg, transparent 0 58%, rgba(31, 81, 41, 0.46) 59% 61%, transparent 62%),
-    linear-gradient(72deg, transparent 0 24%, rgba(164, 139, 72, 0.5) 25% 27%, transparent 28%);
-}
-
-.reeds-left {
-  left: 4px;
-}
-
-.reeds-right {
-  right: 10px;
-  transform: scaleX(-1);
+  background: url("assets/backgrounds/forest-photo-seedream-v2.png") center/cover no-repeat;
 }
 
 .app-shell {
@@ -247,25 +133,18 @@ h1 {
 .draw-stage {
   position: relative;
   min-height: auto;
-  padding: 18px 18px 20px;
+  padding: 20px 20px 22px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 30px;
-  background:
-    radial-gradient(circle at 52% 28%, rgba(255, 255, 255, 0.5), transparent 24%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(241, 247, 233, 0.7));
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 22px;
+  background: rgba(255,255,255,0.68);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
 }
 
 .draw-stage::before {
-  position: absolute;
-  inset: 80px -20px auto;
-  height: 260px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.38), transparent 66%);
-  content: "";
-  pointer-events: none;
+  display: none;
 }
 
 .stage-topline,
