@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#e8f1e9" />
+    <base href="/" />
     <title>NFC 今日鸟签</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./styles.css?v=20260519i" />
@@ -66,6 +67,7 @@
             <strong id="unlock-count">0 / 34</strong>
           </div>
           <p>每天固定一签，翻开过的鸟会在这台设备上收录。</p>
+          <a class="brand-pill" href="https://www.xiaohongshu.com/user/profile/27440953987" target="_blank" rel="noopener">🪶 Joyi 的小红书</a>
           <div class="preview-tools" aria-label="本地预览工具">
             <button id="reset-preview-button" class="preview-reset" type="button">重置预览状态</button>
           </div>
@@ -80,8 +82,8 @@
             </svg>
           </button>
           <div>
-            <p class="eyebrow">已收集的鸟签合集</p>
-            <h1>鸟类图鉴</h1>
+            <p class="eyebrow">已入窝的鸟团团</p>
+            <h1>小鸟自留地</h1>
           </div>
         </header>
 
@@ -90,7 +92,8 @@
             <span>已收录</span>
             <strong id="guide-count">0</strong>
           </div>
-          <p>翻开过的鸟签，被收录在鸟类图鉴</p>
+          <p>可收录的鸟团团会定期更新</p>
+          <a class="brand-pill" href="https://www.xiaohongshu.com/user/profile/27440953987" target="_blank" rel="noopener">🪶 Joyi 的小红书</a>
           <div class="progress-track">
             <span id="guide-progress"></span>
           </div>
@@ -131,6 +134,22 @@
         <button id="save-poster" class="primary poster-save" type="button">提示截图保存</button>
       </section>
     </main>
+
+    <aside id="bird-detail-modal" class="bird-detail-modal" aria-hidden="true" aria-label="鸟签详情">
+      <div class="detail-backdrop" id="bird-detail-backdrop"></div>
+      <div class="detail-sheet">
+        <button id="detail-close" class="detail-close" type="button" aria-label="关闭详情">✕</button>
+        <div class="detail-art"><img id="detail-bird-image" src="" alt="" /></div>
+        <p class="detail-rank" id="detail-bird-rank">No.1</p>
+        <h2 id="detail-bird-name">鸟名</h2>
+        <p class="detail-look" id="detail-bird-look">外观描述</p>
+        <p class="detail-quote" id="detail-bird-quote">签名</p>
+        <p class="detail-habitat" id="detail-bird-habitat">栖息地</p>
+        <button id="detail-call-button" class="detail-call" type="button">🔊 播放鸟鸣</button>
+        <a class="brand-pill" href="https://www.xiaohongshu.com/user/profile/27440953987" target="_blank" rel="noopener">🪶 Joyi 的小红书</a>
+        <button id="detail-shot-button" class="detail-shot" type="button">📸 截图保存</button>
+      </div>
+    </aside>
 
     <nav class="tabbar" aria-label="页面切换">
       <button class="tab active" data-screen="home" type="button">今日</button>

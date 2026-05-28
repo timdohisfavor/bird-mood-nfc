@@ -8,7 +8,9 @@ const state = {
   currentScreen: "home",
   unlockedBirdIds: new Set(),
   unlockedBirdTimes: new Map(),
-  playingCallId: null
+  playingCallId: null,
+  callProgressFrame: null,
+  detailBird: null
 };
 
 const els = {};
@@ -333,10 +335,39 @@ function renderAll() {
 
 function goScreen(screen) {
   if (!["home", "nest"].includes(screen)) return;
+  closeBirdDetail();
   state.currentScreen = screen;
   location.hash = screen === "home" ? "" : screen;
   renderRoute();
   window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openBirdDetail(bird) {
+  if (!bird || !state.unlockedBirdIds.has(bird.id)) return;
+  state.detailBird = bird;
+  renderDetailModal();
+}
+
+function closeBirdDetail() {
+  state.detailBird = null;
+  renderDetailModal();
+}
+
+function renderDetailModal() {
+  var open = Boolean(state.detailBird);
+  if (els.birdDetailModal) {
+    els.birdDetailModal.classList.toggle("open", open);
+    els.birdDetailModal.setAttribute("aria-hidden", open ? "false" : "true");
+  }
+  document.body.classList.toggle("has-modal", open);
+  if (!open) return;
+  var bird = state.detailBird;
+  if (els.detailBirdRank) els.detailBirdRank.textContent = "No." + bird.rank;
+  if (els.detailBirdHabitat) els.detailBirdHabitat.textContent = bird.habitat;
+  if (els.detailBirdImage) { els.detailBirdImage.src = bird.image || ""; els.detailBirdImage.alt = bird.name + "鸟签详情插画"; }
+  if (els.detailBirdName) els.detailBirdName.textContent = bird.name;
+  if (els.detailBirdLook) els.detailBirdLook.textContent = bird.look;
+  if (els.detailBirdQuote) els.detailBirdQuote.textContent = bird.quote;
 }
 
 function drawBird() {
@@ -386,11 +417,18 @@ function bindEvents() {
   els.savePoster.addEventListener("click", () => showToast("用系统截图保存这张海报"));
   els.resetPreviewButton.addEventListener("click", resetPreviewState);
   els.birdGrid.addEventListener("click", (event) => {
-    const button = event.target.closest(".call-button");
-    if (!button) return;
-
-    const bird = state.birds.find((item) => item.id === button.dataset.birdId);
-    playBirdCall(bird);
+    var callBtn = event.target.closest(".call-button");
+    if (callBtn) {
+      var bird = state.birds.find(function(item) { return item.id === callBtn.dataset.birdId; });
+      playBirdCall(bird);
+      return;
+    }
+    var tile = event.target.closest(".bird-tile");
+    if (!tile) return;
+    var bird = state.birds.find(function(item) { return item.id === tile.dataset.birdId; });
+    if (!bird) return;
+    if (!state.unlockedBirdIds.has(bird.id)) { showToast("这只鸟还没有收集到"); return; }
+    openBirdDetail(bird);
   });
   els.birdGrid.addEventListener(
     "error",
@@ -401,6 +439,13 @@ function bindEvents() {
     },
     true
   );
+  if (els.detailClose) els.detailClose.addEventListener("click", closeBirdDetail);
+  if (els.birdDetailBackdrop) els.birdDetailBackdrop.addEventListener("click", closeBirdDetail);
+  if (els.detailShotButton) els.detailShotButton.addEventListener("click", function() { showToast("用系统截图保存这张鸟签"); });
+  if (els.detailCallButton) els.detailCallButton.addEventListener("click", function() {
+    if (!state.detailBird) return;
+    playBirdCall(state.detailBird);
+  });
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.addEventListener("click", () => goScreen(tab.dataset.screen));
   });
@@ -435,6 +480,17 @@ function cacheElements() {
     posterBirdLook: $("#poster-bird-look"),
     posterBirdQuote: $("#poster-bird-quote"),
     savePoster: $("#save-poster"),
+    birdDetailModal: $("#bird-detail-modal"),
+    birdDetailBackdrop: $("#bird-detail-backdrop"),
+    detailClose: $("#detail-close"),
+    detailBirdRank: $("#detail-bird-rank"),
+    detailBirdHabitat: $("#detail-bird-habitat"),
+    detailBirdImage: $("#detail-bird-image"),
+    detailBirdName: $("#detail-bird-name"),
+    detailBirdLook: $("#detail-bird-look"),
+    detailBirdQuote: $("#detail-bird-quote"),
+    detailCallButton: $("#detail-call-button"),
+    detailShotButton: $("#detail-shot-button"),
     toast: $("#toast")
   });
 }
