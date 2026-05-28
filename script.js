@@ -18,38 +18,6 @@ const state = {
 const els = {};
 const embeddedBirds = Array.isArray(window.BIRD_SIGN_DATA) ? window.BIRD_SIGN_DATA : [];
 const callBirdIds = new Set(["sparrow", "egret", "zebra-dove", "moorhen", "white-headed-duck"]);
-const habitatByBirdId = {
-  sparrow: "城市与村落",
-  egret: "湖泊浅滩",
-  "zebra-dove": "城市绿地",
-  moorhen: "湖泊海岸",
-  "falco-subbuteo": "高楼峭壁",
-  "long-tailed-tit": "林缘灌丛",
-  "snowy-owl": "北方冻原",
-  "red-billed-leiothrix": "开阔田野",
-  "golden-eagle": "高山草原",
-  "night-heron": "河岸湿地",
-  swan: "湖泊湿地",
-  blackbird: "林地公园",
-  "white-headed-duck": "城市林缘",
-  "large-billed-crow": "城市山林",
-  "red-eared-bulbul": "灌丛果树",
-  "scarlet-ibis": "稻田湿地",
-  "red-headed-tit": "山地林缘",
-  "silver-throated-tit": "山林灌丛",
-  goshawk: "森林山地",
-  "common-kingfisher": "溪流河岸",
-  cockatoo: "林地树冠",
-  "bee-eater": "林缘蜂巢",
-  "dai-sheng": "草地林缘",
-  "white-wagtail": "河岸地面",
-  mallard: "湖泊河流",
-  "red-tailed-shrike": "溪边岩地",
-  sparrowhawk: "林地边缘",
-  "spotted-owlet": "村落林地",
-  "horned-lark": "开阔荒地",
-  "brown-headed-bunting": "灌丛草地"
-};
 
 const callAudio = new Audio();
 let toastTimer = null;
@@ -103,9 +71,11 @@ function parseJson(value, fallback) {
 }
 
 function withBirdMeta(bird) {
+  if (!bird.habitat) {
+    throw new Error(`${bird.name} (${bird.id}) 缺少栖息地数据，请检查 export_h5_birds.mjs`);
+  }
   return {
     ...bird,
-    habitat: habitatByBirdId[bird.id] || "常见栖息地",
     call: callBirdIds.has(bird.id) ? `assets/bird-calls/${bird.id}.mp3` : ""
   };
 }
@@ -467,6 +437,18 @@ function resetPreviewState() {
   showToast("已回到未抽签预览状态");
 }
 
+function unlockAllBirds() {
+  state.birds.forEach(function(bird) {
+    if (!state.unlockedBirdIds.has(bird.id)) {
+      state.unlockedBirdIds.add(bird.id);
+      state.unlockedBirdTimes.set(bird.id, Date.now());
+    }
+  });
+  saveUnlockedBirdIds();
+  renderAll();
+  showToast("已揭开全部 " + state.birds.length + " 只鸟");
+}
+
 function bindEvents() {
   els.drawButton.addEventListener("click", drawBird);
   els.drawCard.addEventListener("click", () => {
@@ -478,6 +460,9 @@ function bindEvents() {
   els.posterBackHome.addEventListener("click", () => goScreen("home"));
   els.savePoster.addEventListener("click", () => showToast("用系统截图保存这张海报"));
   els.resetPreviewButton.addEventListener("click", resetPreviewState);
+
+  var unlockAllBtn = document.getElementById("unlock-all-button");
+  if (unlockAllBtn) unlockAllBtn.addEventListener("click", unlockAllBirds);
 
   var posterBtn = document.getElementById("share-poster-button");
   if (posterBtn) posterBtn.addEventListener("click", function() { goScreen("poster"); });
