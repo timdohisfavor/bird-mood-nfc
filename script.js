@@ -408,9 +408,7 @@ function bindEvents() {
   els.drawCard.addEventListener("click", () => {
     if (!state.revealed) {
       drawBird();
-      return;
     }
-    playBirdCall(state.activeBird);
   });
   els.backHome.addEventListener("click", () => goScreen("home"));
   els.posterBackHome.addEventListener("click", () => goScreen("home"));
