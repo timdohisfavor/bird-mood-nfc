@@ -10,7 +10,9 @@ const state = {
   unlockedBirdTimes: new Map(),
   playingCallId: null,
   callProgressFrame: null,
-  detailBird: null
+  detailBird: null,
+  guideFilter: "all",
+  countdownTimer: null
 };
 
 const els = {};
@@ -124,6 +126,54 @@ function isPreviewMode() {
   return ["localhost", "127.0.0.1", ""].includes(location.hostname) || location.protocol === "file:";
 }
 
+
+
+function getTimeUntilMidnight() {
+  const now = new Date();
+  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  const diff = midnight - now;
+  const hours = Math.floor(diff / 3600000);
+  const minutes = Math.floor((diff % 3600000) / 60000);
+  const seconds = Math.floor((diff % 60000) / 1000);
+  return { hours, minutes, seconds, total: diff };
+}
+
+function renderNfcSimulator() {
+  var container = document.getElementById("nfc-simulator");
+  if (!container) return;
+  if (!isPreviewMode()) { container.style.display = "none"; return; }
+  container.style.display = "";
+}
+
+function renderGuideFilters() {
+  var container = document.getElementById("guide-filters");
+  if (!container) return;
+  var filters = [
+    { key: "all", label: "全部" },
+    { key: "unlocked", label: "已收录" },
+    { key: "locked", label: "未收录" },
+    { key: "call", label: "有鸟鸣" }
+  ];
+  container.innerHTML = filters.map(function(f) {
+    return '<button class="filter-btn' + (state.guideFilter === f.key ? " active" : "") + '" data-filter="' + f.key + '" type="button">' + f.label + '</button>';
+  }).join("");
+}
+
+function renderDailyCountdown() {
+  var countdownEl = document.getElementById("daily-countdown");
+  if (!countdownEl) return;
+  if (!state.revealed) { countdownEl.style.display = "none"; return; }
+  countdownEl.style.display = "";
+  var t = getTimeUntilMidnight();
+  var pad = function(n) { return n < 10 ? "0" + n : "" + n; };
+  countdownEl.innerHTML = '<span class="countdown-label">距离下一次鸟签</span><span class="countdown-time">' + pad(t.hours) + ":" + pad(t.minutes) + ":" + pad(t.seconds) + '</span>';
+}
+
+function startCountdownTimer() {
+  if (state.countdownTimer) clearInterval(state.countdownTimer);
+  state.countdownTimer = setInterval(function() { renderDailyCountdown(); }, 1000);
+}
+
 function showToast(message) {
   els.toast.textContent = message;
   els.toast.classList.add("show");
@@ -228,6 +278,10 @@ function renderActiveBird() {
   els.drawButton.textContent = state.revealed ? "已收录，查看图鉴" : "翻开今日鸟签";
   els.drawButton.disabled = false;
 
+  var posterBtn = document.getElementById("share-poster-button");
+  if (posterBtn) posterBtn.style.display = state.revealed ? "" : "none";
+  renderDailyCountdown();
+
   if (!state.revealed || !bird) {
     els.activeBirdName.textContent = "鸟签待翻开";
     els.activeBirdLook.textContent = "先轻点翻开";
@@ -271,7 +325,14 @@ function renderProgress() {
 }
 
 function renderGrid() {
-  const orderedBirds = [...state.birds].sort((a, b) => {
+  var filteredBirds = state.birds.filter(function(bird) {
+    var unlocked = state.unlockedBirdIds.has(bird.id);
+    if (state.guideFilter === "unlocked") return unlocked;
+    if (state.guideFilter === "locked") return !unlocked;
+    if (state.guideFilter === "call") return unlocked && bird.call;
+    return true;
+  });
+  const orderedBirds = [...filteredBirds].sort((a, b) => {
     const aUnlocked = state.unlockedBirdIds.has(a.id);
     const bUnlocked = state.unlockedBirdIds.has(b.id);
 
@@ -329,7 +390,9 @@ function renderRoute() {
 function renderAll() {
   renderActiveBird();
   renderProgress();
+  renderGuideFilters();
   renderGrid();
+  renderNfcSimulator();
   renderRoute();
 }
 
@@ -398,6 +461,7 @@ function resetPreviewState() {
   state.playingCallId = null;
   callAudio.pause();
   callAudio.currentTime = 0;
+  if (state.countdownTimer) { clearInterval(state.countdownTimer); state.countdownTimer = null; }
   renderAll();
   goScreen("home");
   showToast("已回到未抽签预览状态");
@@ -414,6 +478,27 @@ function bindEvents() {
   els.posterBackHome.addEventListener("click", () => goScreen("home"));
   els.savePoster.addEventListener("click", () => showToast("用系统截图保存这张海报"));
   els.resetPreviewButton.addEventListener("click", resetPreviewState);
+
+  var posterBtn = document.getElementById("share-poster-button");
+  if (posterBtn) posterBtn.addEventListener("click", function() { goScreen("poster"); });
+
+  var guideFilters = document.getElementById("guide-filters");
+  if (guideFilters) guideFilters.addEventListener("click", function(event) {
+    var btn = event.target.closest(".filter-btn");
+    if (!btn) return;
+    state.guideFilter = btn.dataset.filter || "all";
+    renderGuideFilters();
+    renderGrid();
+  });
+
+  var nfcSimBtn = document.getElementById("nfc-sim-button");
+  if (nfcSimBtn) nfcSimBtn.addEventListener("click", function() {
+    var input = document.getElementById("nfc-sim-input");
+    if (input && input.value.trim()) {
+      var tag = input.value.trim();
+      location.href = "?tag=" + encodeURIComponent(tag);
+    }
+  });
   els.birdGrid.addEventListener("click", (event) => {
     var callBtn = event.target.closest(".call-button");
     if (callBtn) {
@@ -512,13 +597,14 @@ async function init() {
   state.currentScreen = route === "nest" ? "nest" : "home";
 
   const url = new URL(location.href);
-  const tag = url.searchParams.get("tag") || url.pathname.match(/\/nfc\/([^/]+)/)?.[1];
+  const tag = url.searchParams.get("tag") || url.pathname.match(/\/nfc\/([^/]+)/)?.[1] || (location.hash.match(/#\/nfc\/([^/]+)/) || location.hash.match(/#nfc\/([^/]+)/) || [])[1];
   if (tag) {
     els.entryLabel.textContent = `NFC 已唤醒 · ${tag}`;
   }
 
   renderAll();
   bindEvents();
+  startCountdownTimer();
 }
 
 init().catch((error) => {

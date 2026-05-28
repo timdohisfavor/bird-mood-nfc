@@ -1128,6 +1128,109 @@ body.has-modal{overflow:hidden}
 }
 */
 
+
+/* Daily countdown */
+.daily-countdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 10px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.6);
+}
+.countdown-label {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+.countdown-time {
+  color: var(--deep);
+  font-size: 22px;
+  font-weight: 950;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 2px;
+}
+
+/* Share poster entry button */
+.poster-entry {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  border: 2px dashed var(--line);
+  border-radius: 16px;
+  color: var(--leaf);
+  background: rgba(255, 255, 255, 0.4);
+  font-size: 15px;
+  font-weight: 700;
+  transition: background 200ms, border-color 200ms;
+}
+.poster-entry:hover,
+.poster-entry:active {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: var(--leaf);
+}
+
+/* NFC simulator (dev only) */
+.nfc-simulator {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+.nfc-sim-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+.nfc-sim-input:focus {
+  border-color: var(--leaf);
+}
+.nfc-sim-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: var(--deep);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Guide filters */
+.guide-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 7px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 180ms ease;
+}
+.filter-btn.active {
+  background: var(--deep);
+  color: #fff;
+  border-color: var(--deep);
+}
+.filter-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--ink);
+}
+
+
 @media (max-width: 380px) {
   .app-shell {
     padding-right: 12px;

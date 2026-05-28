@@ -37,6 +37,7 @@
             <span id="today-text">今日</span>
             <span id="daily-status" class="status-pill">待翻开</span>
           </div>
+          <div id="daily-countdown" class="daily-countdown" style="display:none"></div>
 
           <button id="draw-card" class="bird-sign unrevealed" type="button" aria-label="翻开今日鸟签">
             <span class="ambient-ring"></span>
@@ -58,6 +59,7 @@
 
           <div class="primary-actions">
             <button id="draw-button" class="primary" type="button">翻开今日鸟签</button>
+            <button id="share-poster-button" class="poster-entry" type="button" style="display:none">🖼️ 生成分享图</button>
           </div>
         </section>
 
@@ -70,6 +72,10 @@
           <a class="brand-pill" href="https://www.xiaohongshu.com/user/profile/27440953987" target="_blank" rel="noopener">🪶 Joyi 的小红书</a>
           <div class="preview-tools" aria-label="本地预览工具">
             <button id="reset-preview-button" class="preview-reset" type="button">重置预览状态</button>
+            <div id="nfc-simulator" class="nfc-simulator">
+              <input id="nfc-sim-input" type="text" placeholder="输入 NFC tag ID 模拟" class="nfc-sim-input" />
+              <button id="nfc-sim-button" class="nfc-sim-btn" type="button">模拟 NFC</button>
+            </div>
           </div>
         </section>
       </section>
@@ -99,6 +105,7 @@
           </div>
         </section>
 
+        <div id="guide-filters" class="guide-filters"></div>
         <section id="bird-grid" class="bird-grid" aria-label="34 只鸟图鉴"></section>
       </section>
 

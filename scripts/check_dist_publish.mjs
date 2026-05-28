@@ -17,8 +17,8 @@ const forbiddenNames = new Set([
   "requirements.txt"
 ]);
 
-const forbiddenDirs = new Set(["backend", "docker", "docs", "outputs", "pages", "scripts"]);
-const forbiddenFilePatterns = [/\.zip$/i, /^tmp-/i, /\.log$/i, /^AGENTS\.md$/i, /^README\.md$/i];
+const forbiddenDirs = new Set(["backend", "docker", "docs", "outputs", "pages", "scripts", "node_modules", ".git", "__pycache__", ".workbuddy"]);
+const forbiddenFilePatterns = [/\.zip$/i, /^tmp-/i, /\.log$/i, /^AGENTS\.md$/i, /^README\.md$/i, /\.py$/i, /\.sh$/i, /\.mjs$/i, /\.ts$/i, /\.tsx$/i, /\.jsx$/i, /\.map$/i, /\.DS_Store$/i, /Thumbs\.db$/i, /\.bak$/i, /\.swp$/i, /\.swo$/i, /~$/i, /\.tmp$/i, /\.temp$/i, /\.orig$/i];
 const allowedRootFiles = new Set(["index.html", "script.js", "styles.css"]);
 
 async function walk(dir) {
