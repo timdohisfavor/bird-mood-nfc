@@ -17,6 +17,11 @@
   font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
 }
 
+/* 玻璃卡片内部用深色 muted，避免白色半透明在白色背景上消失 */
+.draw-stage, .home-note, .guide-summary, .bird-tile, .detail-sheet, .tabbar, .poster-card, .habitat-chip {
+  --muted: #607366;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -102,7 +107,7 @@ img {
 
 .eyebrow {
   margin: 0 0 7px;
-  color: var(--leaf);
+  color: #a5c4a0;
   font-size: 13px;
   font-weight: 900;
 }
@@ -119,6 +124,7 @@ h1 {
   font-weight: 950;
   line-height: 1.08;
   letter-spacing: 0;
+  color: rgba(255,255,255,0.92);
 }
 
 .subcopy {
