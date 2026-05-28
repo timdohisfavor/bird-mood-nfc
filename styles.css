@@ -910,7 +910,7 @@ h1 {
   left: 50%;
   width: 560px;
   color: rgba(18, 50, 37, 0.055);
-  content: "BIRD SIGN";
+  content: "JOYI BIRD";
   font-size: 64px;
   font-weight: 950;
   line-height: 1;
@@ -1116,13 +1116,13 @@ h1 {
   place-items: center;
   border: 1.5px solid rgba(255,255,255,.3);
   border-radius: 50%;
-  background: rgba(255,255,255,.08);
-  color: rgba(255,255,255,.9);
+  background: rgba(18,50,37,.65);
+  color: #fff;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 2px 12px rgba(0,0,0,.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 2px 16px rgba(0,0,0,.25), 0 0 0 1px rgba(255,255,255,.08) inset;
   transition: transform 200ms ease, background 200ms ease, box-shadow 200ms ease;
 }
 .pulse-play-btn:active {
@@ -1147,8 +1147,9 @@ h1 {
   z-index: 2;
   margin: 0;
   font-size: 12px;
-  font-weight: 600;
-  color: rgba(255,255,255,.88);
+  font-weight: 800;
+  color: rgba(255,255,255,.95);
+  letter-spacing: .03em;
   text-align: center;
   pointer-events: none;
   transition: opacity 300ms ease;

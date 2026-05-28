@@ -46,6 +46,7 @@ class PulseVisualizer {
     this.analyser.smoothingTimeConstant = 0.78;
     this.source = this.audioCtx.createMediaElementSource(audioEl);
     this.source.connect(this.analyser);
+    this.analyser.connect(this.audioCtx.destination);
     this.freqData = new Uint8Array(this.analyser.frequencyBinCount);
     this.timeData = new Uint8Array(this.analyser.fftSize);
   }
@@ -144,23 +145,42 @@ class PulseVisualizer {
       ctx.stroke();
 
     } else {
-      /* Idle breathing animation */
-      var breath = Math.sin(this.time * 1.2) * 0.06 + 1;
+      /* Idle breathing animation — vivid rainbow pulse */
+      var breath = Math.sin(this.time * 1.2) * 0.08 + 1;
       var idleR = Math.min(cx, cy) * 0.28 * breath;
+      var hue = (this.time * 25) % 360;
 
-      /* Idle core glow */
-      var idleGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, idleR * 1.5);
-      idleGlow.addColorStop(0, "hsla(" + ((this.time * 20) % 360) + ",60%,60%,0.2)");
-      idleGlow.addColorStop(1, "hsla(" + ((this.time * 20) % 360) + ",50%,40%,0.02)");
+      /* Outer soft glow */
+      var idleGlow = ctx.createRadialGradient(cx, cy, idleR * 0.3, cx, cy, idleR * 2.2);
+      idleGlow.addColorStop(0, "hsla(" + hue + ",70%,60%,0.35)");
+      idleGlow.addColorStop(0.5, "hsla(" + (hue + 40) + ",65%,50%,0.12)");
+      idleGlow.addColorStop(1, "hsla(" + hue + ",60%,40%,0)");
       ctx.beginPath();
-      ctx.arc(cx, cy, idleR * 1.5, 0, Math.PI * 2);
+      ctx.arc(cx, cy, idleR * 2.2, 0, Math.PI * 2);
       ctx.fillStyle = idleGlow;
       ctx.fill();
 
-      /* Idle ring */
+      /* Inner core */
+      var coreGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, idleR);
+      coreGlow.addColorStop(0, "hsla(" + hue + ",75%,65%,0.5)");
+      coreGlow.addColorStop(1, "hsla(" + (hue + 30) + ",65%,50%,0.08)");
       ctx.beginPath();
-      ctx.arc(cx, cy, idleR + 8 * dpr / 2, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(255,255,255," + (0.12 + Math.sin(this.time * 1.2) * 0.06) + ")";
+      ctx.arc(cx, cy, idleR, 0, Math.PI * 2);
+      ctx.fillStyle = coreGlow;
+      ctx.fill();
+
+      /* Breathing outer ring */
+      var ringAlpha = 0.25 + Math.sin(this.time * 1.2) * 0.12;
+      ctx.beginPath();
+      ctx.arc(cx, cy, idleR * 1.6, 0, Math.PI * 2);
+      ctx.strokeStyle = "hsla(" + hue + ",70%,60%," + ringAlpha + ")";
+      ctx.lineWidth = 2 * dpr / 2;
+      ctx.stroke();
+
+      /* Inner accent ring */
+      ctx.beginPath();
+      ctx.arc(cx, cy, idleR + 6 * dpr / 2, 0, Math.PI * 2);
+      ctx.strokeStyle = "hsla(" + ((hue + 120) % 360) + ",65%,55%," + (ringAlpha * 0.7) + ")";
       ctx.lineWidth = 1.5 * dpr / 2;
       ctx.stroke();
     }
