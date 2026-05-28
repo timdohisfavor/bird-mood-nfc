@@ -1,0 +1,246 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - region "鸟类图鉴" [ref=e3]:
+      - generic [ref=e4]:
+        - button "返回今日鸟签" [ref=e5] [cursor=pointer]:
+          - img [ref=e6]
+        - generic [ref=e8]:
+          - paragraph [ref=e9]: 已收集的鸟签合集
+          - heading "鸟类图鉴" [level=1] [ref=e10]
+      - generic [ref=e11]:
+        - generic [ref=e12]:
+          - generic [ref=e13]: 已收录
+          - strong [ref=e14]: "0"
+        - paragraph [ref=e15]: 翻开过的鸟签，被收录在鸟类图鉴
+        - generic "图鉴筛选" [ref=e17]:
+          - button "全部" [ref=e18] [cursor=pointer]
+          - button "已收集" [ref=e19] [cursor=pointer]
+          - button "未收集" [ref=e20] [cursor=pointer]
+        - generic "鸟窝本地预览工具" [ref=e21]:
+          - button "一键揭开全部剪影" [ref=e22] [cursor=pointer]
+      - region "34 只鸟图鉴" [ref=e23]:
+        - article [ref=e24]:
+          - generic [ref=e26]: 未收录
+          - img "未收录鸟类剪影" [ref=e28]
+          - heading "栖息地剪影" [level=2] [ref=e29]
+          - paragraph [ref=e30]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e31]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e32]:
+          - generic [ref=e34]: 未收录
+          - img "未收录鸟类剪影" [ref=e36]
+          - heading "栖息地剪影" [level=2] [ref=e37]
+          - paragraph [ref=e38]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e39]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e40]:
+          - generic [ref=e42]: 未收录
+          - img "未收录鸟类剪影" [ref=e44]
+          - heading "栖息地剪影" [level=2] [ref=e45]
+          - paragraph [ref=e46]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e47]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e48]:
+          - generic [ref=e50]: 未收录
+          - img "未收录鸟类剪影" [ref=e52]
+          - heading "栖息地剪影" [level=2] [ref=e53]
+          - paragraph [ref=e54]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e55]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e56]:
+          - generic [ref=e58]: 未收录
+          - img "未收录鸟类剪影" [ref=e60]
+          - heading "栖息地剪影" [level=2] [ref=e61]
+          - paragraph [ref=e62]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e63]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e64]:
+          - generic [ref=e66]: 未收录
+          - img "未收录鸟类剪影" [ref=e68]
+          - heading "栖息地剪影" [level=2] [ref=e69]
+          - paragraph [ref=e70]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e71]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e72]:
+          - generic [ref=e74]: 未收录
+          - img "未收录鸟类剪影" [ref=e76]
+          - heading "栖息地剪影" [level=2] [ref=e77]
+          - paragraph [ref=e78]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e79]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e80]:
+          - generic [ref=e82]: 未收录
+          - img "未收录鸟类剪影" [ref=e84]
+          - heading "栖息地剪影" [level=2] [ref=e85]
+          - paragraph [ref=e86]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e87]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e88]:
+          - generic [ref=e90]: 未收录
+          - img "未收录鸟类剪影" [ref=e92]
+          - heading "栖息地剪影" [level=2] [ref=e93]
+          - paragraph [ref=e94]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e95]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e96]:
+          - generic [ref=e98]: 未收录
+          - img "未收录鸟类剪影" [ref=e100]
+          - heading "栖息地剪影" [level=2] [ref=e101]
+          - paragraph [ref=e102]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e103]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e104]:
+          - generic [ref=e106]: 未收录
+          - img "未收录鸟类剪影" [ref=e108]
+          - heading "栖息地剪影" [level=2] [ref=e109]
+          - paragraph [ref=e110]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e111]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e112]:
+          - generic [ref=e114]: 未收录
+          - img "未收录鸟类剪影" [ref=e116]
+          - heading "栖息地剪影" [level=2] [ref=e117]
+          - paragraph [ref=e118]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e119]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e120]:
+          - generic [ref=e122]: 未收录
+          - img "未收录鸟类剪影" [ref=e124]
+          - heading "栖息地剪影" [level=2] [ref=e125]
+          - paragraph [ref=e126]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e127]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e128]:
+          - generic [ref=e130]: 未收录
+          - img "未收录鸟类剪影" [ref=e132]
+          - heading "栖息地剪影" [level=2] [ref=e133]
+          - paragraph [ref=e134]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e135]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e136]:
+          - generic [ref=e138]: 未收录
+          - img "未收录鸟类剪影" [ref=e140]
+          - heading "栖息地剪影" [level=2] [ref=e141]
+          - paragraph [ref=e142]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e143]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e144]:
+          - generic [ref=e146]: 未收录
+          - img "未收录鸟类剪影" [ref=e148]
+          - heading "栖息地剪影" [level=2] [ref=e149]
+          - paragraph [ref=e150]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e151]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e152]:
+          - generic [ref=e154]: 未收录
+          - img "未收录鸟类剪影" [ref=e156]
+          - heading "栖息地剪影" [level=2] [ref=e157]
+          - paragraph [ref=e158]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e159]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e160]:
+          - generic [ref=e162]: 未收录
+          - img "未收录鸟类剪影" [ref=e164]
+          - heading "栖息地剪影" [level=2] [ref=e165]
+          - paragraph [ref=e166]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e167]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e168]:
+          - generic [ref=e170]: 未收录
+          - generic [ref=e171]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e172]
+          - paragraph [ref=e173]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e174]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e175]:
+          - generic [ref=e177]: 未收录
+          - generic [ref=e178]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e179]
+          - paragraph [ref=e180]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e181]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e182]:
+          - generic [ref=e184]: 未收录
+          - generic [ref=e185]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e186]
+          - paragraph [ref=e187]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e188]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e189]:
+          - generic [ref=e191]: 未收录
+          - generic [ref=e192]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e193]
+          - paragraph [ref=e194]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e195]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e196]:
+          - generic [ref=e198]: 未收录
+          - generic [ref=e199]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e200]
+          - paragraph [ref=e201]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e202]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e203]:
+          - generic [ref=e205]: 未收录
+          - generic [ref=e206]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e207]
+          - paragraph [ref=e208]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e209]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e210]:
+          - generic [ref=e212]: 未收录
+          - generic [ref=e213]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e214]
+          - paragraph [ref=e215]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e216]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e217]:
+          - generic [ref=e219]: 未收录
+          - generic [ref=e220]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e221]
+          - paragraph [ref=e222]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e223]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e224]:
+          - generic [ref=e226]: 未收录
+          - generic [ref=e227]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e228]
+          - paragraph [ref=e229]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e230]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e231]:
+          - generic [ref=e233]: 未收录
+          - generic [ref=e234]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e235]
+          - paragraph [ref=e236]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e237]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e238]:
+          - generic [ref=e240]: 未收录
+          - generic [ref=e241]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e242]
+          - paragraph [ref=e243]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e244]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e245]:
+          - generic [ref=e247]: 未收录
+          - generic [ref=e248]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e249]
+          - paragraph [ref=e250]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e251]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e252]:
+          - generic [ref=e254]: 未收录
+          - generic [ref=e255]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e256]
+          - paragraph [ref=e257]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e258]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e259]:
+          - generic [ref=e261]: 未收录
+          - generic [ref=e262]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e263]
+          - paragraph [ref=e264]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e265]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e266]:
+          - generic [ref=e268]: 未收录
+          - generic [ref=e269]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e270]
+          - paragraph [ref=e271]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e272]: 继续翻鸟签，等它飞进鸟窝
+        - article [ref=e273]:
+          - generic [ref=e275]: 未收录
+          - generic [ref=e276]:
+            - img "未收录鸟类剪影"
+          - heading "栖息地剪影" [level=2] [ref=e277]
+          - paragraph [ref=e278]: 这只鸟还藏在晨雾里
+          - paragraph [ref=e279]: 继续翻鸟签，等它飞进鸟窝
+    - text: BIRD SIGN
+  - navigation "页面切换" [ref=e280]:
+    - button "今日" [ref=e281] [cursor=pointer]
+    - button "鸟窝" [ref=e282] [cursor=pointer]
+  - status

@@ -8,39 +8,6 @@ const state = {
 };
 
 const els = {};
-const callBirdIds = new Set(["sparrow", "egret", "zebra-dove", "moorhen", "white-headed-duck"]);
-const habitatByBirdId = {
-  sparrow: "城市与村落",
-  egret: "湖泊浅滩",
-  "zebra-dove": "城市绿地",
-  moorhen: "湖泊海岸",
-  "falco-subbuteo": "高楼峭壁",
-  "long-tailed-tit": "林缘灌丛",
-  "snowy-owl": "北方冻原",
-  "red-billed-leiothrix": "开阔田野",
-  "golden-eagle": "高山草原",
-  "night-heron": "河岸湿地",
-  swan: "湖泊湿地",
-  blackbird: "林地公园",
-  "white-headed-duck": "城市林缘",
-  "large-billed-crow": "城市山林",
-  "red-eared-bulbul": "灌丛果树",
-  "scarlet-ibis": "稻田湿地",
-  "red-headed-tit": "山地林缘",
-  "silver-throated-tit": "山林灌丛",
-  goshawk: "森林山地",
-  "common-kingfisher": "溪流河岸",
-  cockatoo: "林地树冠",
-  "bee-eater": "林缘蜂巢",
-  "dai-sheng": "草地林缘",
-  "white-wagtail": "河岸地面",
-  mallard: "湖泊河流",
-  "red-tailed-shrike": "溪边岩地",
-  sparrowhawk: "林地边缘",
-  "spotted-owlet": "村落林地",
-  "horned-lark": "开阔荒地",
-  "brown-headed-bunting": "灌丛草地"
-};
 const callAudio = new Audio();
 let toastTimer = null;
 
@@ -76,10 +43,14 @@ function safeStorageSet(key, value) {
 }
 
 function withBirdCall(bird) {
+  if (!bird.habitat) {
+    throw new Error(`${bird.name} 缺少栖息地数据`);
+  }
+
   return {
     ...bird,
-    habitat: habitatByBirdId[bird.id] || "常见栖息地",
-    call: callBirdIds.has(bird.id) ? `assets/bird-calls/${bird.id}.mp3` : ""
+    habitat: bird.habitat,
+    call: bird.call || `assets/bird-calls/${bird.id}.mp3`
   };
 }
 
@@ -158,7 +129,7 @@ function renderActiveBird() {
   const bird = state.activeBird;
   setImage(els.activeBirdImage, bird, "鸟签插画");
   els.rarityPill.textContent = state.revealed ? bird.rarity : "待翻开";
-  els.rankLabel.textContent = "常见地点";
+  els.rankLabel.textContent = "栖息地";
   els.heatLabel.textContent = bird.habitat;
   els.activeBirdName.textContent = bird.name;
   els.activeBirdLook.textContent = bird.look;
@@ -179,7 +150,7 @@ function renderGrid() {
       (bird) => `
         <article class="bird-tile ${bird.call ? "has-call call-enabled" : ""}" data-bird-id="${bird.id}">
           <div class="tile-habitat">
-            <span>常见地点</span>
+            <span>栖息地</span>
             <strong>${bird.habitat}</strong>
           </div>
           ${

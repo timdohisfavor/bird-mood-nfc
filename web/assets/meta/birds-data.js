@@ -6,6 +6,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "8907万",
     "rarity": "热榜 1",
     "look": "褐背、黑喉、小圆身",
+    "habitat": "城市村落",
     "line": "体型小，适应力强，常在城市和村落活动。",
     "quote": "【今日宜雀食】\n任何时间，任何地点，认真干饭",
     "fish": 3,
@@ -15,7 +16,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★★☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/sparrow.webp",
-    "fallbackImage": "assets/birds-final/sparrow.png"
+    "fallbackImage": "assets/birds-final/sparrow.png",
+    "call": "assets/bird-calls/sparrow.mp3"
   },
   {
     "id": "egret",
@@ -24,6 +26,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "6762万",
     "rarity": "热榜 2",
     "look": "白羽、黄嘴、黑脚",
+    "habitat": "浅水湿地",
     "line": "常在浅水区缓步觅食，姿态轻盈优雅。",
     "quote": "【今日宜行路】\n鹭路通畅，一鹭顺风",
     "fish": 3,
@@ -33,7 +36,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/egret.webp",
-    "fallbackImage": "assets/birds-final/egret.png"
+    "fallbackImage": "assets/birds-final/egret.png",
+    "call": "assets/bird-calls/egret.mp3"
   },
   {
     "id": "zebra-dove",
@@ -42,6 +46,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "2828万",
     "rarity": "热榜 3",
     "look": "灰褐羽、珠点颈斑",
+    "habitat": "城市绿地",
     "line": "颈侧有黑底白点的珠状斑，鸣声低柔。",
     "quote": "【今日宜随性】\n关于明天的事，后天自然就知道了",
     "fish": 4,
@@ -51,7 +56,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★☆☆☆",
     "meetingText": "★★★☆☆",
     "image": "assets/birds-final-webp/zebra-dove.webp",
-    "fallbackImage": "assets/birds-final/zebra-dove.png"
+    "fallbackImage": "assets/birds-final/zebra-dove.png",
+    "call": "assets/bird-calls/zebra-dove.mp3"
   },
   {
     "id": "moorhen",
@@ -60,6 +66,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "2364万",
     "rarity": "热榜 4",
     "look": "白灰羽、红嘴、红脚",
+    "habitat": "海岸湖泊",
     "line": "常在海岸、湖泊和河流附近活动，白灰羽色与红嘴红脚很醒目。",
     "quote": "【今日宜接欧】 \n鸥气满满，接住从天而降的好运投喂",
     "fish": 2,
@@ -69,7 +76,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/moorhen.webp",
-    "fallbackImage": "assets/birds-final/moorhen.png"
+    "fallbackImage": "assets/birds-final/moorhen.png",
+    "call": "assets/bird-calls/moorhen.mp3"
   },
   {
     "id": "falco-subbuteo",
@@ -78,6 +86,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "2237万",
     "rarity": "热榜 5",
     "look": "灰背、黑须纹、尖翼",
+    "habitat": "山崖高楼",
     "line": "高速飞行能力极强，常从高处俯冲捕猎。",
     "quote": "【今日宜俯冲】\n向下俯冲，是为了更高腾空",
     "fish": 1,
@@ -87,7 +96,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★★",
     "image": "assets/birds-final-webp/falco-subbuteo.webp",
-    "fallbackImage": "assets/birds-final/falco-subbuteo.png"
+    "fallbackImage": "assets/birds-final/falco-subbuteo.png",
+    "call": "assets/bird-calls/falco-subbuteo.mp3"
   },
   {
     "id": "long-tailed-tit",
@@ -96,6 +106,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "1892万",
     "rarity": "热榜 6",
     "look": "白圆脸、粉褐身、超长尾",
+    "habitat": "林地灌丛",
     "line": "体型小而圆，尾巴细长，常成群穿梭枝间。",
     "quote": "【今日宜大餐】\n只要我吃得够圆，就没人敢把我看扁",
     "fish": 4,
@@ -105,7 +116,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★★★",
     "meetingText": "★☆☆☆☆",
     "image": "assets/birds-final-webp/long-tailed-tit.webp",
-    "fallbackImage": "assets/birds-final/long-tailed-tit.png"
+    "fallbackImage": "assets/birds-final/long-tailed-tit.png",
+    "call": "assets/bird-calls/long-tailed-tit.mp3"
   },
   {
     "id": "snowy-owl",
@@ -114,6 +126,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "1708万",
     "rarity": "热榜 7",
     "look": "白羽、金眼、黑斑",
+    "habitat": "北方冻原",
     "line": "通体偏白，羽上有黑褐斑点，眼睛金黄。",
     "quote": "【今日宜围观】 \n保持雪鸮般的冷静清醒，坐看风云",
     "fish": 3,
@@ -123,7 +136,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★☆☆☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/snowy-owl.webp",
-    "fallbackImage": "assets/birds-final/snowy-owl.png"
+    "fallbackImage": "assets/birds-final/snowy-owl.png",
+    "call": "assets/bird-calls/snowy-owl.mp3"
   },
   {
     "id": "red-billed-leiothrix",
@@ -132,6 +146,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "1610万",
     "rarity": "热榜 8",
     "look": "栗背斑点、灰头、钩喙",
+    "habitat": "开阔田野",
     "line": "常悬停搜寻猎物，背部栗色并带黑色斑点。",
     "quote": "【今日宜悬停】\n定点悬停，是为了精准出击",
     "fish": 2,
@@ -141,7 +156,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/red-billed-leiothrix.webp",
-    "fallbackImage": "assets/birds-final/red-billed-leiothrix.png"
+    "fallbackImage": "assets/birds-final/red-billed-leiothrix.png",
+    "call": "assets/bird-calls/red-billed-leiothrix.mp3"
   },
   {
     "id": "golden-eagle",
@@ -150,6 +166,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "1402万",
     "rarity": "热榜 9",
     "look": "深褐身、金色后颈、强钩喙",
+    "habitat": "高山草原",
     "line": "大型猛禽，后颈金褐色，飞行时翼展很有压迫感。",
     "quote": "【今日宜高飞】\n飞得高一点，去看天外天",
     "fish": 1,
@@ -159,7 +176,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★★",
     "image": "assets/birds-final-webp/golden-eagle.webp",
-    "fallbackImage": "assets/birds-final/golden-eagle.png"
+    "fallbackImage": "assets/birds-final/golden-eagle.png",
+    "call": "assets/bird-calls/golden-eagle.mp3"
   },
   {
     "id": "night-heron",
@@ -168,6 +186,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "1303万",
     "rarity": "热榜 10",
     "look": "黑冠、灰翼、白腹",
+    "habitat": "河岸湿地",
     "line": "常在黄昏和夜间活动，黑色头冠很醒目。",
     "quote": "【今日宜漫步】\n鹭过的时候，别忘了看看风景",
     "fish": 4,
@@ -177,7 +196,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★☆☆☆☆",
     "meetingText": "★★★☆☆",
     "image": "assets/birds-final-webp/night-heron.webp",
-    "fallbackImage": "assets/birds-final/night-heron.png"
+    "fallbackImage": "assets/birds-final/night-heron.png",
+    "call": "assets/bird-calls/night-heron.mp3"
   },
   {
     "id": "swan",
@@ -186,6 +206,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "1095万",
     "rarity": "热榜 11",
     "look": "通体白、红脸、黑翼端",
+    "habitat": "湖泊湿地",
     "line": "大型涉禽，通体白色，面部裸露区域偏红。",
     "quote": "【今日宜闲散】\n“云来白鹤影，风动青松枝”",
     "fish": 2,
@@ -195,7 +216,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★★",
     "image": "assets/birds-final-webp/swan.webp",
-    "fallbackImage": "assets/birds-final/swan.png"
+    "fallbackImage": "assets/birds-final/swan.png",
+    "call": "assets/bird-calls/swan.mp3"
   },
   {
     "id": "blackbird",
@@ -204,6 +226,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "922万",
     "rarity": "热榜 12",
     "look": "黑羽、黄嘴、黄眼圈",
+    "habitat": "林地花园",
     "line": "雄鸟通体黑色，黄色嘴和眼圈非常醒目。",
     "quote": "【今日宜开麦】\n少问自己为什么，多问别人凭什么",
     "fish": 4,
@@ -213,7 +236,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★☆☆☆☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/blackbird.webp",
-    "fallbackImage": "assets/birds-final/blackbird.png"
+    "fallbackImage": "assets/birds-final/blackbird.png",
+    "call": "assets/bird-calls/blackbird.mp3"
   },
   {
     "id": "white-headed-duck",
@@ -222,6 +246,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "750万",
     "rarity": "热榜 13",
     "look": "白头、黑脸、橄榄翼",
+    "habitat": "树林灌丛",
     "line": "头顶白色、脸部黑色，背翼偏橄榄褐，常在树木和灌丛间活动。",
     "quote": "【今日宜筹备】\n有鹎而来，好运常在",
     "fish": 5,
@@ -231,7 +256,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★☆☆☆",
     "meetingText": "★☆☆☆☆",
     "image": "assets/birds-final-webp/white-headed-duck.webp",
-    "fallbackImage": "assets/birds-final/white-headed-duck.png"
+    "fallbackImage": "assets/birds-final/white-headed-duck.png",
+    "call": "assets/bird-calls/white-headed-duck.mp3"
   },
   {
     "id": "large-billed-crow",
@@ -240,6 +266,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "690万",
     "rarity": "热榜 14",
     "look": "黑羽、厚重大嘴、强壮体型",
+    "habitat": "城市山林",
     "line": "全身乌黑，嘴形比普通乌鸦更厚重有力。",
     "quote": "【今日宜减压】\n鸦力退散，万事皆有利于我",
     "fish": 2,
@@ -249,7 +276,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★★★",
     "meetingText": "★★★☆☆",
     "image": "assets/birds-final-webp/large-billed-crow.webp",
-    "fallbackImage": "assets/birds-final/large-billed-crow.png"
+    "fallbackImage": "assets/birds-final/large-billed-crow.png",
+    "call": "assets/bird-calls/large-billed-crow.mp3"
   },
   {
     "id": "red-eared-bulbul",
@@ -258,6 +286,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "452万",
     "rarity": "热榜 15",
     "look": "黑冠、白脸、红耳斑",
+    "habitat": "灌丛果树",
     "line": "头顶有黑色冠羽，耳侧红斑非常醒目。",
     "quote": "【今日宜续杯】 \n再来一鹎，去去班味，躺平摸鱼，快乐加鹎",
     "fish": 3,
@@ -267,7 +296,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★★☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/red-eared-bulbul.webp",
-    "fallbackImage": "assets/birds-final/red-eared-bulbul.png"
+    "fallbackImage": "assets/birds-final/red-eared-bulbul.png",
+    "call": "assets/bird-calls/red-eared-bulbul.mp3"
   },
   {
     "id": "scarlet-ibis",
@@ -276,6 +306,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "644万",
     "rarity": "热榜 16",
     "look": "粉白翼、红脸、弯长嘴",
+    "habitat": "稻田湿地",
     "line": "羽色淡粉，脸部红色，长而下弯的嘴适合觅食。",
     "quote": "【今日宜优雅】\n不慌不忙，慢慢发光",
     "fish": 3,
@@ -285,7 +316,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/scarlet-ibis.webp",
-    "fallbackImage": "assets/birds-final/scarlet-ibis.png"
+    "fallbackImage": "assets/birds-final/scarlet-ibis.png",
+    "call": "assets/bird-calls/scarlet-ibis.mp3"
   },
   {
     "id": "red-headed-tit",
@@ -294,6 +326,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "310万",
     "rarity": "热榜 17",
     "look": "红褐头、白脸、长尾",
+    "habitat": "山地林缘",
     "line": "头部红褐，体型小巧，长尾让轮廓很灵动。",
     "quote": "【今日宜红火】\n红运当头，快乐尾随",
     "fish": 4,
@@ -303,7 +336,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★★★",
     "meetingText": "★☆☆☆☆",
     "image": "assets/birds-final-webp/red-headed-tit.webp",
-    "fallbackImage": "assets/birds-final/red-headed-tit.png"
+    "fallbackImage": "assets/birds-final/red-headed-tit.png",
+    "call": "assets/bird-calls/red-headed-tit.mp3"
   },
   {
     "id": "silver-throated-tit",
@@ -312,6 +346,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "302万",
     "rarity": "热榜 18",
     "look": "银白喉、黑眉、长尾",
+    "habitat": "山林灌丛",
     "line": "喉部银白，头侧线条清晰，尾巴细长。",
     "quote": "【今日宜卖萌】\n早上好，有什么倒忙我可以帮的吗",
     "fish": 4,
@@ -321,7 +356,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★★☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/silver-throated-tit.webp",
-    "fallbackImage": "assets/birds-final/silver-throated-tit.png"
+    "fallbackImage": "assets/birds-final/silver-throated-tit.png",
+    "call": "assets/bird-calls/silver-throated-tit.mp3"
   },
   {
     "id": "goshawk",
@@ -330,6 +366,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "279万",
     "rarity": "热榜 19",
     "look": "灰背、白眉、横斑腹",
+    "habitat": "森林山地",
     "line": "森林型猛禽，目光锐利，腹部常见细密横斑。",
     "quote": "【今日宜出击】\n精准锁定目标，出场全都拿下",
     "fish": 1,
@@ -339,7 +376,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★★",
     "image": "assets/birds-final-webp/goshawk.webp",
-    "fallbackImage": "assets/birds-final/goshawk.png"
+    "fallbackImage": "assets/birds-final/goshawk.png",
+    "call": "assets/bird-calls/goshawk.mp3"
   },
   {
     "id": "common-kingfisher",
@@ -348,6 +386,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "275万",
     "rarity": "热榜 20",
     "look": "蓝绿背、橙腹、长直嘴",
+    "habitat": "水边河岸",
     "line": "背部蓝绿、腹部橙色，常停在水边等待俯冲。",
     "quote": "【今日宜静观】\n静候时机，一击必中",
     "fish": 2,
@@ -357,7 +396,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★☆☆",
     "meetingText": "★☆☆☆☆",
     "image": "assets/birds-final-webp/common-kingfisher.webp",
-    "fallbackImage": "assets/birds-final/common-kingfisher.png"
+    "fallbackImage": "assets/birds-final/common-kingfisher.png",
+    "call": "assets/bird-calls/common-kingfisher.mp3"
   },
   {
     "id": "cockatoo",
@@ -366,6 +406,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "229万",
     "rarity": "热榜 21",
     "look": "白羽、黄冠、弯喙",
+    "habitat": "林地树冠",
     "line": "常见白色鹦鹉形象，头顶冠羽会竖起。",
     "quote": "【今日宜显眼】\n自由自在不内耗，做个快乐显眼包",
     "fish": 2,
@@ -375,7 +416,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★★★",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/cockatoo.webp",
-    "fallbackImage": "assets/birds-final/cockatoo.png"
+    "fallbackImage": "assets/birds-final/cockatoo.png",
+    "call": "assets/bird-calls/cockatoo.mp3"
   },
   {
     "id": "bee-eater",
@@ -384,6 +426,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "217万",
     "rarity": "热榜 22",
     "look": "褐身、短冠、宽翼",
+    "habitat": "林缘蜂巢",
     "line": "头部可见短冠羽，常以蜂类和蜂巢为食。",
     "quote": "【今日宜防毒】\n工作而已，别太上头",
     "fish": 2,
@@ -393,7 +436,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/bee-eater.webp",
-    "fallbackImage": "assets/birds-final/bee-eater.png"
+    "fallbackImage": "assets/birds-final/bee-eater.png",
+    "call": "assets/bird-calls/bee-eater.mp3"
   },
   {
     "id": "dai-sheng",
@@ -402,6 +446,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "176万",
     "rarity": "热榜 23",
     "look": "橙冠、黑白翼、长弯嘴",
+    "habitat": "草地林缘",
     "line": "头顶扇形冠羽，翅膀黑白横纹，非常有辨识度。",
     "quote": "【今日宜戴胜】\n今天开冠，好运分你一半",
     "fish": 3,
@@ -411,7 +456,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★★☆",
     "meetingText": "★★★☆☆",
     "image": "assets/birds-final-webp/dai-sheng.webp",
-    "fallbackImage": "assets/birds-final/dai-sheng.png"
+    "fallbackImage": "assets/birds-final/dai-sheng.png",
+    "call": "assets/bird-calls/dai-sheng.mp3"
   },
   {
     "id": "white-wagtail",
@@ -420,6 +466,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "165万",
     "rarity": "热榜 24",
     "look": "黑白身、细长尾、爱摆尾",
+    "habitat": "河岸地面",
     "line": "黑白配色清爽，常在地面快速行走并摆动尾巴。",
     "quote": "【今日宜开摆】\n与其逼自己一把，不如放自己一马",
     "fish": 3,
@@ -429,7 +476,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★☆☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/white-wagtail.webp",
-    "fallbackImage": "assets/birds-final/white-wagtail.png"
+    "fallbackImage": "assets/birds-final/white-wagtail.png",
+    "call": "assets/bird-calls/white-wagtail.mp3"
   },
   {
     "id": "mallard",
@@ -438,6 +486,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "116万",
     "rarity": "热榜 25",
     "look": "橙褐身、浅色头、水鸟身形",
+    "habitat": "湖泊湿地",
     "line": "全身多为橙褐色，常见于湖泊、河流和湿地。",
     "quote": "【今日宜冲鸭】 \n想多了都是问题，做多了就有答案",
     "fish": 5,
@@ -447,7 +496,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★☆☆",
     "meetingText": "★☆☆☆☆",
     "image": "assets/birds-final-webp/mallard.webp",
-    "fallbackImage": "assets/birds-final/mallard.png"
+    "fallbackImage": "assets/birds-final/mallard.png",
+    "call": "assets/bird-calls/mallard.mp3"
   },
   {
     "id": "red-tailed-shrike",
@@ -456,6 +506,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "96万",
     "rarity": "热榜 26",
     "look": "蓝莓色身体、红橙尾",
+    "habitat": "溪流岩岸",
     "line": "常在溪流附近活动，蓝灰身体和红橙尾羽很醒目。",
     "quote": "【今日宜顺水】 \n一切都会水到鸲成",
     "fish": 4,
@@ -465,7 +516,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★☆☆☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/red-tailed-shrike.webp",
-    "fallbackImage": "assets/birds-final/red-tailed-shrike.png"
+    "fallbackImage": "assets/birds-final/red-tailed-shrike.png",
+    "call": "assets/bird-calls/red-tailed-shrike.mp3"
   },
   {
     "id": "sparrowhawk",
@@ -474,6 +526,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "93万",
     "rarity": "热榜 27",
     "look": "灰背、橙横斑腹、锐眼",
+    "habitat": "林地边缘",
     "line": "体型较小的猛禽，飞行灵活，捕食小鸟。",
     "quote": "【今日宜低调】 \n真正的王者，不露锋芒不声张",
     "fish": 1,
@@ -483,7 +536,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★★",
     "image": "assets/birds-final-webp/sparrowhawk.webp",
-    "fallbackImage": "assets/birds-final/sparrowhawk.png"
+    "fallbackImage": "assets/birds-final/sparrowhawk.png",
+    "call": "assets/bird-calls/sparrowhawk.mp3"
   },
   {
     "id": "spotted-owlet",
@@ -492,6 +546,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "83万",
     "rarity": "热榜 28",
     "look": "圆头、黄眼、白斑",
+    "habitat": "村落林地",
     "line": "小型鸮类，头部和背部有明显白色斑点。",
     "quote": "【今日宜祛斑】 \n美式可以苦苦的，斑味必须淡淡的",
     "fish": 3,
@@ -501,7 +556,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★☆☆☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/spotted-owlet.webp",
-    "fallbackImage": "assets/birds-final/spotted-owlet.png"
+    "fallbackImage": "assets/birds-final/spotted-owlet.png",
+    "call": "assets/bird-calls/spotted-owlet.mp3"
   },
   {
     "id": "horned-lark",
@@ -510,6 +566,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "79万",
     "rarity": "热榜 29",
     "look": "巨大黄盔、黑白身、长喙",
+    "habitat": "热带森林",
     "line": "大型犀鸟有显著盔突和巨大嘴形，轮廓非常戏剧化。",
     "quote": "【今日宜大吃】 \n做生活的嚼嚼者",
     "fish": 2,
@@ -519,7 +576,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★★☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/horned-lark.webp",
-    "fallbackImage": "assets/birds-final/horned-lark.png"
+    "fallbackImage": "assets/birds-final/horned-lark.png",
+    "call": "assets/bird-calls/horned-lark.mp3"
   },
   {
     "id": "brown-headed-bunting",
@@ -528,6 +586,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "74万",
     "rarity": "热榜 30",
     "look": "棕红头翼、短粗喙、长尾",
+    "habitat": "灌丛草地",
     "line": "粉棕褐身体、棕红头翼和长尾，让它在灌丛间很有辨识度。",
     "quote": "【今日宜玩耍】 \n阳光这么好，何必自寻烦恼",
     "fish": 4,
@@ -537,7 +596,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★☆☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/brown-headed-bunting.webp",
-    "fallbackImage": "assets/birds-final/brown-headed-bunting.png"
+    "fallbackImage": "assets/birds-final/brown-headed-bunting.png",
+    "call": "assets/bird-calls/brown-headed-bunting.mp3"
   },
   {
     "id": "yellow-rumped-warbler",
@@ -546,6 +606,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "68万",
     "rarity": "热榜 31",
     "look": "黄绿身、黄腰斑、细尖嘴",
+    "habitat": "林地枝头",
     "line": "雀形目柳莺科。体型极小的黄绿色小鸟，腰部有明显黄斑，极其活跃，常在枝头间不停飞跃觅食，鸣声悦耳。",
     "quote": "【今日宜拥有】 \n心之所向，莺有尽有",
     "fish": 4,
@@ -555,7 +616,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★★☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/yellow-rumped-warbler.webp",
-    "fallbackImage": "assets/birds-final/yellow-rumped-warbler.png"
+    "fallbackImage": "assets/birds-final/yellow-rumped-warbler.png",
+    "call": "assets/bird-calls/yellow-rumped-warbler.mp3"
   },
   {
     "id": "chestnut-flanked-white-eye",
@@ -564,6 +626,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "63万",
     "rarity": "热榜 32",
     "look": "白眼圈、栗红胁、黄绿身",
+    "habitat": "花园林缘",
     "line": "雀形目绣眼鸟科。有标志性的白色眼环，两胁呈栗红色，生性活泼，爱吃花蜜和昆虫，常倒悬在树枝上啄食。",
     "quote": "【今日宜早睡】\n健康可爱，没有眼袋",
     "fish": 5,
@@ -573,7 +636,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★★☆",
     "meetingText": "★☆☆☆☆",
     "image": "assets/birds-final-webp/chestnut-flanked-white-eye.webp",
-    "fallbackImage": "assets/birds-final/chestnut-flanked-white-eye.png"
+    "fallbackImage": "assets/birds-final/chestnut-flanked-white-eye.png",
+    "call": "assets/bird-calls/chestnut-flanked-white-eye.mp3"
   },
   {
     "id": "brown-shrike",
@@ -582,6 +646,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "58万",
     "rarity": "热榜 33",
     "look": "棕背、黑眼罩、钩状嘴",
+    "habitat": "灌丛农田",
     "line": "雀形目伯劳科。戴黑色“眼罩”，性情凶猛，有把捕获的昆虫或小鸟穿挂在树刺上的习惯，人称“屠夫鸟”。",
     "quote": "【今日宜硬气】 \n道理我都懂，但是今天不讲道理",
     "fish": 2,
@@ -591,7 +656,8 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★☆☆",
     "meetingText": "★★★★★",
     "image": "assets/birds-final-webp/brown-shrike.webp",
-    "fallbackImage": "assets/birds-final/brown-shrike.png"
+    "fallbackImage": "assets/birds-final/brown-shrike.png",
+    "call": "assets/bird-calls/brown-shrike.mp3"
   },
   {
     "id": "robin",
@@ -600,6 +666,7 @@ window.BIRD_SIGN_DATA = [
     "heat": "52万",
     "rarity": "热榜 34",
     "look": "橘红胸、圆身、细腿",
+    "habitat": "花园林地",
     "line": "雀形目鹟科。胸前长着一片鲜艳的橘红色羽毛，圆润可爱，性格大胆且充满好奇心，常在花园翻找泥土中的蚯蚓。",
     "quote": "【今日宜更新】 \n归零，更新，重启，向上",
     "fish": 3,
@@ -609,6 +676,7 @@ window.BIRD_SIGN_DATA = [
     "socialText": "★★★★☆",
     "meetingText": "★★★☆☆",
     "image": "assets/birds-final-webp/robin.webp",
-    "fallbackImage": "assets/birds-final/robin.png"
+    "fallbackImage": "assets/birds-final/robin.png",
+    "call": "assets/bird-calls/robin.mp3"
   }
 ];

@@ -1,3 +1,5 @@
+@/Users/Admin/Downloads/Codex/2026-05-07/nfc-iphone-m-m-nfc-m/docs/codex-execution-playbook.md
+
 # 今日鸟签 NFC — Project Guide
 
 ## Overview

@@ -5,7 +5,11 @@
   "description": "今日鸟签 NFC 小程序原型与 H5 预览",
   "type": "module",
   "scripts": {
-    "build": "node scripts/convert_bird_webp.mjs && node scripts/export_h5_birds.mjs && node -e \"const fs=require('fs');const birds=JSON.parse(fs.readFileSync('web/assets/meta/birds.json','utf8'));fs.writeFileSync('web/assets/meta/birds-data.js','window.BIRD_SIGN_DATA = '+JSON.stringify(birds,null,2)+';\\n');\" && rm -rf dist && mkdir -p dist/assets dist/web/assets && cp index.html styles.css script.js dist/ && cp -R assets/birds-final dist/assets/ && cp -R assets/birds-final-webp dist/assets/ && if [ -d assets/bird-calls ]; then cp -R assets/bird-calls dist/assets/; fi && cp -R web/assets/meta dist/web/assets/",
+    "build": "node scripts/convert_bird_webp.mjs && node scripts/export_h5_birds.mjs && node scripts/build_dist.mjs && node scripts/check_dist_publish.mjs",
+    "build:fast": "node scripts/export_h5_birds.mjs && node scripts/build_dist.mjs && node scripts/check_dist_publish.mjs",
+    "check:dist": "node scripts/check_dist_publish.mjs",
+    "serve:dist": "node scripts/serve_dist.mjs",
+    "audio:optimize": "node scripts/optimize_bird_calls.mjs",
     "assets:webp": "node scripts/convert_bird_webp.mjs",
     "serve": "python3 -m http.server 4173 --bind 127.0.0.1",
     "serve:web": "python3 -m http.server 4174 --bind 127.0.0.1 --directory web",
