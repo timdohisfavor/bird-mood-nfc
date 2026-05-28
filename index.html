@@ -153,7 +153,27 @@
         <p class="detail-look" id="detail-bird-look">外观描述</p>
         <p class="detail-quote" id="detail-bird-quote">签名</p>
         <p class="detail-habitat" id="detail-bird-habitat">栖息地</p>
-        <button id="detail-call-button" class="detail-call" type="button">🔊 播放鸟鸣</button>
+        <p class="detail-line" id="detail-bird-line"></p>
+        <div class="detail-stats">
+          <div class="detail-stat"><span class="detail-stat-label">宜鱼</span><span class="detail-stat-stars" id="detail-stat-fish"></span></div>
+          <div class="detail-stat"><span class="detail-stat-label">社交</span><span class="detail-stat-stars" id="detail-stat-social"></span></div>
+          <div class="detail-stat"><span class="detail-stat-label">遇见</span><span class="detail-stat-stars" id="detail-stat-meeting"></span></div>
+        </div>
+        <div class="pulse-viz-wrap" id="pulse-viz-wrap">
+          <canvas id="pulse-canvas" class="pulse-canvas" width="360" height="360"></canvas>
+        </div>
+        <div class="detail-call-row">
+          <button id="detail-call-button" class="pulse-play-btn" type="button" aria-label="播放鸟鸣">
+            <svg class="pulse-play-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path class="pulse-play-tri" d="M8 5v14l11-7z" />
+            </svg>
+            <svg class="pulse-pause-icon" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
+              <rect x="6" y="4" width="4" height="16" rx="1" />
+              <rect x="14" y="4" width="4" height="16" rx="1" />
+            </svg>
+          </button>
+          <span class="pulse-label" id="pulse-label">轻触聆听鸟鸣</span>
+        </div>
         <button id="detail-shot-button" class="detail-shot" type="button">保存到相册</button>
       </div>
     </aside>

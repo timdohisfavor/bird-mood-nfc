@@ -20,7 +20,155 @@ const embeddedBirds = Array.isArray(window.BIRD_SIGN_DATA) ? window.BIRD_SIGN_DA
 // All 34 birds have audio files — no callBirdIds filter needed.
 
 const callAudio = new Audio();
+let pulseViz = null;
 let toastTimer = null;
+/* ── Pulse Ring Visualizer (Web Audio API + Canvas) ── */
+class PulseVisualizer {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.audioCtx = null;
+    this.analyser = null;
+    this.source = null;
+    this.freqData = null;
+    this.timeData = null;
+    this.rafId = null;
+    this.isPlaying = false;
+    this.time = 0;
+    this._boundDraw = this._draw.bind(this);
+  }
+
+  _ensureAudioCtx(audioEl) {
+    if (this.audioCtx) return;
+    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    this.analyser = this.audioCtx.createAnalyser();
+    this.analyser.fftSize = 256;
+    this.analyser.smoothingTimeConstant = 0.78;
+    this.source = this.audioCtx.createMediaElementSource(audioEl);
+    this.source.connect(this.analyser);
+    this.freqData = new Uint8Array(this.analyser.frequencyBinCount);
+    this.timeData = new Uint8Array(this.analyser.fftSize);
+  }
+
+  start(audioEl) {
+    this._ensureAudioCtx(audioEl);
+    if (this.audioCtx.state === "suspended") this.audioCtx.resume();
+    this.isPlaying = true;
+    if (!this.rafId) this._draw();
+  }
+
+  stop() {
+    this.isPlaying = false;
+  }
+
+  destroy() {
+    if (this.rafId) { cancelAnimationFrame(this.rafId); this.rafId = null; }
+  }
+
+  _draw() {
+    var c = this.canvas;
+    var ctx = this.ctx;
+    var dpr = window.devicePixelRatio || 1;
+    var displayW = c.clientWidth * dpr;
+    var displayH = c.clientHeight * dpr;
+    if (c.width !== displayW || c.height !== displayH) {
+      c.width = displayW; c.height = displayH;
+    }
+    var w = c.width, h = c.height;
+    var cx = w / 2, cy = h / 2;
+
+    ctx.clearRect(0, 0, w, h);
+    this.time += 0.016;
+
+    if (this.isPlaying && this.analyser) {
+      this.analyser.getByteFrequencyData(this.freqData);
+      this.analyser.getByteTimeDomainData(this.timeData);
+
+      var maxR = Math.min(cx, cy) * 0.92;
+      var innerR = maxR * 0.28;
+      var usable = Math.floor(this.freqData.length * 0.7);
+      var n = 180;
+
+      /* Average energy for core pulse */
+      var totalEnergy = 0;
+      for (var i = 0; i < usable; i++) totalEnergy += this.freqData[i];
+      var avgEnergy = totalEnergy / usable / 255;
+      var pulseR = innerR * (1 + avgEnergy * 0.35);
+
+      /* Central glowing core */
+      var coreGrad = ctx.createRadialGradient(cx, cy, pulseR * 0.15, cx, cy, pulseR);
+      coreGrad.addColorStop(0, "hsla(" + (avgEnergy * 50) + ",80%,65%,0.55)");
+      coreGrad.addColorStop(0.6, "hsla(" + (avgEnergy * 50 + 30) + ",70%,50%,0.15)");
+      coreGrad.addColorStop(1, "hsla(" + (avgEnergy * 50) + ",60%,40%,0.02)");
+      ctx.beginPath();
+      ctx.arc(cx, cy, pulseR, 0, Math.PI * 2);
+      ctx.fillStyle = coreGrad;
+      ctx.fill();
+
+      /* 180 rainbow frequency bars radiating outward */
+      for (var j = 0; j < n; j++) {
+        var angle = (j / n) * Math.PI * 2 - Math.PI / 2;
+        var fi = Math.floor(j * usable / n);
+        var val = this.freqData[fi] / 255;
+        var barLen = val * (maxR - innerR) * 1.6;
+        var x1 = cx + Math.cos(angle) * pulseR;
+        var y1 = cy + Math.sin(angle) * pulseR;
+        var x2 = cx + Math.cos(angle) * (pulseR + barLen);
+        var y2 = cy + Math.sin(angle) * (pulseR + barLen);
+
+        var hue = (j / n) * 300 + avgEnergy * 60;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = "hsl(" + (hue % 360) + ",75%,55%)";
+        ctx.globalAlpha = 0.65 + val * 0.35;
+        ctx.lineWidth = 2.2 * dpr / 2;
+        ctx.lineCap = "round";
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      /* White waveform ring (time domain) */
+      ctx.beginPath();
+      for (var k = 0; k < this.timeData.length; k++) {
+        var a = (k / this.timeData.length) * Math.PI * 2 - Math.PI / 2;
+        var v = (this.timeData[k] - 128) / 128;
+        var r = pulseR + v * 14 * dpr / 2;
+        var px = cx + Math.cos(a) * r;
+        var py = cy + Math.sin(a) * r;
+        if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = "rgba(255,255,255,0.35)";
+      ctx.lineWidth = 1.2 * dpr / 2;
+      ctx.stroke();
+
+    } else {
+      /* Idle breathing animation */
+      var breath = Math.sin(this.time * 1.2) * 0.06 + 1;
+      var idleR = Math.min(cx, cy) * 0.28 * breath;
+
+      /* Idle core glow */
+      var idleGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, idleR * 1.5);
+      idleGlow.addColorStop(0, "hsla(" + ((this.time * 20) % 360) + ",60%,60%,0.2)");
+      idleGlow.addColorStop(1, "hsla(" + ((this.time * 20) % 360) + ",50%,40%,0.02)");
+      ctx.beginPath();
+      ctx.arc(cx, cy, idleR * 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = idleGlow;
+      ctx.fill();
+
+      /* Idle ring */
+      ctx.beginPath();
+      ctx.arc(cx, cy, idleR + 8 * dpr / 2, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(255,255,255," + (0.12 + Math.sin(this.time * 1.2) * 0.06) + ")";
+      ctx.lineWidth = 1.5 * dpr / 2;
+      ctx.stroke();
+    }
+
+    this.rafId = requestAnimationFrame(this._boundDraw);
+  }
+}
+
 
 function $(selector) {
   return document.querySelector(selector);
@@ -214,6 +362,7 @@ function updateCallState() {
   document.querySelectorAll(".call-button").forEach((button) => {
     button.classList.toggle("playing", button.dataset.birdId === state.playingCallId);
   });
+  updatePulseState();
 }
 
 async function playBirdCall(bird) {
@@ -424,7 +573,10 @@ function renderDetailModal() {
     els.birdDetailModal.setAttribute("aria-hidden", open ? "false" : "true");
   }
   document.body.classList.toggle("has-modal", open);
-  if (!open) return;
+  if (!open) {
+    if (pulseViz) { pulseViz.stop(); }
+    return;
+  }
   var bird = state.detailBird;
   if (els.detailBirdRank) els.detailBirdRank.textContent = "No." + bird.rank;
   if (els.detailBirdHabitat) els.detailBirdHabitat.textContent = bird.habitat;
@@ -432,6 +584,27 @@ function renderDetailModal() {
   if (els.detailBirdName) els.detailBirdName.textContent = bird.name;
   if (els.detailBirdLook) els.detailBirdLook.textContent = bird.look;
   if (els.detailBirdQuote) els.detailBirdQuote.textContent = bird.quote;
+  if (els.detailBirdLine) els.detailBirdLine.textContent = bird.line || "";
+  if (els.detailStatFish) els.detailStatFish.textContent = bird.fishText || "";
+  if (els.detailStatSocial) els.detailStatSocial.textContent = bird.socialText || "";
+  if (els.detailStatMeeting) els.detailStatMeeting.textContent = bird.meetingText || "";
+  updatePulseState();
+}
+
+function updatePulseState() {
+  var btn = document.getElementById("detail-call-button");
+  var playIcon = btn ? btn.querySelector(".pulse-play-icon") : null;
+  var pauseIcon = btn ? btn.querySelector(".pulse-pause-icon") : null;
+  var label = document.getElementById("pulse-label");
+  var isPlayingThis = state.playingCallId && state.detailBird && state.playingCallId === state.detailBird.id;
+  if (btn) btn.classList.toggle("is-playing", isPlayingThis);
+  if (playIcon) playIcon.style.display = isPlayingThis ? "none" : "";
+  if (pauseIcon) pauseIcon.style.display = isPlayingThis ? "" : "none";
+  if (label) label.classList.toggle("hidden", isPlayingThis);
+  if (pulseViz) {
+    if (isPlayingThis) pulseViz.start(callAudio);
+    else pulseViz.stop();
+  }
 }
 
 function drawBird() {
@@ -629,6 +802,8 @@ function bindEvents() {
     if (!state.detailBird) return;
     playBirdCall(state.detailBird);
   });
+  var pulseCanvas = document.getElementById("pulse-canvas");
+  if (pulseCanvas) pulseViz = new PulseVisualizer(pulseCanvas);
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.addEventListener("click", () => goScreen(tab.dataset.screen));
   });
@@ -674,6 +849,10 @@ function cacheElements() {
     detailBirdQuote: $("#detail-bird-quote"),
     detailCallButton: $("#detail-call-button"),
     detailShotButton: $("#detail-shot-button"),
+    detailBirdLine: $("#detail-bird-line"),
+    detailStatFish: $("#detail-stat-fish"),
+    detailStatSocial: $("#detail-stat-social"),
+    detailStatMeeting: $("#detail-stat-meeting"),
     toast: $("#toast")
   });
 }
