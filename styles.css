@@ -703,7 +703,7 @@ h1 {
 }
 
 .tile-topline {
-  min-height: 32px;
+  min-height: 36px;
   color: var(--muted);
   font-size: 11px;
   font-weight: 900;
@@ -711,17 +711,11 @@ h1 {
   align-items: center;
   justify-content: space-between;
   position: relative;
+  gap: 8px;
 }
 
 .tile-topline span:first-child {
   min-width: 45px;
-}
-
-.tile-topline strong {
-  color: var(--deep);
-  text-align: center;
-  flex: 1;
-  padding: 0 40px;
 }
 
 .tile-art {
@@ -789,14 +783,23 @@ h1 {
   text-align: center;
 }
 
+.tile-habitat {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 6px;
+  color: var(--deep);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  min-height: 18px;
+}
+
 .call-button {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+  position: relative;
   z-index: 2;
   display: grid;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   place-items: center;
   border-radius: 50%;
   color: #fff;
@@ -804,19 +807,45 @@ h1 {
   border: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
 }
 
-.call-button svg {
-  width: 19px;
-  height: 19px;
+.call-ring {
+  position: absolute;
+  inset: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  transform: rotate(-90deg);
+}
+
+.call-ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 2;
+}
+
+.call-ring-progress {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 100ms linear;
+}
+
+.call-icon {
+  width: 18px;
+  height: 18px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2;
+  position: relative;
+  z-index: 1;
 }
 
 .call-button.playing {
+  background: var(--leaf);
   animation: callPulse 900ms ease both;
 }
 

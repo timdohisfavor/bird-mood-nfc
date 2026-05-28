@@ -17,7 +17,7 @@ const state = {
 
 const els = {};
 const embeddedBirds = Array.isArray(window.BIRD_SIGN_DATA) ? window.BIRD_SIGN_DATA : [];
-const callBirdIds = new Set(["sparrow", "egret", "zebra-dove", "moorhen", "white-headed-duck"]);
+// All 34 birds have audio files — no callBirdIds filter needed.
 
 const callAudio = new Audio();
 let toastTimer = null;
@@ -76,7 +76,7 @@ function withBirdMeta(bird) {
   }
   return {
     ...bird,
-    call: callBirdIds.has(bird.id) ? `assets/bird-calls/${bird.id}.mp3` : ""
+    call: bird.call || `assets/bird-calls/${bird.id}.mp3`
   };
 }
 
@@ -220,6 +220,14 @@ function updateCallState() {
 async function playBirdCall(bird) {
   if (!bird?.call || !state.unlockedBirdIds.has(bird.id)) return;
 
+  if (state.playingCallId === bird.id) {
+    callAudio.pause();
+    callAudio.currentTime = 0;
+    state.playingCallId = null;
+    updateCallState();
+    return;
+  }
+
   try {
     state.playingCallId = bird.id;
     updateCallState();
@@ -234,10 +242,30 @@ async function playBirdCall(bird) {
   }
 }
 
-callAudio.addEventListener("ended", () => {
+function updateCallProgress() {
+  document.querySelectorAll(".call-button").forEach(function(btn) {
+    var ring = btn.querySelector(".call-ring-progress");
+    if (!ring) return;
+    var isActive = btn.dataset.birdId === state.playingCallId;
+    if (isActive && callAudio.duration && !isNaN(callAudio.duration)) {
+      var progress = callAudio.currentTime / callAudio.duration;
+      var circumference = 2 * Math.PI * 16;
+      ring.style.strokeDasharray = circumference;
+      ring.style.strokeDashoffset = circumference * (1 - progress);
+    } else {
+      ring.style.strokeDasharray = "";
+      ring.style.strokeDashoffset = "";
+    }
+  });
+}
+
+callAudio.addEventListener("ended", function() {
   state.playingCallId = null;
   updateCallState();
+  updateCallProgress();
 });
+
+callAudio.addEventListener("timeupdate", updateCallProgress);
 
 function renderActiveBird() {
   const bird = state.activeBird;
@@ -322,19 +350,23 @@ function renderGrid() {
         <article class="bird-tile ${unlocked ? "unlocked" : "locked"} ${bird.call && unlocked ? "has-call" : ""}" data-bird-id="${bird.id}">
           <div class="tile-topline">
             <span>${unlocked ? `No.${bird.rank}` : "未收录"}</span>
-            ${unlocked ? `<strong>${bird.habitat}</strong>` : ""}
+            ${
+              bird.call && unlocked
+                ? `<button class="call-button" type="button" data-bird-id="${bird.id}" aria-label="播放${bird.name}鸟鸣">
+                    <svg class="call-ring" viewBox="0 0 36 36" aria-hidden="true">
+                      <circle class="call-ring-bg" cx="18" cy="18" r="16" />
+                      <circle class="call-ring-progress" cx="18" cy="18" r="16" />
+                    </svg>
+                    <svg class="call-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 9v6h4l5 4V5L8 9H4Z"></path>
+                      <path d="M16 9.5c1.2 1.4 1.2 3.6 0 5"></path>
+                      <path d="M18.5 7c2.4 2.9 2.4 7.1 0 10"></path>
+                    </svg>
+                  </button>`
+                : ""
+            }
           </div>
-          ${
-            bird.call && unlocked
-              ? `<button class="call-button" type="button" data-bird-id="${bird.id}" aria-label="播放${bird.name}鸟鸣">
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M4 9v6h4l5 4V5L8 9H4Z"></path>
-                    <path d="M16 9.5c1.2 1.4 1.2 3.6 0 5"></path>
-                    <path d="M18.5 7c2.4 2.9 2.4 7.1 0 10"></path>
-                  </svg>
-                </button>`
-              : ""
-          }
+          <div class="tile-habitat">${unlocked ? bird.habitat : ""}</div>
           <div class="tile-art">
             <img src="${bird.image}" data-fallback="${bird.fallbackImage || ""}" alt="${unlocked ? `${bird.name}插画` : "未收录鸟类剪影"}" loading="lazy" decoding="async" />
           </div>
