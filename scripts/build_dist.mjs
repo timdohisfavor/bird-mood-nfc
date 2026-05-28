@@ -47,6 +47,7 @@ await Promise.all([
   copyIfExists(path.join(rootDir, "assets/birds-final"), path.join(distDir, "assets/birds-final")),
   copyIfExists(path.join(rootDir, "assets/birds-final-webp"), path.join(distDir, "assets/birds-final-webp")),
   copyIfExists(path.join(rootDir, "assets/backgrounds"), path.join(distDir, "assets/backgrounds")),
+  copyIfExists(path.join(rootDir, "assets/icons"), path.join(distDir, "assets/icons")),
   copyIfExists(path.join(rootDir, "web/assets/meta"), path.join(distDir, "web/assets/meta")),
   copyAudioAssets()
 ]);

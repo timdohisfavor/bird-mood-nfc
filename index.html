@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#e8f1e9" />
+    <meta name="theme-color" content="#0d1a12" />
     <base href="/" />
     <title>NFC 今日鸟签</title>
     <link rel="icon" href="data:," />
@@ -69,7 +69,7 @@
             <strong id="unlock-count">0 / 34</strong>
           </div>
           <p>每天固定一签，翻开过的鸟会在这台设备上收录。</p>
-          <a class="brand-pill" href="https://www.xiaohongshu.com/user/profile/27440953987" target="_blank" rel="noopener">🪶 Joyi 的小红书</a>
+          <a class="brand-pill" href="https://xhslink.com/m/7SGBBG2ZVDv" target="_blank" rel="noopener"><img class="brand-pill-icon" src="./assets/icons/xhs-logo.png" alt="小红书" width="20" height="10" /><span>去JOYI小红书许愿</span><svg class="brand-pill-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           <div class="preview-tools" aria-label="本地预览工具">
             <button id="reset-preview-button" class="preview-reset" type="button">重置预览状态</button>
             <button id="unlock-all-button" class="preview-reset preview-unlock-all" type="button">一键揭开所有鸟</button>
@@ -100,7 +100,7 @@
             <strong id="guide-count">0</strong>
           </div>
           <p>可收录的鸟团团会定期更新</p>
-          <a class="brand-pill" href="https://www.xiaohongshu.com/user/profile/27440953987" target="_blank" rel="noopener">🪶 Joyi 的小红书</a>
+          <a class="brand-pill" href="https://xhslink.com/m/7SGBBG2ZVDv" target="_blank" rel="noopener"><img class="brand-pill-icon" src="./assets/icons/xhs-logo.png" alt="小红书" width="20" height="10" /><span>去JOYI小红书许愿</span><svg class="brand-pill-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           <div class="progress-track">
             <span id="guide-progress"></span>
           </div>
@@ -139,7 +139,7 @@
           </div>
         </article>
 
-        <button id="save-poster" class="primary poster-save" type="button">提示截图保存</button>
+        <button id="save-poster" class="poster-save" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>保存到相册</button>
       </section>
     </main>
 
@@ -154,8 +154,7 @@
         <p class="detail-quote" id="detail-bird-quote">签名</p>
         <p class="detail-habitat" id="detail-bird-habitat">栖息地</p>
         <button id="detail-call-button" class="detail-call" type="button">🔊 播放鸟鸣</button>
-        <a class="brand-pill" href="https://www.xiaohongshu.com/user/profile/27440953987" target="_blank" rel="noopener">🪶 Joyi 的小红书</a>
-        <button id="detail-shot-button" class="detail-shot" type="button">📸 截图保存</button>
+        <button id="detail-shot-button" class="detail-shot" type="button">保存到相册</button>
       </div>
     </aside>
 
@@ -166,6 +165,7 @@
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
     <script src="./web/assets/meta/birds-data.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="./script.js" defer></script>
   </body>
 </html>

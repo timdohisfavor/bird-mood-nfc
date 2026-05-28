@@ -121,8 +121,7 @@ function renderGuideFilters() {
   var filters = [
     { key: "all", label: "全部" },
     { key: "unlocked", label: "已收录" },
-    { key: "locked", label: "未收录" },
-    { key: "call", label: "有鸟鸣" }
+    { key: "locked", label: "未收录" }
   ];
   container.innerHTML = filters.map(function(f) {
     return '<button class="filter-btn' + (state.guideFilter === f.key ? " active" : "") + '" data-filter="' + f.key + '" type="button">' + f.label + '</button>';
@@ -399,7 +398,7 @@ function renderAll() {
 }
 
 function goScreen(screen) {
-  if (!["home", "nest"].includes(screen)) return;
+  if (!["home", "nest", "poster"].includes(screen)) return;
   closeBirdDetail();
   state.currentScreen = screen;
   location.hash = screen === "home" ? "" : screen;
@@ -490,7 +489,48 @@ function bindEvents() {
   });
   els.backHome.addEventListener("click", () => goScreen("home"));
   els.posterBackHome.addEventListener("click", () => goScreen("home"));
-  els.savePoster.addEventListener("click", () => showToast("用系统截图保存这张海报"));
+  els.savePoster.addEventListener("click", async function() {
+    var card = document.querySelector(".poster-card");
+    if (!card || typeof html2canvas === "undefined") {
+      showToast("截图组件未加载，请手动截图");
+      return;
+    }
+    var btn = els.savePoster;
+    btn.disabled = true;
+    btn.textContent = "生成中…";
+    try {
+      var canvas = await html2canvas(card, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#f4f4e7",
+        borderRadius: 30
+      });
+      var blob = await new Promise(function(resolve) {
+        canvas.toBlob(resolve, "image/png", 1.0);
+      });
+      if (!blob) throw new Error("toBlob failed");
+      var file = new File([blob], "bird-sign-" + new Date().toISOString().slice(0, 10) + ".png", { type: "image/png" });
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: "今日鸟签" });
+        showToast("已准备好分享");
+      } else {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = file.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("图片已保存");
+      }
+    } catch (e) {
+      if (e.name !== "AbortError") showToast("生成失败，请手动截图");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "保存到相册";
+    }
+  });
   els.resetPreviewButton.addEventListener("click", resetPreviewState);
 
   var unlockAllBtn = document.getElementById("unlock-all-button");
@@ -541,7 +581,50 @@ function bindEvents() {
   );
   if (els.detailClose) els.detailClose.addEventListener("click", closeBirdDetail);
   if (els.birdDetailBackdrop) els.birdDetailBackdrop.addEventListener("click", closeBirdDetail);
-  if (els.detailShotButton) els.detailShotButton.addEventListener("click", function() { showToast("用系统截图保存这张鸟签"); });
+  if (els.detailShotButton) els.detailShotButton.addEventListener("click", async function() {
+    var sheet = document.querySelector(".detail-sheet");
+    if (!sheet || typeof html2canvas === "undefined") {
+      showToast("截图组件未加载，请手动截图");
+      return;
+    }
+    var btn = els.detailShotButton;
+    btn.disabled = true;
+    btn.textContent = "生成中…";
+    try {
+      var canvas = await html2canvas(sheet, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#fbfbf3",
+        borderRadius: 28
+      });
+      var blob = await new Promise(function(resolve) {
+        canvas.toBlob(resolve, "image/png", 1.0);
+      });
+      if (!blob) throw new Error("toBlob failed");
+      var bird = state.detailBird;
+      var name = bird ? bird.name : "bird";
+      var file = new File([blob], "bird-sign-" + name + "-" + new Date().toISOString().slice(0, 10) + ".png", { type: "image/png" });
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: "今日鸟签" });
+        showToast("已准备好分享");
+      } else {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = file.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("图片已保存");
+      }
+    } catch (e) {
+      if (e.name !== "AbortError") showToast("生成失败，请手动截图");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "保存到相册";
+    }
+  });
   if (els.detailCallButton) els.detailCallButton.addEventListener("click", function() {
     if (!state.detailBird) return;
     playBirdCall(state.detailBird);
