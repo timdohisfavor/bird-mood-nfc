@@ -7,7 +7,7 @@
     <base href="/" />
     <title>NFC 今日鸟签</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="./styles.css?v=20260519i" />
+    <link rel="stylesheet" href="./styles.css?v=20260529b" />
   </head>
   <body>
     <div class="habitat-bg" aria-hidden="true">
@@ -40,9 +40,14 @@
           <div id="daily-countdown" class="daily-countdown" style="display:none"></div>
 
           <button id="draw-card" class="bird-sign unrevealed" type="button" aria-label="翻开今日鸟签">
-            <span class="ambient-ring"></span>
             <span class="sign-back">
-              <span class="seal-mark" aria-hidden="true"></span>
+              <span class="seal-mark" aria-hidden="true">
+                <span class="seal-paper">
+                  <span class="seal-stamp">
+                    <span class="seal-bird"></span>
+                  </span>
+                </span>
+              </span>
               <span class="seal-title">鸟签待翻开</span>
               <span class="seal-copy">轻点一下，让小鸟从栖息地里出现吧</span>
             </span>
@@ -186,6 +191,6 @@
 
     <script src="./web/assets/meta/birds-data.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <script src="./script.js" defer></script>
+    <script src="./script.js?v=20260529b" defer></script>
   </body>
 </html>

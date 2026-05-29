@@ -202,7 +202,34 @@ function todayKey() {
 function todayText() {
   const weekdays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
   const date = new Date();
-  return `${date.getMonth() + 1}月${date.getDate()}日 ${weekdays[date.getDay()]}`;
+  const lunar = lunarDateText(date);
+  return `${date.getMonth() + 1}月${date.getDate()}日 ${weekdays[date.getDay()]}${lunar ? ` · ${lunar}` : ""}`;
+}
+
+function lunarDayName(day) {
+  const numerals = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
+  if (day <= 0 || day > 30) return "";
+  if (day < 10) return `初${numerals[day]}`;
+  if (day === 10) return "初十";
+  if (day < 20) return `十${numerals[day - 10]}`;
+  if (day === 20) return "二十";
+  if (day < 30) return `廿${numerals[day - 20]}`;
+  return "三十";
+}
+
+function lunarDateText(date) {
+  try {
+    const parts = new Intl.DateTimeFormat("zh-CN-u-ca-chinese", {
+      month: "long",
+      day: "numeric"
+    }).formatToParts(date);
+    const month = parts.find((part) => part.type === "month")?.value;
+    const day = Number(parts.find((part) => part.type === "day")?.value);
+    const lunarDay = lunarDayName(day);
+    return month && lunarDay ? `农历${month}${lunarDay}` : "";
+  } catch {
+    return "";
+  }
 }
 
 function safeStorageGet(key) {

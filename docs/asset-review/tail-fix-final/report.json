@@ -1,0 +1,126 @@
+[
+  {
+    "id": "zebra-dove",
+    "groups": [
+      [
+        493,
+        533
+      ]
+    ],
+    "margins": [
+      14,
+      134,
+      143,
+      99
+    ],
+    "left_edge_alpha": 0
+  },
+  {
+    "id": "golden-eagle",
+    "groups": [
+      [
+        579,
+        602
+      ],
+      [
+        606,
+        628
+      ],
+      [
+        632,
+        639
+      ]
+    ],
+    "margins": [
+      11,
+      88,
+      92,
+      61
+    ],
+    "left_edge_alpha": 0
+  },
+  {
+    "id": "blackbird",
+    "groups": [
+      [
+        463,
+        495
+      ]
+    ],
+    "margins": [
+      13,
+      112,
+      65,
+      149
+    ],
+    "left_edge_alpha": 0
+  },
+  {
+    "id": "cockatoo",
+    "groups": [
+      [
+        556,
+        574
+      ],
+      [
+        583,
+        604
+      ]
+    ],
+    "margins": [
+      15,
+      89,
+      153,
+      67
+    ],
+    "left_edge_alpha": 0
+  },
+  {
+    "id": "sparrowhawk",
+    "groups": [
+      [
+        564,
+        607
+      ]
+    ],
+    "margins": [
+      11,
+      123,
+      120,
+      97
+    ],
+    "left_edge_alpha": 0
+  },
+  {
+    "id": "brown-headed-bunting",
+    "groups": [
+      [
+        460,
+        500
+      ]
+    ],
+    "margins": [
+      13,
+      104,
+      67,
+      207
+    ],
+    "left_edge_alpha": 0
+  },
+  {
+    "id": "white-wagtail",
+    "groups": [
+      [
+        200,
+        232
+      ]
+    ],
+    "margins": [
+      10,
+      156,
+      50,
+      207
+    ],
+    "left_edge_alpha": 0
+  }
+]

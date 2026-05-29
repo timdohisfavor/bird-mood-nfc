@@ -268,8 +268,14 @@ h1 {
   font-weight: 900;
 }
 
+#today-text {
+  min-width: 0;
+  line-height: 1.35;
+}
+
 .status-pill {
   display: inline-flex;
+  flex: 0 0 auto;
   min-height: 30px;
   align-items: center;
   justify-content: center;
@@ -291,20 +297,6 @@ h1 {
 
 .bird-sign.revealed {
   min-height: 520px;
-}
-
-.ambient-ring {
-  position: absolute;
-  top: 28px;
-  left: 50%;
-  width: 262px;
-  height: 262px;
-  border: 1px solid rgba(255, 255, 255, 0.46);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.32), transparent 58%),
-    conic-gradient(from 40deg, rgba(47, 111, 69, 0.04), rgba(138, 169, 107, 0.28), rgba(121, 169, 157, 0.08), rgba(47, 111, 69, 0.04));
-  transform: translateX(-50%);
 }
 
 .sign-back,
@@ -1291,12 +1283,6 @@ body.has-modal{overflow:hidden}
 
   .bird-frame {
     height: 132px;
-  }
-
-  .ambient-ring {
-    top: 14px;
-    width: 220px;
-    height: 220px;
   }
 
   .seal-mark {

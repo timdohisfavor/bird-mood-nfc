@@ -50,6 +50,9 @@ Users draw a bird card each day that describes their mental state.
 - **NFC**: URL 参数 `?tag=` 或路径 `/nfc/{tag}` 检测 NFC 标签
 - **每日一签**: 按日期 key 持久化，同一设备每天固定一签
 - **构建**: `npm run build` -> 转换 WebP、导出 H5 数据、组装 `dist/`
+- **鸟图资产更新**: 新增或替换鸟图时，必须按现有资产规格交付：720x720、真实透明 alpha、无背景/树枝/场景元素，并同步 PNG、WebP、`web/` 资产、H5 数据和 `dist/` 构建结果；不能只生成预览图。
+- **H5 验证**: 改动 H5 后至少运行 `npm run build` 并打开相关本地页面/哈希路由验证；遇到本地无法加载、502、拒绝连接时，先检查 dev server、端口占用、`http_proxy`/`https_proxy` 和 `no_proxy`，再判断是否是应用代码问题。
+- **派生字段**: H5 展示字段如 `habitat`、图鉴数量、音频路径等应由权威数据源或导出脚本统一生成；前端不要用临时兜底文案静默掩盖缺失数据，缺字段应尽早暴露。
 
 ## npm Scripts
 | Command | Description |

@@ -5,9 +5,16 @@ const rootDir = path.resolve(".");
 const distDir = path.join(rootDir, "dist");
 const audioExtensions = new Set([".mp3", ".m4a", ".ogg", ".wav", ".webm"]);
 
+function shouldSkipPublishFile(name) {
+  return name.startsWith(".") || name === "Thumbs.db";
+}
+
 async function copyIfExists(source, target) {
   try {
-    await fs.cp(source, target, { recursive: true });
+    await fs.cp(source, target, {
+      recursive: true,
+      filter: (sourcePath) => !shouldSkipPublishFile(path.basename(sourcePath))
+    });
   } catch (error) {
     if (error.code !== "ENOENT") throw error;
   }
