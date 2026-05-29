@@ -314,7 +314,7 @@ h1 {
 
 .sign-back {
   justify-content: flex-start;
-  padding: 136px 22px 0;
+  padding: 112px 22px 0;
 }
 
 .sign-front {
@@ -336,29 +336,150 @@ h1 {
 .seal-mark {
   position: relative;
   display: grid;
-  width: 54px;
-  height: 54px;
+  width: 156px;
+  height: 172px;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.34), transparent 35%),
-    var(--deep);
-  box-shadow:
-    0 16px 30px rgba(18, 50, 37, 0.18),
-    0 0 0 9px rgba(18, 50, 37, 0.08);
+  filter: drop-shadow(0 22px 34px rgba(18, 50, 37, 0.18));
 }
 
 .seal-mark::before {
-  content: none;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 10px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(18, 50, 37, 0), rgba(18, 50, 37, 0.7) 18%, rgba(18, 50, 37, 0.86) 50%, rgba(18, 50, 37, 0.7) 82%, rgba(18, 50, 37, 0)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0 2px, transparent 2px 8px);
+  content: "";
+  transform: translateY(-50%);
+  z-index: 0;
 }
 
 .seal-mark::after {
-  content: none;
+  position: absolute;
+  top: 20px;
+  bottom: 16px;
+  left: 50%;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(18, 50, 37, 0), rgba(18, 50, 37, 0.22) 20%, rgba(18, 50, 37, 0.28) 78%, rgba(18, 50, 37, 0));
+  content: "";
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.seal-paper {
+  position: relative;
+  display: grid;
+  width: 102px;
+  height: 154px;
+  place-items: center;
+  border: 1px solid rgba(130, 108, 64, 0.2);
+  border-radius: 6px 6px 18px 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(251, 247, 225, 0.54)),
+    repeating-linear-gradient(90deg, rgba(130, 108, 64, 0.08) 0 1px, transparent 1px 18px),
+    #f8efd1;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -16px 28px rgba(130, 108, 64, 0.1),
+    0 18px 28px rgba(18, 50, 37, 0.14);
+  transform: rotate(-2deg);
+  z-index: 2;
+}
+
+.seal-paper::before,
+.seal-paper::after {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  background: rgba(130, 108, 64, 0.18);
+  content: "";
+}
+
+.seal-paper::before {
+  top: 24px;
+}
+
+.seal-paper::after {
+  bottom: 24px;
+}
+
+.seal-stamp {
+  position: relative;
+  display: grid;
+  width: 62px;
+  height: 62px;
+  place-items: center;
+  border: 2px solid rgba(156, 44, 34, 0.76);
+  border-radius: 18px;
+  color: #8f2a22;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.26), transparent 28%),
+    rgba(178, 52, 38, 0.11);
+  transform: rotate(7deg);
+  box-shadow: inset 0 0 0 5px rgba(156, 44, 34, 0.08);
+  z-index: 3;
+}
+
+.seal-stamp::before,
+.seal-stamp::after {
+  position: absolute;
+  background: currentColor;
+  content: "";
+  opacity: 0.85;
+}
+
+.seal-stamp::before {
+  width: 31px;
+  height: 18px;
+  border-radius: 70% 44% 58% 48%;
+  transform: translate(-4px, 1px) rotate(-14deg);
+}
+
+.seal-stamp::after {
+  width: 18px;
+  height: 8px;
+  border-radius: 999px 0 999px 999px;
+  transform: translate(20px, -2px) rotate(24deg);
+}
+
+.seal-bird {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translate(14px, -13px);
+  z-index: 2;
+}
+
+.seal-bird::before,
+.seal-bird::after {
+  position: absolute;
+  background: currentColor;
+  content: "";
+}
+
+.seal-bird::before {
+  width: 18px;
+  height: 5px;
+  border-radius: 999px;
+  transform: translate(-23px, 17px) rotate(18deg);
+}
+
+.seal-bird::after {
+  width: 12px;
+  height: 4px;
+  border-radius: 999px;
+  transform: translate(-7px, 9px) rotate(58deg);
 }
 
 .seal-title {
-  margin-top: 112px;
+  margin-top: 24px;
   font-size: 28px;
   font-weight: 950;
 }
