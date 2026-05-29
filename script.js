@@ -784,6 +784,31 @@ function bindEvents() {
     btn.disabled = true;
     btn.textContent = "生成中…";
     try {
+      // Temporarily expand sheet so html2canvas captures full content (not just 88vh)
+      var modal = sheet.parentElement;
+      var savedMaxH = sheet.style.maxHeight;
+      var savedOverflow = sheet.style.overflowY;
+      var savedH = sheet.style.height;
+      var savedAlign = sheet.style.alignSelf;
+      var savedPos = sheet.style.position;
+      var savedModalAlign = modal ? modal.style.alignItems : '';
+      var savedModalOverflow = modal ? modal.style.overflow : '';
+      var savedBorderRadius = sheet.style.borderRadius;
+      var closeBtn = sheet.querySelector('.detail-close');
+      if (closeBtn) closeBtn.style.display = 'none';
+      // Expand modal to top-aligned so full sheet is visible
+      if (modal) {
+        modal.style.alignItems = 'flex-start';
+        modal.style.overflow = 'visible';
+      }
+      sheet.style.maxHeight = 'none';
+      sheet.style.height = 'auto';
+      sheet.style.overflowY = 'visible';
+      sheet.style.position = 'relative';
+      sheet.style.alignSelf = 'flex-start';
+      sheet.style.borderRadius = '28px';
+      // Force layout reflow
+      void sheet.offsetHeight;
       var canvas = await html2canvas(sheet, {
         scale: 2,
         useCORS: true,
@@ -814,6 +839,18 @@ function bindEvents() {
     } catch (e) {
       if (e.name !== "AbortError") showToast("生成失败，请手动截图");
     } finally {
+      // Always restore sheet & modal styles
+      if (modal) {
+        modal.style.alignItems = savedModalAlign || '';
+        modal.style.overflow = savedModalOverflow || '';
+      }
+      sheet.style.maxHeight = savedMaxH || '';
+      sheet.style.overflowY = savedOverflow || '';
+      sheet.style.height = savedH || '';
+      sheet.style.alignSelf = savedAlign || '';
+      sheet.style.position = savedPos || '';
+      sheet.style.borderRadius = savedBorderRadius || '';
+      if (closeBtn) closeBtn.style.display = '';
       btn.disabled = false;
       btn.textContent = "保存到相册";
     }
