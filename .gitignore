@@ -37,9 +37,13 @@ build/
 coverage/
 deploy-package*.zip
 bird-mood-nfc-download/
+output/
 
 # Keep checked-in project exports intentional.
 outputs/
+
+# Local browser automation snapshots
+.playwright-cli/
 
 # Local Netlify folder
 .netlify
