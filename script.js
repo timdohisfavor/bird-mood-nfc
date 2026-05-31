@@ -22,6 +22,8 @@ const embeddedBirds = Array.isArray(window.BIRD_SIGN_DATA) ? window.BIRD_SIGN_DA
 const callAudio = new Audio();
 let pulseViz = null;
 let toastTimer = null;
+const detailImageCache = new Map();
+const SAVE_ICON_HTML = '<svg class="button-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>保存到相册</span>';
 /* ── Pulse Ring Visualizer (Web Audio API + Canvas) ── */
 class PulseVisualizer {
   constructor(canvas) {
@@ -58,8 +60,19 @@ class PulseVisualizer {
     if (!this.rafId) this._draw();
   }
 
+  startIdle() {
+    this.isPlaying = false;
+    if (!this.rafId) this._draw();
+  }
+
   stop() {
     this.isPlaying = false;
+  }
+
+  pause() {
+    this.isPlaying = false;
+    if (this.rafId) { cancelAnimationFrame(this.rafId); this.rafId = null; }
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   destroy() {
@@ -177,6 +190,27 @@ class PulseVisualizer {
       ctx.lineWidth = 2 * dpr / 2;
       ctx.stroke();
 
+      /* Quiet rainbow feathers keep the signature spectrum visible before playback */
+      var featherCount = 96;
+      var featherInner = idleR * 1.45;
+      var featherBase = idleR * 1.85;
+      for (var idleI = 0; idleI < featherCount; idleI++) {
+        var idleA = (idleI / featherCount) * Math.PI * 2 - Math.PI / 2;
+        var wave = Math.sin(this.time * 1.8 + idleI * 0.42) * 0.5 + 0.5;
+        var featherOuter = featherBase + (8 + wave * 18) * dpr / 2;
+        var ix1 = cx + Math.cos(idleA) * featherInner;
+        var iy1 = cy + Math.sin(idleA) * featherInner;
+        var ix2 = cx + Math.cos(idleA) * featherOuter;
+        var iy2 = cy + Math.sin(idleA) * featherOuter;
+        ctx.beginPath();
+        ctx.moveTo(ix1, iy1);
+        ctx.lineTo(ix2, iy2);
+        ctx.strokeStyle = "hsla(" + ((idleI / featherCount) * 300 + hue * 0.18) % 360 + ",72%,58%," + (0.18 + wave * 0.2) + ")";
+        ctx.lineWidth = 1.7 * dpr / 2;
+        ctx.lineCap = "round";
+        ctx.stroke();
+      }
+
       /* Inner accent ring */
       ctx.beginPath();
       ctx.arc(cx, cy, idleR + 6 * dpr / 2, 0, Math.PI * 2);
@@ -263,6 +297,26 @@ function parseJson(value, fallback) {
   } catch {
     return fallback;
   }
+}
+
+function getConservationStatusClass(status) {
+  if (["安全"].includes(status)) return "status-safe";
+  if (["罕见", "减少", "近危"].includes(status)) return "status-watch";
+  if (["易危", "濒危", "极危"].includes(status)) return "status-danger";
+  if (["人工", "非本地"].includes(status)) return "status-neutral";
+  return "status-neutral";
+}
+
+function parseQuoteParts(quote) {
+  var clean = String(quote || "").trim();
+  var match = clean.match(/^【([^】]+)】\s*([\s\S]*)$/);
+  if (!match) {
+    return { title: "今日状态", body: clean || "今天的鸟签还在晨雾里。" };
+  }
+  return {
+    title: match[1].trim() || "今日状态",
+    body: match[2].trim() || clean
+  };
 }
 
 function withBirdMeta(bird) {
@@ -355,6 +409,90 @@ function setImage(img, bird, label) {
   };
   img.src = bird?.image || "";
   img.alt = bird ? `${bird.name}${label}` : "";
+}
+
+async function sanitizeTransparentEdge(src) {
+  if (!src) return "";
+  if (detailImageCache.has(src)) return detailImageCache.get(src);
+  var promise = new Promise(function(resolve) {
+    var img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = function() {
+      try {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        var ctx = canvas.getContext("2d", { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0);
+        var image = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var data = image.data;
+        var width = image.width;
+        var height = image.height;
+        var copy = new Uint8ClampedArray(data);
+        var hasAlpha = function(x, y) {
+          if (x < 0 || y < 0 || x >= width || y >= height) return false;
+          return copy[(y * width + x) * 4 + 3] > 0;
+        };
+        for (var y = 0; y < height; y++) {
+          for (var x = 0; x < width; x++) {
+            var i = (y * width + x) * 4;
+            if (copy[i + 3] !== 0) continue;
+            var totalR = 0, totalG = 0, totalB = 0, count = 0;
+            for (var dy = -2; dy <= 2; dy++) {
+              for (var dx = -2; dx <= 2; dx++) {
+                if (!dx && !dy) continue;
+                if (!hasAlpha(x + dx, y + dy)) continue;
+                var ni = ((y + dy) * width + (x + dx)) * 4;
+                totalR += copy[ni];
+                totalG += copy[ni + 1];
+                totalB += copy[ni + 2];
+                count++;
+              }
+            }
+            if (count) {
+              data[i] = Math.round(totalR / count);
+              data[i + 1] = Math.round(totalG / count);
+              data[i + 2] = Math.round(totalB / count);
+            }
+          }
+        }
+        ctx.putImageData(image, 0, 0);
+        resolve(canvas.toDataURL("image/png"));
+      } catch {
+        resolve(src);
+      }
+    };
+    img.onerror = function() { resolve(src); };
+    img.src = src;
+  });
+  detailImageCache.set(src, promise);
+  return promise;
+}
+
+function setDetailImage(img, bird) {
+  if (!img) return;
+  var detailSrc = bird?.fallbackImage || bird?.image || "";
+  img.onerror = () => {
+    if (bird?.image && img.src !== bird.image) {
+      img.src = bird.image;
+    }
+  };
+  img.src = detailSrc;
+  img.alt = bird ? `${bird.name}鸟签详情插画` : "";
+  sanitizeTransparentEdge(detailSrc).then(function(cleanSrc) {
+    if (state.detailBird?.id === bird?.id && cleanSrc) img.src = cleanSrc;
+  });
+}
+
+function waitForImages(root) {
+  var images = Array.from(root.querySelectorAll("img"));
+  return Promise.all(images.map(function(img) {
+    if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+    return new Promise(function(resolve) {
+      img.addEventListener("load", resolve, { once: true });
+      img.addEventListener("error", resolve, { once: true });
+    });
+  }));
 }
 
 function chooseRandomBird() {
@@ -467,7 +605,7 @@ function renderActiveBird() {
 
   els.drawCard.classList.toggle("revealed", state.revealed);
   els.drawCard.classList.toggle("unrevealed", !state.revealed);
-  els.dailyStatus.textContent = state.revealed ? "今日已揭晓" : "待翻开";
+  els.dailyStatus.textContent = state.revealed ? "今日已揭晓" : "轻点翻开";
   els.drawButton.textContent = state.revealed ? "已收录，查看图鉴" : "翻开今日鸟签";
   els.drawButton.disabled = false;
 
@@ -478,7 +616,7 @@ function renderActiveBird() {
   if (!state.revealed || !bird) {
     els.activeBirdName.textContent = "鸟签待翻开";
     els.activeBirdLook.textContent = "先轻点翻开";
-    els.activeBirdQuote.textContent = "今天的鸟还在晨雾里，等你把它叫出来。";
+    renderActiveQuote("今日状态", "今天的鸟还在晨雾里，等你把它叫出来。");
     renderPoster(null);
     return;
   }
@@ -486,8 +624,21 @@ function renderActiveBird() {
   setImage(els.activeBirdImage, bird, "鸟签插画");
   els.activeBirdName.textContent = bird.name;
   els.activeBirdLook.textContent = bird.look;
-  els.activeBirdQuote.textContent = bird.quote;
+  var quoteParts = parseQuoteParts(bird.quote);
+  renderActiveQuote(quoteParts.title, quoteParts.body);
   renderPoster(bird);
+}
+
+function renderActiveQuote(title, body) {
+  if (!els.activeBirdQuote) return;
+  els.activeBirdQuote.innerHTML = "";
+  var titleEl = document.createElement("span");
+  titleEl.className = "quote-title";
+  titleEl.textContent = title || "今日状态";
+  var bodyEl = document.createElement("span");
+  bodyEl.className = "quote-body";
+  bodyEl.textContent = body || "";
+  els.activeBirdQuote.append(titleEl, bodyEl);
 }
 
 function renderPoster(bird) {
@@ -498,14 +649,27 @@ function renderPoster(bird) {
     els.posterBirdImage.alt = "";
     els.posterBirdName.textContent = "鸟签待翻开";
     els.posterBirdLook.textContent = "先翻开今日鸟签";
-    els.posterBirdQuote.textContent = "今天的鸟还在晨雾里。";
+    renderPosterQuote("今日状态", "今天的鸟还在晨雾里。");
     return;
   }
 
   setImage(els.posterBirdImage, bird, "分享海报插画");
   els.posterBirdName.textContent = bird.name;
-  els.posterBirdLook.textContent = `No.${bird.rank} · ${bird.heat} · ${bird.look}`;
-  els.posterBirdQuote.textContent = bird.quote;
+  els.posterBirdLook.textContent = bird.look;
+  var quoteParts = parseQuoteParts(bird.quote);
+  renderPosterQuote(quoteParts.title, quoteParts.body);
+}
+
+function renderPosterQuote(title, body) {
+  if (!els.posterBirdQuote) return;
+  els.posterBirdQuote.innerHTML = "";
+  var titleEl = document.createElement("span");
+  titleEl.className = "poster-quote-title";
+  titleEl.textContent = title || "今日状态";
+  var bodyEl = document.createElement("span");
+  bodyEl.className = "poster-quote-body";
+  bodyEl.textContent = body || "";
+  els.posterBirdQuote.append(titleEl, bodyEl);
 }
 
 function renderProgress() {
@@ -579,9 +743,16 @@ function renderRoute() {
   document.querySelectorAll(".screen").forEach((screen) => {
     screen.classList.toggle("active", screen.id === `${state.currentScreen}-screen`);
   });
+  document.body.classList.toggle("is-poster-screen", state.currentScreen === "poster");
+  document.body.classList.toggle("is-home-revealed", state.currentScreen === "home" && state.revealed);
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.classList.toggle("active", tab.dataset.screen === state.currentScreen);
   });
+}
+
+function getScreenFromHash() {
+  var route = location.hash.replace("#", "");
+  return ["home", "nest", "poster"].includes(route) ? route : "home";
 }
 
 function renderAll() {
@@ -621,20 +792,28 @@ function renderDetailModal() {
   }
   document.body.classList.toggle("has-modal", open);
   if (!open) {
-    if (pulseViz) { pulseViz.stop(); }
+    if (pulseViz) { pulseViz.pause(); }
     return;
   }
   var bird = state.detailBird;
+  var quoteParts = parseQuoteParts(bird.quote);
+  var conservation = bird.conservation || {};
   if (els.detailBirdRank) els.detailBirdRank.textContent = "No." + bird.rank;
   if (els.detailBirdHabitat) els.detailBirdHabitat.textContent = bird.habitat;
-  if (els.detailBirdImage) { els.detailBirdImage.src = bird.image || ""; els.detailBirdImage.alt = bird.name + "鸟签详情插画"; }
+  setDetailImage(els.detailBirdImage, bird);
   if (els.detailBirdName) els.detailBirdName.textContent = bird.name;
   if (els.detailBirdLook) els.detailBirdLook.textContent = bird.look;
-  if (els.detailBirdQuote) els.detailBirdQuote.textContent = bird.quote;
+  if (els.detailQuoteTitle) els.detailQuoteTitle.textContent = quoteParts.title;
+  if (els.detailBirdQuote) els.detailBirdQuote.textContent = quoteParts.body;
   if (els.detailBirdLine) els.detailBirdLine.textContent = bird.line || "";
-  if (els.detailStatFish) els.detailStatFish.textContent = bird.fishText || "";
-  if (els.detailStatSocial) els.detailStatSocial.textContent = bird.socialText || "";
-  if (els.detailStatMeeting) els.detailStatMeeting.textContent = bird.meetingText || "";
+  if (els.detailProtectionLevel) els.detailProtectionLevel.textContent = conservation.protectionLevel || "-";
+  if (els.detailChinaPopulation) els.detailChinaPopulation.textContent = conservation.chinaPopulation || "-";
+  if (els.detailIucnStatus) els.detailIucnStatus.textContent = conservation.iucn || "-";
+  if (els.detailChinaStatus) {
+    var status = conservation.chinaStatus || "-";
+    els.detailChinaStatus.textContent = status;
+    els.detailChinaStatus.className = "status-badge " + getConservationStatusClass(status);
+  }
   updatePulseState();
 }
 
@@ -650,8 +829,41 @@ function updatePulseState() {
   if (label) label.classList.toggle("hidden", isPlayingThis);
   if (pulseViz) {
     if (isPlayingThis) pulseViz.start(callAudio);
-    else pulseViz.stop();
+    else pulseViz.startIdle();
   }
+}
+
+function cloneCanvasPixels(sourceCanvas, targetCanvas) {
+  if (!sourceCanvas || !targetCanvas) return;
+  targetCanvas.width = sourceCanvas.width;
+  targetCanvas.height = sourceCanvas.height;
+  targetCanvas.style.width = sourceCanvas.clientWidth + "px";
+  targetCanvas.style.height = sourceCanvas.clientHeight + "px";
+  var ctx = targetCanvas.getContext("2d");
+  if (ctx) ctx.drawImage(sourceCanvas, 0, 0);
+}
+
+function createDetailExportNode(sheet) {
+  var clone = sheet.cloneNode(true);
+  clone.classList.add("detail-export-sheet");
+  clone.querySelector(".detail-close")?.remove();
+  clone.querySelector("#detail-shot-button")?.remove();
+
+  var sourceCanvas = sheet.querySelector("#pulse-canvas");
+  var targetCanvas = clone.querySelector("#pulse-canvas");
+  cloneCanvasPixels(sourceCanvas, targetCanvas);
+
+  clone.querySelectorAll("[id]").forEach(function(node) {
+    node.removeAttribute("id");
+  });
+
+  var rect = sheet.getBoundingClientRect();
+  var exportWrap = document.createElement("div");
+  exportWrap.className = "detail-export-wrap";
+  exportWrap.style.width = Math.ceil(rect.width) + "px";
+  exportWrap.appendChild(clone);
+  document.body.appendChild(exportWrap);
+  return { wrap: exportWrap, sheet: clone };
 }
 
 function drawBird() {
@@ -702,6 +914,7 @@ function unlockAllBirds() {
 
 function bindEvents() {
   els.drawButton.addEventListener("click", drawBird);
+  els.dailyStatus.addEventListener("click", drawBird);
   els.drawCard.addEventListener("click", () => {
     if (!state.revealed) {
       drawBird();
@@ -717,7 +930,7 @@ function bindEvents() {
     }
     var btn = els.savePoster;
     btn.disabled = true;
-    btn.textContent = "生成中…";
+    btn.innerHTML = SAVE_ICON_HTML.replace("保存到相册", "生成中…");
     try {
       var canvas = await html2canvas(card, {
         scale: 2,
@@ -748,7 +961,7 @@ function bindEvents() {
       if (e.name !== "AbortError") showToast("生成失败，请手动截图");
     } finally {
       btn.disabled = false;
-      btn.textContent = "保存到相册";
+      btn.innerHTML = SAVE_ICON_HTML;
     }
   });
   els.resetPreviewButton.addEventListener("click", resetPreviewState);
@@ -809,38 +1022,22 @@ function bindEvents() {
     }
     var btn = els.detailShotButton;
     btn.disabled = true;
-    btn.textContent = "生成中…";
+    var exportNode = null;
     try {
-      // Temporarily expand sheet so html2canvas captures full content (not just 88vh)
-      var modal = sheet.parentElement;
-      var savedMaxH = sheet.style.maxHeight;
-      var savedOverflow = sheet.style.overflowY;
-      var savedH = sheet.style.height;
-      var savedAlign = sheet.style.alignSelf;
-      var savedPos = sheet.style.position;
-      var savedModalAlign = modal ? modal.style.alignItems : '';
-      var savedModalOverflow = modal ? modal.style.overflow : '';
-      var savedBorderRadius = sheet.style.borderRadius;
-      var closeBtn = sheet.querySelector('.detail-close');
-      if (closeBtn) closeBtn.style.display = 'none';
-      // Expand modal to top-aligned so full sheet is visible
-      if (modal) {
-        modal.style.alignItems = 'flex-start';
-        modal.style.overflow = 'visible';
-      }
-      sheet.style.maxHeight = 'none';
-      sheet.style.height = 'auto';
-      sheet.style.overflowY = 'visible';
-      sheet.style.position = 'relative';
-      sheet.style.alignSelf = 'flex-start';
-      sheet.style.borderRadius = '28px';
-      // Force layout reflow
-      void sheet.offsetHeight;
-      var canvas = await html2canvas(sheet, {
+      exportNode = createDetailExportNode(sheet);
+      await waitForImages(exportNode.sheet);
+      void exportNode.sheet.offsetHeight;
+      btn.innerHTML = '<span>生成中…</span>';
+      var canvas = await html2canvas(exportNode.sheet, {
         scale: 2,
         useCORS: true,
         backgroundColor: "#fbfbf3",
-        borderRadius: 28
+        width: exportNode.sheet.offsetWidth,
+        height: exportNode.sheet.offsetHeight,
+        windowWidth: exportNode.sheet.scrollWidth,
+        windowHeight: exportNode.sheet.scrollHeight,
+        scrollX: 0,
+        scrollY: 0
       });
       var blob = await new Promise(function(resolve) {
         canvas.toBlob(resolve, "image/png", 1.0);
@@ -866,20 +1063,9 @@ function bindEvents() {
     } catch (e) {
       if (e.name !== "AbortError") showToast("生成失败，请手动截图");
     } finally {
-      // Always restore sheet & modal styles
-      if (modal) {
-        modal.style.alignItems = savedModalAlign || '';
-        modal.style.overflow = savedModalOverflow || '';
-      }
-      sheet.style.maxHeight = savedMaxH || '';
-      sheet.style.overflowY = savedOverflow || '';
-      sheet.style.height = savedH || '';
-      sheet.style.alignSelf = savedAlign || '';
-      sheet.style.position = savedPos || '';
-      sheet.style.borderRadius = savedBorderRadius || '';
-      if (closeBtn) closeBtn.style.display = '';
+      if (exportNode?.wrap) exportNode.wrap.remove();
       btn.disabled = false;
-      btn.textContent = "保存到相册";
+      btn.innerHTML = SAVE_ICON_HTML;
     }
   });
   if (els.detailCallButton) els.detailCallButton.addEventListener("click", function() {
@@ -892,8 +1078,7 @@ function bindEvents() {
     tab.addEventListener("click", () => goScreen(tab.dataset.screen));
   });
   window.addEventListener("hashchange", () => {
-    const route = location.hash.replace("#", "");
-    state.currentScreen = route === "nest" ? "nest" : "home";
+    state.currentScreen = getScreenFromHash();
     renderRoute();
   });
 }
@@ -930,13 +1115,15 @@ function cacheElements() {
     detailBirdImage: $("#detail-bird-image"),
     detailBirdName: $("#detail-bird-name"),
     detailBirdLook: $("#detail-bird-look"),
+    detailQuoteTitle: $("#detail-quote-title"),
     detailBirdQuote: $("#detail-bird-quote"),
     detailCallButton: $("#detail-call-button"),
     detailShotButton: $("#detail-shot-button"),
     detailBirdLine: $("#detail-bird-line"),
-    detailStatFish: $("#detail-stat-fish"),
-    detailStatSocial: $("#detail-stat-social"),
-    detailStatMeeting: $("#detail-stat-meeting"),
+    detailProtectionLevel: $("#detail-protection-level"),
+    detailChinaPopulation: $("#detail-china-population"),
+    detailIucnStatus: $("#detail-iucn-status"),
+    detailChinaStatus: $("#detail-china-status"),
     toast: $("#toast")
   });
 }
@@ -956,8 +1143,7 @@ async function init() {
     unlockBird(storedBird);
   }
 
-  const route = location.hash.replace("#", "");
-  state.currentScreen = route === "nest" ? "nest" : "home";
+  state.currentScreen = getScreenFromHash();
 
   const url = new URL(location.href);
   const tag = url.searchParams.get("tag") || url.pathname.match(/\/nfc\/([^/]+)/)?.[1] || (location.hash.match(/#\/nfc\/([^/]+)/) || location.hash.match(/#nfc\/([^/]+)/) || [])[1];

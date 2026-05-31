@@ -55,9 +55,51 @@ const habitatByBirdId = {
   robin: "花园林地"
 };
 
+const conservationByBirdId = {
+  sparrow: { iucn: "LC", protectionLevel: "三有", chinaPopulation: "数亿只", chinaStatus: "安全" },
+  egret: { iucn: "LC", protectionLevel: "三有", chinaPopulation: "数十万只", chinaStatus: "安全" },
+  "zebra-dove": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "数千万只", chinaStatus: "安全" },
+  moorhen: { iucn: "LC", protectionLevel: "三有", chinaPopulation: "约4.2万只", chinaStatus: "安全" },
+  "falco-subbuteo": { iucn: "LC", protectionLevel: "二级", chinaPopulation: "数千-万只", chinaStatus: "安全" },
+  "long-tailed-tit": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "数百万只", chinaStatus: "安全" },
+  "snowy-owl": { iucn: "LC", protectionLevel: "二级", chinaPopulation: "极少", chinaStatus: "罕见" },
+  "red-billed-leiothrix": { iucn: "LC", protectionLevel: "二级", chinaPopulation: "数十万对", chinaStatus: "安全" },
+  "golden-eagle": { iucn: "LC", protectionLevel: "一级", chinaPopulation: "数千只", chinaStatus: "易危" },
+  "night-heron": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "数十万只", chinaStatus: "安全" },
+  swan: { iucn: "CR", protectionLevel: "一级", chinaPopulation: "约6000只", chinaStatus: "极危" },
+  blackbird: { iucn: "LC", protectionLevel: "三有", chinaPopulation: "数百万只", chinaStatus: "安全" },
+  "white-headed-duck": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "数千万只", chinaStatus: "安全" },
+  "large-billed-crow": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "常见", chinaStatus: "安全" },
+  "red-eared-bulbul": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "常见", chinaStatus: "安全" },
+  "scarlet-ibis": { iucn: "EN", protectionLevel: "一级", chinaPopulation: "约1.1万只", chinaStatus: "濒危" },
+  "red-headed-tit": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "数十万只", chinaStatus: "安全" },
+  "silver-throated-tit": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "数十万只", chinaStatus: "安全" },
+  goshawk: { iucn: "LC", protectionLevel: "二级", chinaPopulation: "数万只", chinaStatus: "安全" },
+  "common-kingfisher": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "数十万只", chinaStatus: "安全" },
+  cockatoo: { iucn: "-", protectionLevel: "二级", chinaPopulation: "人工养殖为主", chinaStatus: "人工" },
+  "bee-eater": { iucn: "LC", protectionLevel: "二级", chinaPopulation: "稀少", chinaStatus: "近危" },
+  "dai-sheng": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "常见", chinaStatus: "安全" },
+  "white-wagtail": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "数百万只", chinaStatus: "安全" },
+  mallard: { iucn: "LC", protectionLevel: "三有", chinaPopulation: "约1万只", chinaStatus: "减少" },
+  "red-tailed-shrike": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "丰富", chinaStatus: "安全" },
+  sparrowhawk: { iucn: "LC", protectionLevel: "二级", chinaPopulation: "数万只", chinaStatus: "安全" },
+  "spotted-owlet": { iucn: "LC", protectionLevel: "二级", chinaPopulation: "数万只", chinaStatus: "安全" },
+  "horned-lark": { iucn: "VU", protectionLevel: "一级", chinaPopulation: "约555-600只", chinaStatus: "极危" },
+  "brown-headed-bunting": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "数千万只", chinaStatus: "安全" },
+  "yellow-rumped-warbler": { iucn: "LC", protectionLevel: "-", chinaPopulation: "数百万只", chinaStatus: "安全" },
+  "chestnut-flanked-white-eye": { iucn: "LC", protectionLevel: "二级", chinaPopulation: "数万只", chinaStatus: "安全" },
+  "brown-shrike": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "常见", chinaStatus: "安全" },
+  robin: { iucn: "LC", protectionLevel: "-", chinaPopulation: "极少", chinaStatus: "非本地" }
+};
+
 const missingHabitats = rawBirds.filter((bird) => !habitatByBirdId[bird.id]);
 if (missingHabitats.length) {
   throw new Error(`Missing habitat for bird ids: ${missingHabitats.map((bird) => bird.id).join(", ")}`);
+}
+
+const missingConservation = rawBirds.filter((bird) => !conservationByBirdId[bird.id]);
+if (missingConservation.length) {
+  throw new Error(`Missing conservation data for bird ids: ${missingConservation.map((bird) => bird.id).join(", ")}`);
 }
 
 const birds = rawBirds
@@ -71,6 +113,7 @@ const birds = rawBirds
     rarity: bird.rarity,
     look: bird.look,
     habitat: habitatByBirdId[bird.id],
+    conservation: conservationByBirdId[bird.id],
     line: bird.line,
     quote: bird.quote,
     fish: bird.fish,
