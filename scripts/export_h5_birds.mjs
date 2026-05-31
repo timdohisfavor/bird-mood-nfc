@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import crypto from "node:crypto";
 import path from "node:path";
 
 const rootDir = path.resolve(".");
@@ -6,6 +7,11 @@ const sourcePath = path.join(rootDir, "data/birds-source.json");
 const outputPath = path.join(rootDir, "assets/meta/birds.json");
 
 const rawBirds = JSON.parse(await fs.readFile(sourcePath, "utf8"));
+
+async function fileHashVersion(relativePath) {
+  const buffer = await fs.readFile(path.join(rootDir, relativePath));
+  return crypto.createHash("sha256").update(buffer).digest("hex").slice(0, 12);
+}
 
 function stars(value) {
   return "★★★★★".slice(0, value) + "☆☆☆☆☆".slice(0, 5 - value);
@@ -95,10 +101,13 @@ if (missingConservation.length) {
   throw new Error(`Missing conservation data for bird ids: ${missingConservation.map((bird) => bird.id).join(", ")}`);
 }
 
-const birds = rawBirds
+const birds = await Promise.all(rawBirds
   .slice()
   .sort((a, b) => a.rank - b.rank)
-  .map((bird) => ({
+  .map(async (bird) => {
+    const callPath = `assets/bird-calls/${bird.id}.mp3`;
+    const callVersion = await fileHashVersion(callPath);
+    return {
     id: bird.id,
     rank: bird.rank,
     name: bird.name,
@@ -117,7 +126,8 @@ const birds = rawBirds
     meetingText: stars(bird.meeting),
     image: `assets/birds-final-webp/${bird.id}.webp`,
     fallbackImage: `assets/birds-final/${bird.id}.png`,
-    call: `assets/bird-calls/${bird.id}.mp3`
+    call: `${callPath}?v=${callVersion}`
+    };
   }));
 
 await fs.mkdir(path.dirname(outputPath), { recursive: true });
