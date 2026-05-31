@@ -332,7 +332,7 @@ function withBirdMeta(bird) {
 async function loadBirds() {
   if (embeddedBirds.length) return embeddedBirds;
   try {
-    const response = await fetch("./web/assets/meta/birds.json");
+    const response = await fetch("./assets/meta/birds.json");
     if (!response.ok) throw new Error("鸟签数据暂时飞丢了，请稍后再试。");
     return await response.json();
   } catch (error) {

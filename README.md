@@ -1,15 +1,16 @@
-# 今日鸟签 NFC
+# 今日鸟签 NFC H5
 
-这是一个微信小程序原型，同时带有可在浏览器中查看的 H5 预览版。
+这是一个以 H5 为主的「今日鸟签」页面。Netlify 线上版本由根目录 H5 构建发布。
 
 ## 项目入口
 
-- 微信小程序入口：`project.config.json`
-- 小程序页面：`pages/index/index.*`
-- 根目录 H5 预览：`index.html`
-- 独立 H5 预览：`web/index.html`
-- 鸟类图片资产：`assets/birds-final/`
-- H5 图片资产：`web/assets/birds-final/`
+- H5 页面：`index.html`
+- H5 样式：`styles.css`
+- H5 逻辑：`script.js`
+- 鸟类原始数据：`data/birds-source.json`
+- H5 运行数据：`assets/meta/birds.json`
+- 鸟类图片资产：`assets/birds-final/`、`assets/birds-final-webp/`
+- 鸟鸣音频资产：`assets/bird-calls/`
 
 ## 本地运行
 
@@ -25,19 +26,50 @@ npm run serve
 http://localhost:4173
 ```
 
-独立 H5 版本：
+## 构建与发布
+
+Netlify 使用：
 
 ```sh
-npm run serve:web
+npm run build
 ```
 
-然后打开：
+构建输出目录：
 
 ```text
-http://localhost:4174
+dist/
 ```
 
-微信小程序请用微信开发者工具打开本目录。
+`npm run build` 会执行：
+
+1. 转换鸟图 WebP
+2. 从 `data/birds-source.json` 导出 `assets/meta/birds.json`
+3. 生成 `assets/meta/birds-data.js`
+4. 复制根目录 H5 和必要资产到 `dist/`
+5. 检查 `dist/` 是否含有不应发布的源码/配置文件
+
+快速构建可用：
+
+```sh
+npm run build:fast
+```
+
+## 数据与资产脚本
+
+导出 H5 鸟数据：
+
+```sh
+npm run export:h5-data
+```
+
+重新生成基础鸟类 PNG，需要先安装 Python 依赖：
+
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+npm run assets:generate
+```
 
 ## Docker 一键启动
 
@@ -47,13 +79,13 @@ http://localhost:4174
 - `backend`：Node.js API，默认访问端口 `18081`
 - `database`：PostgreSQL，默认本机端口 `15432`
 
-直接启动：
+启动：
 
 ```sh
 docker compose up --build
 ```
 
-然后打开：
+访问：
 
 ```text
 http://localhost:18080
@@ -63,24 +95,6 @@ http://localhost:18080
 
 ```text
 http://localhost:18081/api/health
-```
-
-Compose 会自动读取项目根目录的 `.env`。如果默认端口已被占用，先复制示例配置并修改端口：
-
-```sh
-cp .env.example .env
-```
-
-可用配置项：
-
-```env
-FRONTEND_PORT=18080
-BACKEND_PORT=18081
-POSTGRES_PORT=15432
-
-POSTGRES_DB=birdsign
-POSTGRES_USER=birdsign
-POSTGRES_PASSWORD=birdsign
 ```
 
 停止服务：
@@ -95,26 +109,8 @@ docker compose down
 docker compose down -v
 ```
 
-## 数据与资产脚本
-
-```sh
-npm run export:h5-data
-```
-
-从 `pages/index/index.js` 导出 H5 使用的 `web/assets/meta/birds.json`。
-
-```sh
-npm run assets:generate
-```
-
-重新生成基础鸟类 PNG，需要先安装 Python 依赖：
-
-```sh
-python3 -m venv .venv
-source .venv/bin/activate
-python3 -m pip install -r requirements.txt
-```
-
 ## 说明
+
+当前项目已清理为 H5-first 结构。微信小程序代码和旧 `web/` H5 页面已移除，后续维护以根目录 H5 为准。
 
 `npm run export:copy-workbook` 依赖 Codex 环境里的表格工具包，用于导出鸟签文案工作簿。如果在普通本地 Node 环境运行失败，优先在 Codex 环境中执行。

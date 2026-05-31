@@ -1,11 +1,10 @@
-import { access, copyFile, mkdir, readdir, stat } from "node:fs/promises";
+import { access, mkdir, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { spawn } from "node:child_process";
 
 const rootDir = path.resolve(".");
 const sourceDir = path.join(rootDir, "assets/birds-final");
 const outputDir = path.join(rootDir, "assets/birds-final-webp");
-const webOutputDir = path.join(rootDir, "web/assets/birds-final-webp");
 const quality = "78";
 
 async function fileExists(filePath) {
@@ -55,7 +54,6 @@ function run(command, args) {
 
 const magick = await findMagick();
 await mkdir(outputDir, { recursive: true });
-await mkdir(webOutputDir, { recursive: true });
 
 const files = (await readdir(sourceDir))
   .filter((file) => file.endsWith(".png"))
@@ -77,8 +75,6 @@ for (const file of files) {
     "webp:method=6",
     outputPath
   ]);
-  await copyFile(outputPath, path.join(webOutputDir, file.replace(/\.png$/, ".webp")));
-
   originalBytes += (await stat(sourcePath)).size;
   webpBytes += (await stat(outputPath)).size;
 }

@@ -2,7 +2,7 @@
   "name": "bird-mood-nfc",
   "version": "0.1.0",
   "private": true,
-  "description": "今日鸟签 NFC 小程序原型与 H5 预览",
+  "description": "今日鸟签 NFC H5",
   "type": "module",
   "scripts": {
     "build": "node scripts/convert_bird_webp.mjs && node scripts/export_h5_birds.mjs && node scripts/build_dist.mjs && node scripts/check_dist_publish.mjs",
@@ -12,7 +12,6 @@
     "audio:optimize": "node scripts/optimize_bird_calls.mjs",
     "assets:webp": "node scripts/convert_bird_webp.mjs",
     "serve": "python3 -m http.server 4173 --bind 127.0.0.1",
-    "serve:web": "python3 -m http.server 4174 --bind 127.0.0.1 --directory web",
     "export:h5-data": "node scripts/export_h5_birds.mjs",
     "export:copy-workbook": "node scripts/export_bird_copy_workbook.mjs",
     "assets:generate": "python3 scripts/generate_bird_pngs.py",

@@ -3,17 +3,11 @@ import path from "node:path";
 import { SpreadsheetFile, Workbook } from "@oai/artifact-tool";
 
 const rootDir = path.resolve(".");
-const sourcePath = path.join(rootDir, "pages/index/index.js");
+const sourcePath = path.join(rootDir, "data/birds-source.json");
 const outputDir = path.join(rootDir, "outputs/bird-copy-export");
 const outputPath = path.join(outputDir, "30只鸟鸟签文案.xlsx");
 
-const source = await fs.readFile(sourcePath, "utf8");
-const match = source.match(/const rawBirds = \[([\s\S]*?)\n\];/);
-if (!match) {
-  throw new Error("Could not find rawBirds in pages/index/index.js");
-}
-
-const rawBirds = Function(`"use strict"; const rawBirds = [${match[1]}\n]; return rawBirds;`)();
+const rawBirds = JSON.parse(await fs.readFile(sourcePath, "utf8"));
 
 function heatNumber(text) {
   const value = Number(String(text).replace("万", ""));
@@ -108,10 +102,10 @@ reviewSheet.getRange(rangeA1(reviewHeaders.length, reviewRows.length + 1)).value
 
 const noteRows = [
   ["文件用途", "30 只鸟的鸟签文案、外观关键词和运营校对字段导出"],
-  ["数据来源", "pages/index/index.js 中 rawBirds 数据"],
+  ["数据来源", "data/birds-source.json"],
   ["导出时间", new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })],
   ["说明", "“标签热度数值(万)”为便于排序和筛选的数值列；文案原文保留在“今日鸟签文案”。"],
-  ["校对建议", "建议先在“运营校对视图”中标记校对状态和修改建议，再回填到小程序数据源。"]
+  ["校对建议", "建议先在“运营校对视图”中标记校对状态和修改建议，再回填到 H5 数据源。"]
 ];
 noteSheet.getRange(`A1:B${noteRows.length}`).values = noteRows;
 

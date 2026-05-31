@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const port = Number.parseInt(process.env.PORT || "3000", 10);
 const birdsDataPath =
   process.env.BIRDS_DATA_PATH ||
-  path.resolve(__dirname, "../web/assets/meta/birds.json");
+  path.resolve(__dirname, "../assets/meta/birds.json");
 const databaseUrl = process.env.DATABASE_URL;
 
 const pool = await createPool(databaseUrl);

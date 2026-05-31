@@ -2,17 +2,10 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const rootDir = path.resolve(".");
-const sourcePath = path.join(rootDir, "pages/index/index.js");
-const outputPath = path.join(rootDir, "web/assets/meta/birds.json");
+const sourcePath = path.join(rootDir, "data/birds-source.json");
+const outputPath = path.join(rootDir, "assets/meta/birds.json");
 
-const source = await fs.readFile(sourcePath, "utf8");
-const match = source.match(/const rawBirds = \[([\s\S]*?)\n\];/);
-
-if (!match) {
-  throw new Error("Could not find rawBirds in pages/index/index.js");
-}
-
-const rawBirds = Function(`"use strict"; const rawBirds = [${match[1]}\n]; return rawBirds;`)();
+const rawBirds = JSON.parse(await fs.readFile(sourcePath, "utf8"));
 
 function stars(value) {
   return "★★★★★".slice(0, value) + "☆☆☆☆☆".slice(0, 5 - value);

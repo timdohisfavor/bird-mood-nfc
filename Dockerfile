@@ -29,7 +29,7 @@ COPY package*.json ./
 RUN npm install --omit=dev
 
 COPY backend ./backend
-COPY --from=build /app/web/assets/meta ./web/assets/meta
+COPY --from=build /app/assets/meta ./assets/meta
 
 EXPOSE 3000
 CMD ["node", "backend/server.mjs"]
