@@ -1,5 +1,16 @@
 const DAILY_KEY = "dailyBirdSign";
 const UNLOCKED_KEY = "unlockedBirdIds";
+const VISITOR_KEY = "birdSignVisitorId";
+const RECOVERY_CODE_KEY = "birdSignRecoveryCode";
+const DAILY_DRAWS_KEY = "birdSignDailyDraws";
+const BACKGROUND_PREVIEWS = {
+  "1": "./assets/backgrounds/forest-bg-option-1.jpg",
+  "2": "./assets/backgrounds/forest-bg-option-2.jpg",
+  "3": "./assets/backgrounds/forest-bg-option-3.jpg",
+  "4": "./assets/backgrounds/forest-bg-option-4.jpg",
+  "5": "./assets/backgrounds/forest-bg-option-5.jpg",
+  "6": "./assets/backgrounds/forest-bg-option-6.jpg"
+};
 
 const state = {
   birds: [],
@@ -12,7 +23,12 @@ const state = {
   callProgressFrame: null,
   detailBird: null,
   guideFilter: "all",
-  countdownTimer: null
+  countdownTimer: null,
+  visitorId: null,
+  recoveryCode: null,
+  dailyDraws: {},
+  progressSyncAvailable: true,
+  progressSyncing: false
 };
 
 const els = {};
@@ -299,6 +315,132 @@ function parseJson(value, fallback) {
   }
 }
 
+function makeVisitorId() {
+  if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
+  return "visitor-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+}
+
+function getVisitorId() {
+  var saved = safeStorageGet(VISITOR_KEY);
+  if (saved) return saved;
+  var visitorId = makeVisitorId();
+  safeStorageSet(VISITOR_KEY, visitorId);
+  return visitorId;
+}
+
+function loadDailyDraws() {
+  state.dailyDraws = parseJson(safeStorageGet(DAILY_DRAWS_KEY), {});
+  var savedDaily = parseJson(safeStorageGet(DAILY_KEY), null);
+  if (savedDaily?.date && savedDaily?.id && !state.dailyDraws[savedDaily.date]) {
+    state.dailyDraws[savedDaily.date] = savedDaily.id;
+  }
+}
+
+function saveDailyDraws() {
+  safeStorageSet(DAILY_DRAWS_KEY, JSON.stringify(state.dailyDraws));
+}
+
+function getUnlockedEntries() {
+  return [...state.unlockedBirdIds].map((id) => ({
+    id,
+    unlockedAt: state.unlockedBirdTimes.get(id) || Date.now()
+  }));
+}
+
+function applyProgress(progress) {
+  if (!progress || typeof progress !== "object") return;
+  if (progress.visitorId) {
+    state.visitorId = progress.visitorId;
+    safeStorageSet(VISITOR_KEY, progress.visitorId);
+  }
+  if (progress.recoveryCode) {
+    state.recoveryCode = progress.recoveryCode;
+    safeStorageSet(RECOVERY_CODE_KEY, progress.recoveryCode);
+  }
+  if (progress.dailyDraws && typeof progress.dailyDraws === "object") {
+    state.dailyDraws = { ...state.dailyDraws, ...progress.dailyDraws };
+    saveDailyDraws();
+  }
+
+  var entries = Array.isArray(progress.unlockedBirds) ? progress.unlockedBirds : [];
+  entries.forEach((entry) => {
+    var id = typeof entry === "string" ? entry : entry?.id;
+    if (!id || !state.birds.some((bird) => bird.id === id)) return;
+    var unlockedAt = Number.isFinite(entry?.unlockedAt) ? entry.unlockedAt : Date.now();
+    var currentTime = state.unlockedBirdTimes.get(id);
+    state.unlockedBirdIds.add(id);
+    state.unlockedBirdTimes.set(id, currentTime ? Math.min(currentTime, unlockedAt) : unlockedAt);
+  });
+  saveUnlockedBirdIds();
+
+  var todayBirdId = state.dailyDraws[todayKey()];
+  var todayBird = todayBirdId ? state.birds.find((bird) => bird.id === todayBirdId) : null;
+  if (todayBird) {
+    state.activeBird = todayBird;
+    state.revealed = true;
+    safeStorageSet(DAILY_KEY, JSON.stringify({ date: todayKey(), id: todayBird.id }));
+  }
+}
+
+async function fetchProgressByVisitor() {
+  if (!state.visitorId || !state.progressSyncAvailable) return null;
+  try {
+    var response = await fetch("/api/progress?visitorId=" + encodeURIComponent(state.visitorId));
+    if (response.status === 404) return null;
+    if (!response.ok) throw new Error("Progress API unavailable");
+    var payload = await response.json();
+    return payload.progress || null;
+  } catch {
+    state.progressSyncAvailable = false;
+    return null;
+  }
+}
+
+async function syncProgress() {
+  if (!state.visitorId || !state.progressSyncAvailable || state.progressSyncing) return;
+  state.progressSyncing = true;
+  try {
+    var response = await fetch("/api/progress", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        visitorId: state.visitorId,
+        unlockedBirds: getUnlockedEntries(),
+        dailyDraws: state.dailyDraws,
+        lastDrawDate: Object.keys(state.dailyDraws).sort().slice(-1)[0] || null
+      })
+    });
+    if (!response.ok) throw new Error("Progress API unavailable");
+    var payload = await response.json();
+    applyProgress(payload.progress);
+    renderProgressTools();
+  } catch {
+    state.progressSyncAvailable = false;
+    renderProgressTools();
+  } finally {
+    state.progressSyncing = false;
+  }
+}
+
+async function restoreProgressByCode(code) {
+  var cleanCode = String(code || "").trim();
+  if (!cleanCode) return;
+  try {
+    var response = await fetch("/api/progress?recoveryCode=" + encodeURIComponent(cleanCode));
+    if (response.status === 404) {
+      showToast("没有找到这个恢复码");
+      return;
+    }
+    if (!response.ok) throw new Error("Progress API unavailable");
+    var payload = await response.json();
+    applyProgress(payload.progress);
+    renderAll();
+    showToast("进度已找回");
+  } catch {
+    showToast("暂时无法恢复，请稍后再试");
+  }
+}
+
 function getConservationStatusClass(status) {
   if (["安全"].includes(status)) return "status-safe";
   if (["罕见", "减少", "近危"].includes(status)) return "status-watch";
@@ -343,6 +485,13 @@ async function loadBirds() {
 
 function isPreviewMode() {
   return ["localhost", "127.0.0.1", ""].includes(location.hostname) || location.protocol === "file:";
+}
+
+function applyBackgroundPreview() {
+  const bg = new URLSearchParams(location.search).get("bg");
+  const imageUrl = BACKGROUND_PREVIEWS[bg];
+  if (!imageUrl) return;
+  document.documentElement.style.setProperty("--forest-bg-image", `url('${imageUrl}')`);
 }
 
 
@@ -496,14 +645,18 @@ function waitForImages(root) {
 }
 
 function chooseRandomBird() {
-  const index = Math.floor(Math.random() * state.birds.length);
-  return state.birds[index];
+  const candidates = state.birds.filter((bird) => !state.unlockedBirdIds.has(bird.id));
+  const pool = candidates.length ? candidates : state.birds;
+  const index = Math.floor(Math.random() * pool.length);
+  return pool[index];
 }
 
 function getStoredDailyBird() {
   const saved = parseJson(safeStorageGet(DAILY_KEY), null);
-  if (!saved || saved.date !== todayKey()) return null;
-  return state.birds.find((bird) => bird.id === saved.id) || null;
+  const today = todayKey();
+  const id = state.dailyDraws[today] || (saved?.date === today ? saved.id : null);
+  if (!id) return null;
+  return state.birds.find((bird) => bird.id === id) || null;
 }
 
 function loadUnlockedBirdIds() {
@@ -529,11 +682,7 @@ function loadUnlockedBirdIds() {
 }
 
 function saveUnlockedBirdIds() {
-  const entries = [...state.unlockedBirdIds].map((id) => ({
-    id,
-    unlockedAt: state.unlockedBirdTimes.get(id) || Date.now()
-  }));
-  safeStorageSet(UNLOCKED_KEY, JSON.stringify(entries));
+  safeStorageSet(UNLOCKED_KEY, JSON.stringify(getUnlockedEntries()));
 }
 
 function unlockBird(bird) {
@@ -681,6 +830,30 @@ function renderProgress() {
   els.guideProgress.style.width = `${percent}%`;
 }
 
+function renderProgressTools() {
+  const canUseCloudProgress = state.progressSyncAvailable;
+  if (els.progressLabel) {
+    els.progressLabel.textContent = canUseCloudProgress ? "云端记录" : "本地记录";
+  }
+  if (els.progressNote) {
+    els.progressNote.textContent = canUseCloudProgress
+      ? "每天固定一签，翻开过的鸟会自动收录；换设备可用恢复码找回。"
+      : "每天固定一签，当前会先保存在这台设备；云端恢复暂不可用。";
+  }
+  if (els.recoveryCode) {
+    els.recoveryCode.textContent = state.recoveryCode || (canUseCloudProgress ? "生成中" : "云端未连接");
+  }
+  if (els.recoveryPanel) {
+    els.recoveryPanel.classList.toggle("is-offline", !canUseCloudProgress);
+  }
+  if (els.restoreCodeInput) {
+    els.restoreCodeInput.disabled = !canUseCloudProgress;
+  }
+  if (els.restoreCodeButton) {
+    els.restoreCodeButton.disabled = !canUseCloudProgress;
+  }
+}
+
 function renderGrid() {
   var filteredBirds = state.birds.filter(function(bird) {
     var unlocked = state.unlockedBirdIds.has(bird.id);
@@ -758,6 +931,7 @@ function getScreenFromHash() {
 function renderAll() {
   renderActiveBird();
   renderProgress();
+  renderProgressTools();
   renderGuideFilters();
   renderGrid();
   renderNfcSimulator();
@@ -877,7 +1051,10 @@ function drawBird() {
     state.activeBird = chooseRandomBird();
     state.revealed = true;
     unlockBird(state.activeBird);
+    state.dailyDraws[todayKey()] = state.activeBird.id;
+    saveDailyDraws();
     safeStorageSet(DAILY_KEY, JSON.stringify({ date: todayKey(), id: state.activeBird.id }));
+    syncProgress();
     renderAll();
     els.drawCard.classList.remove("is-drawing");
     showToast(`${state.activeBird.name}飞进了今天`);
@@ -887,10 +1064,12 @@ function drawBird() {
 function resetPreviewState() {
   safeStorageRemove(DAILY_KEY);
   safeStorageRemove(UNLOCKED_KEY);
+  safeStorageRemove(DAILY_DRAWS_KEY);
   state.activeBird = null;
   state.revealed = false;
   state.unlockedBirdIds = new Set();
   state.unlockedBirdTimes = new Map();
+  state.dailyDraws = {};
   state.playingCallId = null;
   callAudio.pause();
   callAudio.currentTime = 0;
@@ -908,6 +1087,7 @@ function unlockAllBirds() {
     }
   });
   saveUnlockedBirdIds();
+  syncProgress();
   renderAll();
   showToast("已揭开全部 " + state.birds.length + " 只鸟");
 }
@@ -968,6 +1148,13 @@ function bindEvents() {
 
   var unlockAllBtn = document.getElementById("unlock-all-button");
   if (unlockAllBtn) unlockAllBtn.addEventListener("click", unlockAllBirds);
+
+  if (els.restoreCodeButton) els.restoreCodeButton.addEventListener("click", function() {
+    restoreProgressByCode(els.restoreCodeInput?.value);
+  });
+  if (els.restoreCodeInput) els.restoreCodeInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") restoreProgressByCode(els.restoreCodeInput.value);
+  });
 
   var posterBtn = document.getElementById("share-poster-button");
   if (posterBtn) posterBtn.addEventListener("click", function() { goScreen("poster"); });
@@ -1095,10 +1282,16 @@ function cacheElements() {
     activeBirdQuote: $("#active-bird-quote"),
     drawButton: $("#draw-button"),
     unlockCount: $("#unlock-count"),
+    progressLabel: $("#progress-label"),
+    progressNote: $("#progress-note"),
     resetPreviewButton: $("#reset-preview-button"),
     backHome: $("#back-home"),
     guideCount: $("#guide-count"),
     guideProgress: $("#guide-progress"),
+    recoveryPanel: $("#recovery-panel"),
+    recoveryCode: $("#recovery-code"),
+    restoreCodeInput: $("#restore-code-input"),
+    restoreCodeButton: $("#restore-code-button"),
     birdGrid: $("#bird-grid"),
     posterBackHome: $("#poster-back-home"),
     posterDate: $("#poster-date"),
@@ -1130,11 +1323,18 @@ function cacheElements() {
 
 async function init() {
   cacheElements();
+  applyBackgroundPreview();
   document.body.classList.toggle("is-preview", isPreviewMode());
   els.todayText.textContent = todayText();
 
   state.birds = (await loadBirds()).map(withBirdMeta);
+  state.visitorId = getVisitorId();
+  state.recoveryCode = safeStorageGet(RECOVERY_CODE_KEY);
+  loadDailyDraws();
   loadUnlockedBirdIds();
+
+  const cloudProgress = await fetchProgressByVisitor();
+  if (cloudProgress) applyProgress(cloudProgress);
 
   const storedBird = getStoredDailyBird();
   if (storedBird) {
@@ -1154,6 +1354,7 @@ async function init() {
   renderAll();
   bindEvents();
   startCountdownTimer();
+  syncProgress();
 }
 
 init().catch((error) => {

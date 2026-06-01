@@ -11,7 +11,7 @@
     </script>
     <title>NFC 今日鸟签</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="./styles.css?v=20260530b" />
+    <link rel="stylesheet" href="./styles.css?v=20260601-bg-option-6" />
   </head>
   <body>
     <div class="habitat-bg" aria-hidden="true">
@@ -50,7 +50,41 @@
                   <span class="unopened-aura" aria-hidden="true"></span>
                   <span class="unopened-shadow" aria-hidden="true"></span>
                   <span class="unopened-particles" aria-hidden="true"></span>
-                  <img class="unopened-hero-image" src="./assets/unopened-bird-egg.png" alt="今日鸟签待开启" decoding="async" />
+                  <span class="unopened-hero-image" aria-hidden="true">
+                    <span class="nest-wrap">
+                      <span class="nest-fibers">
+                        <svg class="nest-svg nest-svg-back" viewBox="0 0 260 150" aria-hidden="true">
+                          <path d="M18 87C54 35 179 31 239 84" />
+                          <path d="M23 98C62 53 172 47 238 95" />
+                          <path d="M34 111C77 73 176 67 229 107" />
+                          <path d="M12 112C74 136 183 136 248 109" />
+                          <path d="M39 125C93 148 174 146 225 123" />
+                        </svg>
+                        <svg class="nest-svg nest-svg-front" viewBox="0 0 260 150" aria-hidden="true">
+                          <path d="M9 93C58 136 197 139 251 91" />
+                          <path d="M17 104C77 152 187 151 245 101" />
+                          <path d="M34 115C88 134 174 137 226 113" />
+                          <path d="M48 91C92 115 166 119 216 91" />
+                        </svg>
+                      </span>
+                      <span class="bird-egg">
+                        <span class="egg-speckles"></span>
+                        <span class="paper-band">
+                          <span class="band-text">JOYI BIRD</span>
+                          <span class="gold-seal">
+                            <svg class="seal-svg" viewBox="0 0 24 24" aria-hidden="true">
+                              <path d="M4 13c2.6-3.1 5.6-4.3 9-3.6 2.5.5 4.6 1.5 7 1.1-1.1 2.7-3.1 4.4-6 5-2.8.5-5.2 0-7.2-1.1L3.5 16 4 13Z" />
+                              <path d="M12.8 9.5c1-2.2 2.5-3.6 4.4-4.3" />
+                              <path d="M8.7 10.1C8.1 8.7 7.2 7.6 6 6.8" />
+                              <path d="M8.5 16.2 7.5 19" />
+                              <path d="M13.2 16.1 13 19" />
+                              <circle cx="16.1" cy="11.1" r="0.7" />
+                            </svg>
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                  </span>
                 </span>
                 <span class="unopened-copy">
                   <span class="seal-title">今日鸟签，正在栖息</span>
@@ -86,12 +120,12 @@
           </div>
         </section>
 
-        <section class="home-note" aria-label="今日鸟签说明">
+        <section class="home-note preview-only" aria-label="今日鸟签说明">
           <div>
-            <span>本地记录</span>
+            <span id="progress-label">云端记录</span>
             <strong id="unlock-count">0 / 34</strong>
           </div>
-          <p>每天固定一签，翻开过的鸟会在这台设备上收录。</p>
+          <p id="progress-note">每天固定一签，翻开过的鸟会自动收录；换设备可用恢复码找回。</p>
           <a class="brand-pill" href="https://xhslink.com/m/7SGBBG2ZVDv" target="_blank" rel="noopener"><img class="brand-pill-icon" src="./assets/icons/xhs-logo.png" alt="小红书" width="20" height="10" /><span>去JOYI小红书许愿</span><svg class="brand-pill-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           <div class="preview-tools" aria-label="本地预览工具">
             <button id="reset-preview-button" class="preview-reset" type="button">重置预览状态</button>
@@ -123,6 +157,16 @@
             <strong id="guide-count">0</strong>
           </div>
           <p>可收录的鸟团团会定期更新</p>
+          <div id="recovery-panel" class="recovery-panel" aria-label="进度恢复">
+            <div class="recovery-code-row">
+              <span>恢复码</span>
+              <strong id="recovery-code">生成中</strong>
+            </div>
+            <div class="recovery-form">
+              <input id="restore-code-input" type="text" inputmode="text" autocomplete="off" placeholder="输入恢复码" aria-label="输入恢复码" />
+              <button id="restore-code-button" type="button">恢复进度</button>
+            </div>
+          </div>
           <a class="brand-pill" href="https://xhslink.com/m/7SGBBG2ZVDv" target="_blank" rel="noopener"><img class="brand-pill-icon" src="./assets/icons/xhs-logo.png" alt="小红书" width="20" height="10" /><span>去JOYI小红书许愿</span><svg class="brand-pill-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           <div class="progress-track">
             <span id="guide-progress"></span>
@@ -265,6 +309,6 @@
 
     <script src="./assets/meta/birds-data.js?v=20260531-audio-hash"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <script src="./script.js?v=20260531-audio-hash" defer></script>
+    <script src="./script.js?v=20260601-bg-options" defer></script>
   </body>
 </html>
