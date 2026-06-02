@@ -20,6 +20,19 @@ function json(statusCode, payload) {
   };
 }
 
+function parseJsonPayload(body) {
+  if (!body) return {};
+  try {
+    return JSON.parse(body);
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      error.statusCode = 400;
+      error.publicMessage = "Malformed JSON";
+    }
+    throw error;
+  }
+}
+
 async function ensureDatabase(db) {
   await db.query(`
     create table if not exists visitor_progress (
@@ -48,15 +61,15 @@ async function ensureDatabase(db) {
         from (
           select
             item->>'id' as id,
-            coalesce((item->>'unlockedAt')::bigint, 0) as unlocked_at
+            (item->>'unlockedAt')::bigint as unlocked_at
           from jsonb_array_elements(coalesce(existing, '[]'::jsonb)) as item
           union all
           select
             item->>'id' as id,
-            coalesce((item->>'unlockedAt')::bigint, 0) as unlocked_at
+            (item->>'unlockedAt')::bigint as unlocked_at
           from jsonb_array_elements(coalesce(incoming, '[]'::jsonb)) as item
         ) all_items
-        where id is not null and id <> ''
+        where id is not null and id <> '' and unlocked_at is not null
         group by id
       ) merged
     $$;
@@ -86,7 +99,7 @@ export async function handler(event) {
     }
 
     if (event.httpMethod === "PUT") {
-      const payload = event.body ? JSON.parse(event.body) : {};
+      const payload = parseJsonPayload(event.body);
       const visitorId = cleanId(payload.visitorId);
       if (!visitorId) return json(400, { error: "visitorId is required" });
 
@@ -121,7 +134,9 @@ export async function handler(event) {
 
     return json(405, { error: "Method not allowed" });
   } catch (error) {
-    return json(500, { error: error.message });
+    if (error.statusCode && error.publicMessage) return json(error.statusCode, { error: error.publicMessage });
+    console.error("Progress handler error:", error);
+    return json(500, { error: "Internal server error" });
   }
 }
 
@@ -160,6 +175,7 @@ function normalizeDailyDraws(value) {
     Object.entries(value)
       .map(([date, id]) => [String(date).slice(0, 20), cleanId(id)])
       .filter(([date, id]) => date && id)
+      .sort(([a], [b]) => a.localeCompare(b))
       .slice(-366)
   );
 }

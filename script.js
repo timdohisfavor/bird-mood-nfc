@@ -3,6 +3,7 @@ const UNLOCKED_KEY = "unlockedBirdIds";
 const VISITOR_KEY = "birdSignVisitorId";
 const RECOVERY_CODE_KEY = "birdSignRecoveryCode";
 const DAILY_DRAWS_KEY = "birdSignDailyDraws";
+const AMBIENT_AUDIO_SRC = "/assets/audio/ambient-rain-birds.mp3";
 const BACKGROUND_PREVIEWS = {
   "1": "./assets/backgrounds/forest-bg-option-1.jpg",
   "2": "./assets/backgrounds/forest-bg-option-2.jpg",
@@ -28,7 +29,9 @@ const state = {
   recoveryCode: null,
   dailyDraws: {},
   progressSyncAvailable: true,
-  progressSyncing: false
+  progressSyncing: false,
+  ambientPlaying: false,
+  ambientUserPaused: false
 };
 
 const els = {};
@@ -36,10 +39,14 @@ const embeddedBirds = Array.isArray(window.BIRD_SIGN_DATA) ? window.BIRD_SIGN_DA
 // All 34 birds have audio files — no callBirdIds filter needed.
 
 const callAudio = new Audio();
+let ambientAudio = null;
 let pulseViz = null;
 let toastTimer = null;
+let deferredInstallPrompt = null;
+let guideGridRendered = false;
 const detailImageCache = new Map();
 const SAVE_ICON_HTML = '<svg class="button-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>保存到相册</span>';
+let html2CanvasPromise = null;
 /* ── Pulse Ring Visualizer (Web Audio API + Canvas) ── */
 class PulseVisualizer {
   constructor(canvas) {
@@ -315,6 +322,198 @@ function parseJson(value, fallback) {
   }
 }
 
+function fetchWithTimeout(url, options = {}, timeoutMs = 9000) {
+  if (!globalThis.AbortController) return fetch(url, options);
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() => {
+    window.clearTimeout(timeout);
+  });
+}
+
+function loadHtml2Canvas() {
+  if (globalThis.html2canvas) return Promise.resolve(globalThis.html2canvas);
+  if (html2CanvasPromise) return html2CanvasPromise;
+
+  html2CanvasPromise = import("./assets/vendor/html2canvas.esm.js").then((module) => {
+    const html2canvas = module.default || module.html2canvas;
+    if (!html2canvas) throw new Error("html2canvas is unavailable");
+    globalThis.html2canvas = html2canvas;
+    return html2canvas;
+  });
+
+  return html2CanvasPromise;
+}
+
+function withTimeout(promise, timeoutMs, message) {
+  return new Promise(function(resolve, reject) {
+    var timeout = window.setTimeout(function() {
+      reject(new Error(message || "operation timed out"));
+    }, timeoutMs);
+    promise.then(function(value) {
+      window.clearTimeout(timeout);
+      resolve(value);
+    }).catch(function(error) {
+      window.clearTimeout(timeout);
+      reject(error);
+    });
+  });
+}
+
+async function saveCanvasBlob(canvas, fileName, shareTitle) {
+  var blob = await new Promise(function(resolve) {
+    canvas.toBlob(resolve, "image/png", 1.0);
+  });
+  if (!blob) throw new Error("toBlob failed");
+
+  var file = new File([blob], fileName, { type: "image/png" });
+  if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+    navigator.share({ files: [file], title: shareTitle })
+      .then(() => showToast("已准备好分享"))
+      .catch(() => showToast("已取消分享"));
+    showToast("已打开分享面板");
+    return;
+  }
+
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = file.name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast("图片已保存");
+}
+
+function drawRoundRect(ctx, x, y, width, height, radius) {
+  var r = Math.min(radius, width / 2, height / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + width, y, x + width, y + height, r);
+  ctx.arcTo(x + width, y + height, x, y + height, r);
+  ctx.arcTo(x, y + height, x, y, r);
+  ctx.arcTo(x, y, x + width, y, r);
+  ctx.closePath();
+}
+
+function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 4) {
+  var words = String(text || "").split("");
+  var line = "";
+  var lines = [];
+  words.forEach((char) => {
+    var testLine = line + char;
+    if (ctx.measureText(testLine).width > maxWidth && line) {
+      lines.push(line);
+      line = char;
+      return;
+    }
+    line = testLine;
+  });
+  if (line) lines.push(line);
+  lines.slice(0, maxLines).forEach((item, index) => {
+    ctx.fillText(item, x, y + index * lineHeight);
+  });
+  return Math.min(lines.length, maxLines) * lineHeight;
+}
+
+function loadCanvasImage(src) {
+  return new Promise((resolve) => {
+    if (!src) {
+      resolve(null);
+      return;
+    }
+    var img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+async function createShareFallbackCanvas(bird, mode = "poster") {
+  var canvas = document.createElement("canvas");
+  var width = 900;
+  var height = mode === "detail" ? 1480 : 1280;
+  canvas.width = width;
+  canvas.height = height;
+  var ctx = canvas.getContext("2d");
+  var quote = parseQuoteParts(bird?.quote);
+  var image = await loadCanvasImage(bird?.image);
+
+  var gradient = ctx.createLinearGradient(0, 0, width, height);
+  gradient.addColorStop(0, "#eef3df");
+  gradient.addColorStop(1, "#d9d0aa");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, width, height);
+
+  ctx.fillStyle = "rgba(255, 253, 242, 0.92)";
+  ctx.fillRect(0, 0, width, height);
+
+  ctx.fillStyle = "#9c2c22";
+  ctx.font = "800 30px sans-serif";
+  ctx.fillText("BIRD MOOD CLUB", 118, 132);
+  ctx.fillStyle = "#66756b";
+  ctx.font = "700 26px sans-serif";
+  ctx.fillText(todayText(), 118, 180);
+
+  if (image) {
+    var imgSize = mode === "detail" ? 380 : 430;
+    var imgX = (width - imgSize) / 2;
+    var imgY = mode === "detail" ? 220 : 260;
+    ctx.drawImage(image, imgX, imgY, imgSize, imgSize);
+  }
+
+  var nameY = mode === "detail" ? 680 : 760;
+  ctx.fillStyle = "#142019";
+  ctx.font = "900 64px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText(bird?.name || "今日鸟签", width / 2, nameY);
+  ctx.fillStyle = "#2f6f45";
+  ctx.font = "800 28px sans-serif";
+  ctx.fillText(bird?.look || "今天的鸟还在晨雾里", width / 2, nameY + 58);
+
+  ctx.fillStyle = "rgba(255,255,255,0.68)";
+  drawRoundRect(ctx, 145, nameY + 95, width - 290, 190, 30);
+  ctx.fill();
+  ctx.fillStyle = "#123225";
+  ctx.font = "900 28px sans-serif";
+  ctx.fillText(quote.title || "今日鸟签", width / 2, nameY + 148);
+  ctx.font = "800 34px sans-serif";
+  drawWrappedText(ctx, quote.body || "", width / 2, nameY + 206, width - 360, 48, 3);
+
+  if (mode === "detail") {
+    var y = nameY + 345;
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#123225";
+    ctx.font = "900 28px sans-serif";
+    ctx.fillText("鸟类档案", 130, y);
+    ctx.font = "700 24px sans-serif";
+    ctx.fillStyle = "#66756b";
+    ctx.fillText("栖息地", 130, y + 54);
+    ctx.fillStyle = "#123225";
+    ctx.font = "900 32px sans-serif";
+    ctx.fillText(bird?.habitat || "林地花园", 130, y + 96);
+    ctx.fillStyle = "#66756b";
+    ctx.font = "700 24px sans-serif";
+    drawWrappedText(ctx, bird?.line || "", 130, y + 142, width - 260, 36, 3);
+  }
+
+  ctx.strokeStyle = "rgba(130,108,64,0.2)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(118, height - 165);
+  ctx.lineTo(width - 118, height - 165);
+  ctx.stroke();
+  ctx.fillStyle = "#53655b";
+  ctx.font = "800 28px sans-serif";
+  ctx.fillText("NFC鸟签", 118, height - 105);
+  ctx.fillText("@JOYI BIRD", 360, height - 105);
+  ctx.textAlign = "start";
+
+  return canvas;
+}
+
 function makeVisitorId() {
   if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
   return "visitor-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
@@ -382,25 +581,29 @@ function applyProgress(progress) {
   }
 }
 
-async function fetchProgressByVisitor() {
+async function fetchProgressByVisitor(retries = 1) {
   if (!state.visitorId || !state.progressSyncAvailable) return null;
   try {
-    var response = await fetch("/api/progress?visitorId=" + encodeURIComponent(state.visitorId));
+    var response = await fetchWithTimeout("/api/progress?visitorId=" + encodeURIComponent(state.visitorId), {}, 9000);
     if (response.status === 404) return null;
     if (!response.ok) throw new Error("Progress API unavailable");
     var payload = await response.json();
     return payload.progress || null;
   } catch {
+    if (retries > 0) {
+      await new Promise((resolve) => window.setTimeout(resolve, 1200));
+      return fetchProgressByVisitor(retries - 1);
+    }
     state.progressSyncAvailable = false;
     return null;
   }
 }
 
-async function syncProgress() {
+async function syncProgress(retries = 1) {
   if (!state.visitorId || !state.progressSyncAvailable || state.progressSyncing) return;
   state.progressSyncing = true;
   try {
-    var response = await fetch("/api/progress", {
+    var response = await fetchWithTimeout("/api/progress", {
       method: "PUT",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -409,35 +612,22 @@ async function syncProgress() {
         dailyDraws: state.dailyDraws,
         lastDrawDate: Object.keys(state.dailyDraws).sort().slice(-1)[0] || null
       })
-    });
+    }, 9000);
     if (!response.ok) throw new Error("Progress API unavailable");
     var payload = await response.json();
     applyProgress(payload.progress);
     renderProgressTools();
   } catch {
+    state.progressSyncing = false;
+    if (retries > 0) {
+      await new Promise((resolve) => window.setTimeout(resolve, 1500));
+      return syncProgress(retries - 1);
+    }
     state.progressSyncAvailable = false;
     renderProgressTools();
+    return;
   } finally {
     state.progressSyncing = false;
-  }
-}
-
-async function restoreProgressByCode(code) {
-  var cleanCode = String(code || "").trim();
-  if (!cleanCode) return;
-  try {
-    var response = await fetch("/api/progress?recoveryCode=" + encodeURIComponent(cleanCode));
-    if (response.status === 404) {
-      showToast("没有找到这个恢复码");
-      return;
-    }
-    if (!response.ok) throw new Error("Progress API unavailable");
-    var payload = await response.json();
-    applyProgress(payload.progress);
-    renderAll();
-    showToast("进度已找回");
-  } catch {
-    showToast("暂时无法恢复，请稍后再试");
   }
 }
 
@@ -550,6 +740,135 @@ function showToast(message) {
   }, 1900);
 }
 
+function updateAmbientUi() {
+  if (!els.ambientToggle || !els.ambientStatus) return;
+  els.ambientToggle.classList.toggle("is-playing", state.ambientPlaying);
+  els.ambientToggle.setAttribute("aria-pressed", state.ambientPlaying ? "true" : "false");
+  els.ambientStatus.textContent = state.ambientPlaying ? "轻音乐播放中" : "轻音乐待播放";
+}
+
+function getInstallGuide() {
+  var ua = navigator.userAgent || "";
+  var isIos = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var isWechat = /MicroMessenger/i.test(ua);
+  var isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+
+  if (isWechat) {
+    return {
+      note: "如果当前在微信里，请先点右上角“...”并选择在 Safari 中打开，再按步骤添加。",
+      steps: [
+        "点右上角“...”打开更多操作。",
+        "选择“在 Safari 中打开”。",
+        "在 Safari 底部点“分享”按钮。",
+        "选择“添加到主屏幕”，确认后点“添加”。"
+      ]
+    };
+  }
+
+  if (isIos || isSafari) {
+    return {
+      note: "iPhone 需要你在系统面板里手动点“添加”，网页不能代替你完成最后一步。",
+      steps: [
+        "在 Safari 底部工具栏点“分享”按钮。",
+        "选择“添加到主屏幕”。",
+        "确认名称为“今日鸟签”，打开“作为网页 App”。",
+        "点右上角“添加”，以后从桌面图标进入。"
+      ]
+    };
+  }
+
+  return {
+    note: "如果浏览器没有弹出安装提示，请从浏览器菜单里找“添加到主屏幕”或“安装应用”。",
+    steps: [
+      "打开浏览器菜单或分享菜单。",
+      "选择“添加到主屏幕”或“安装应用”。",
+      "确认名称为“今日鸟签”。",
+      "添加后从桌面图标进入。"
+    ]
+  };
+}
+
+function setInstallGuideContent() {
+  if (!els.installSteps) return;
+  var guide = getInstallGuide();
+  els.installSteps.innerHTML = guide.steps.map(function(step, index) {
+    return `<li><span>${index + 1}</span><p>${step}</p></li>`;
+  }).join("");
+  if (els.installBrowserNote) {
+    els.installBrowserNote.textContent = deferredInstallPrompt
+      ? "当前浏览器支持安装提示，也可以点“让浏览器添加”并在系统弹窗中确认。"
+      : guide.note;
+  }
+  if (els.installNativeButton) els.installNativeButton.hidden = !deferredInstallPrompt;
+}
+
+function toggleInstallGuide(open) {
+  if (!els.installModal) return;
+  if (open) setInstallGuideContent();
+  els.installModal.classList.toggle("open", open);
+  els.installModal.setAttribute("aria-hidden", open ? "false" : "true");
+  document.body.classList.toggle("has-modal", open || document.body.classList.contains("has-detail-modal"));
+}
+
+async function handleInstallTip() {
+  toggleInstallGuide(true);
+}
+
+async function handleNativeInstall() {
+  if (deferredInstallPrompt) {
+    var promptEvent = deferredInstallPrompt;
+    deferredInstallPrompt = null;
+    promptEvent.prompt();
+    var choice = await promptEvent.userChoice.catch(() => null);
+    if (choice?.outcome === "accepted") {
+      toggleInstallGuide(false);
+      showToast("已开始添加到主屏幕");
+      return;
+    }
+    setInstallGuideContent();
+    return;
+  }
+  toggleInstallGuide(true);
+}
+
+function runAfterFirstPaint(callback, delay = 900) {
+  window.setTimeout(function() {
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(callback, { timeout: 2200 });
+      return;
+    }
+    callback();
+  }, delay);
+}
+
+async function startAmbientMusic(fromGesture = false) {
+  if (state.ambientUserPaused || !els.ambientToggle) return;
+  try {
+    if (!ambientAudio) {
+      ambientAudio = new Audio(AMBIENT_AUDIO_SRC);
+      ambientAudio.loop = true;
+      ambientAudio.preload = "none";
+      ambientAudio.volume = 0.42;
+    }
+    await ambientAudio.play();
+    if (!state.ambientPlaying) {
+      state.ambientPlaying = true;
+      updateAmbientUi();
+      if (fromGesture) showToast("轻音乐已开启");
+    }
+  } catch {
+    state.ambientPlaying = false;
+    updateAmbientUi();
+  }
+}
+
+function stopAmbientMusic(userPaused = false) {
+  state.ambientUserPaused = userPaused;
+  state.ambientPlaying = false;
+  if (ambientAudio) ambientAudio.pause();
+  updateAmbientUi();
+}
+
 function setImage(img, bird, label) {
   img.onerror = () => {
     if (bird?.fallbackImage && img.src !== bird.fallbackImage) {
@@ -620,7 +939,7 @@ async function sanitizeTransparentEdge(src) {
 
 function setDetailImage(img, bird) {
   if (!img) return;
-  var detailSrc = bird?.fallbackImage || bird?.image || "";
+  var detailSrc = bird?.image || bird?.fallbackImage || "";
   img.onerror = () => {
     if (bird?.image && img.src !== bird.image) {
       img.src = bird.image;
@@ -633,13 +952,18 @@ function setDetailImage(img, bird) {
   });
 }
 
-function waitForImages(root) {
+function waitForImages(root, timeoutMs = 2500) {
   var images = Array.from(root.querySelectorAll("img"));
   return Promise.all(images.map(function(img) {
-    if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+    if (img.complete) return Promise.resolve();
     return new Promise(function(resolve) {
-      img.addEventListener("load", resolve, { once: true });
-      img.addEventListener("error", resolve, { once: true });
+      var timeout = window.setTimeout(resolve, timeoutMs);
+      var done = function() {
+        window.clearTimeout(timeout);
+        resolve();
+      };
+      img.addEventListener("load", done, { once: true });
+      img.addEventListener("error", done, { once: true });
     });
   }));
 }
@@ -823,7 +1147,7 @@ function renderPosterQuote(title, body) {
 
 function renderProgress() {
   const count = state.unlockedBirdIds.size;
-  const total = state.birds.length || 30;
+  const total = state.birds.length || 34;
   const percent = total ? Math.round((count / total) * 100) : 0;
   els.unlockCount.textContent = `${count} / ${total}`;
   els.guideCount.textContent = `${count}`;
@@ -837,20 +1161,8 @@ function renderProgressTools() {
   }
   if (els.progressNote) {
     els.progressNote.textContent = canUseCloudProgress
-      ? "每天固定一签，翻开过的鸟会自动收录；换设备可用恢复码找回。"
-      : "每天固定一签，当前会先保存在这台设备；云端恢复暂不可用。";
-  }
-  if (els.recoveryCode) {
-    els.recoveryCode.textContent = state.recoveryCode || (canUseCloudProgress ? "生成中" : "云端未连接");
-  }
-  if (els.recoveryPanel) {
-    els.recoveryPanel.classList.toggle("is-offline", !canUseCloudProgress);
-  }
-  if (els.restoreCodeInput) {
-    els.restoreCodeInput.disabled = !canUseCloudProgress;
-  }
-  if (els.restoreCodeButton) {
-    els.restoreCodeButton.disabled = !canUseCloudProgress;
+      ? "每天固定一签，翻开过的鸟会自动收录。"
+      : "每天固定一签，当前会先保存在这台设备。";
   }
 }
 
@@ -900,7 +1212,7 @@ function renderGrid() {
           </div>
           <div class="tile-habitat">${unlocked ? bird.habitat : ""}</div>
           <div class="tile-art">
-            <img src="${bird.image}" data-fallback="${bird.fallbackImage || ""}" alt="${unlocked ? `${bird.name}插画` : "未收录鸟类剪影"}" loading="lazy" decoding="async" />
+            <img src="${bird.image}" data-fallback="${bird.fallbackImage || ""}" alt="${unlocked ? `${bird.name}插画` : "未收录鸟类剪影"}" loading="lazy" decoding="async" fetchpriority="low" />
           </div>
           <h2 class="tile-title">${unlocked ? bird.name : "栖息地剪影"}</h2>
           <p class="tile-look">${unlocked ? bird.look : "这只鸟还藏在晨雾里"}</p>
@@ -932,8 +1244,11 @@ function renderAll() {
   renderActiveBird();
   renderProgress();
   renderProgressTools();
-  renderGuideFilters();
-  renderGrid();
+  if (state.currentScreen === "nest" || guideGridRendered) {
+    renderGuideFilters();
+    renderGrid();
+    guideGridRendered = true;
+  }
   renderNfcSimulator();
   renderRoute();
 }
@@ -943,6 +1258,11 @@ function goScreen(screen) {
   closeBirdDetail();
   state.currentScreen = screen;
   location.hash = screen === "home" ? "" : screen;
+  if (screen === "nest") {
+    renderGuideFilters();
+    renderGrid();
+    guideGridRendered = true;
+  }
   renderRoute();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -1032,12 +1352,30 @@ function createDetailExportNode(sheet) {
   });
 
   var rect = sheet.getBoundingClientRect();
+  var exportWidth = Math.max(360, Math.min(430, Math.ceil(rect.width || 430)));
   var exportWrap = document.createElement("div");
   exportWrap.className = "detail-export-wrap";
-  exportWrap.style.width = Math.ceil(rect.width) + "px";
+  exportWrap.style.width = exportWidth + "px";
   exportWrap.appendChild(clone);
   document.body.appendChild(exportWrap);
   return { wrap: exportWrap, sheet: clone };
+}
+
+function createPosterExportNode(card) {
+  var clone = card.cloneNode(true);
+  clone.classList.add("poster-export-card");
+  clone.querySelectorAll("[id]").forEach(function(node) {
+    node.removeAttribute("id");
+  });
+
+  var rect = card.getBoundingClientRect();
+  var exportWidth = Math.max(360, Math.min(420, Math.ceil(rect.width || 420)));
+  var exportWrap = document.createElement("div");
+  exportWrap.className = "poster-export-wrap";
+  exportWrap.style.width = exportWidth + "px";
+  exportWrap.appendChild(clone);
+  document.body.appendChild(exportWrap);
+  return { wrap: exportWrap, card: clone };
 }
 
 function drawBird() {
@@ -1092,6 +1430,103 @@ function unlockAllBirds() {
   showToast("已揭开全部 " + state.birds.length + " 只鸟");
 }
 
+async function savePosterImage() {
+  var card = document.querySelector(".poster-card");
+  if (!card || !els.savePoster) {
+    showToast("海报还没准备好");
+    return;
+  }
+
+  var btn = els.savePoster;
+  if (btn.disabled) return;
+  btn.disabled = true;
+  btn.innerHTML = SAVE_ICON_HTML.replace("保存到相册", "生成中…");
+  var exportNode = null;
+
+  try {
+    const html2canvas = await loadHtml2Canvas();
+    exportNode = createPosterExportNode(card);
+    await waitForImages(exportNode.card);
+    var canvas = await withTimeout(html2canvas(exportNode.card, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#fbfbf3",
+      width: exportNode.card.offsetWidth,
+      height: exportNode.card.offsetHeight,
+      windowWidth: exportNode.card.scrollWidth,
+      windowHeight: exportNode.card.scrollHeight,
+      scrollX: 0,
+      scrollY: 0
+    }), 4500, "poster screenshot timed out");
+    await saveCanvasBlob(canvas, "bird-sign-" + new Date().toISOString().slice(0, 10) + ".png", "今日鸟签");
+  } catch (e) {
+    if (e.name !== "AbortError") {
+      console.warn(e);
+      try {
+        var fallbackCanvas = await createShareFallbackCanvas(state.activeBird, "poster");
+        await saveCanvasBlob(fallbackCanvas, "bird-sign-" + new Date().toISOString().slice(0, 10) + ".png", "今日鸟签");
+      } catch {
+        showToast("生成失败，请手动截图");
+      }
+    }
+  } finally {
+    if (exportNode?.wrap) exportNode.wrap.remove();
+    btn.disabled = false;
+    btn.innerHTML = SAVE_ICON_HTML;
+  }
+}
+
+async function saveDetailImage() {
+  var sheet = document.querySelector(".detail-sheet");
+  if (!sheet || !els.detailShotButton) {
+    showToast("详情还没准备好");
+    return;
+  }
+
+  var btn = els.detailShotButton;
+  if (btn.disabled) return;
+  btn.disabled = true;
+  var exportNode = null;
+
+  try {
+    const html2canvas = await loadHtml2Canvas();
+    exportNode = createDetailExportNode(sheet);
+    await waitForImages(exportNode.sheet);
+    void exportNode.sheet.offsetHeight;
+    btn.innerHTML = '<span>生成中…</span>';
+    var canvas = await withTimeout(html2canvas(exportNode.sheet, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#fbfbf3",
+      width: exportNode.sheet.offsetWidth,
+      height: exportNode.sheet.offsetHeight,
+      windowWidth: exportNode.sheet.scrollWidth,
+      windowHeight: exportNode.sheet.scrollHeight,
+      scrollX: 0,
+      scrollY: 0
+    }), 4500, "detail screenshot timed out");
+    var bird = state.detailBird;
+    var name = bird ? bird.name : "bird";
+    await saveCanvasBlob(canvas, "bird-sign-" + name + "-" + new Date().toISOString().slice(0, 10) + ".png", "今日鸟签");
+  } catch (e) {
+    if (e.name !== "AbortError") {
+      console.warn(e);
+      try {
+        var fallbackBird = state.detailBird || state.activeBird;
+        var fallbackCanvas = await createShareFallbackCanvas(fallbackBird, "detail");
+        var fallbackName = fallbackBird ? fallbackBird.name : "bird";
+        await saveCanvasBlob(fallbackCanvas, "bird-sign-" + fallbackName + "-" + new Date().toISOString().slice(0, 10) + ".png", "今日鸟签");
+      } catch {
+        showToast("生成失败，请手动截图");
+      }
+    }
+  } finally {
+    if (exportNode?.wrap) exportNode.wrap.remove();
+    btn.disabled = false;
+    btn.innerHTML = SAVE_ICON_HTML;
+  }
+}
+
 function bindEvents() {
   els.drawButton.addEventListener("click", drawBird);
   els.dailyStatus.addEventListener("click", drawBird);
@@ -1102,59 +1537,30 @@ function bindEvents() {
   });
   els.backHome.addEventListener("click", () => goScreen("home"));
   els.posterBackHome.addEventListener("click", () => goScreen("home"));
-  els.savePoster.addEventListener("click", async function() {
-    var card = document.querySelector(".poster-card");
-    if (!card || typeof html2canvas === "undefined") {
-      showToast("截图组件未加载，请手动截图");
+  if (els.ambientToggle) els.ambientToggle.addEventListener("click", function() {
+    if (state.ambientPlaying) {
+      stopAmbientMusic(true);
+      showToast("轻音乐已关闭");
       return;
     }
-    var btn = els.savePoster;
-    btn.disabled = true;
-    btn.innerHTML = SAVE_ICON_HTML.replace("保存到相册", "生成中…");
-    try {
-      var canvas = await html2canvas(card, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#f4f4e7",
-        borderRadius: 30
-      });
-      var blob = await new Promise(function(resolve) {
-        canvas.toBlob(resolve, "image/png", 1.0);
-      });
-      if (!blob) throw new Error("toBlob failed");
-      var file = new File([blob], "bird-sign-" + new Date().toISOString().slice(0, 10) + ".png", { type: "image/png" });
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: "今日鸟签" });
-        showToast("已准备好分享");
-      } else {
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement("a");
-        a.href = url;
-        a.download = file.name;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        showToast("图片已保存");
-      }
-    } catch (e) {
-      if (e.name !== "AbortError") showToast("生成失败，请手动截图");
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = SAVE_ICON_HTML;
-    }
+    state.ambientUserPaused = false;
+    startAmbientMusic(true);
   });
+  if (els.installTip) els.installTip.addEventListener("click", handleInstallTip);
+  document.addEventListener("click", function(event) {
+    if (event.target.closest("#install-tip")) handleInstallTip();
+  });
+  if (els.installNativeButton) els.installNativeButton.addEventListener("click", handleNativeInstall);
+  if (els.installModalClose) els.installModalClose.addEventListener("click", function() { toggleInstallGuide(false); });
+  if (els.installModalOk) els.installModalOk.addEventListener("click", function() { toggleInstallGuide(false); });
+  if (els.installModal) els.installModal.addEventListener("click", function(event) {
+    if (event.target === els.installModal) toggleInstallGuide(false);
+  });
+  if (els.savePoster) els.savePoster.addEventListener("click", savePosterImage);
   els.resetPreviewButton.addEventListener("click", resetPreviewState);
 
   var unlockAllBtn = document.getElementById("unlock-all-button");
   if (unlockAllBtn) unlockAllBtn.addEventListener("click", unlockAllBirds);
-
-  if (els.restoreCodeButton) els.restoreCodeButton.addEventListener("click", function() {
-    restoreProgressByCode(els.restoreCodeInput?.value);
-  });
-  if (els.restoreCodeInput) els.restoreCodeInput.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") restoreProgressByCode(els.restoreCodeInput.value);
-  });
 
   var posterBtn = document.getElementById("share-poster-button");
   if (posterBtn) posterBtn.addEventListener("click", function() { goScreen("poster"); });
@@ -1201,59 +1607,10 @@ function bindEvents() {
   );
   if (els.detailClose) els.detailClose.addEventListener("click", closeBirdDetail);
   if (els.birdDetailBackdrop) els.birdDetailBackdrop.addEventListener("click", closeBirdDetail);
-  if (els.detailShotButton) els.detailShotButton.addEventListener("click", async function() {
-    var sheet = document.querySelector(".detail-sheet");
-    if (!sheet || typeof html2canvas === "undefined") {
-      showToast("截图组件未加载，请手动截图");
-      return;
-    }
-    var btn = els.detailShotButton;
-    btn.disabled = true;
-    var exportNode = null;
-    try {
-      exportNode = createDetailExportNode(sheet);
-      await waitForImages(exportNode.sheet);
-      void exportNode.sheet.offsetHeight;
-      btn.innerHTML = '<span>生成中…</span>';
-      var canvas = await html2canvas(exportNode.sheet, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#fbfbf3",
-        width: exportNode.sheet.offsetWidth,
-        height: exportNode.sheet.offsetHeight,
-        windowWidth: exportNode.sheet.scrollWidth,
-        windowHeight: exportNode.sheet.scrollHeight,
-        scrollX: 0,
-        scrollY: 0
-      });
-      var blob = await new Promise(function(resolve) {
-        canvas.toBlob(resolve, "image/png", 1.0);
-      });
-      if (!blob) throw new Error("toBlob failed");
-      var bird = state.detailBird;
-      var name = bird ? bird.name : "bird";
-      var file = new File([blob], "bird-sign-" + name + "-" + new Date().toISOString().slice(0, 10) + ".png", { type: "image/png" });
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: "今日鸟签" });
-        showToast("已准备好分享");
-      } else {
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement("a");
-        a.href = url;
-        a.download = file.name;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        showToast("图片已保存");
-      }
-    } catch (e) {
-      if (e.name !== "AbortError") showToast("生成失败，请手动截图");
-    } finally {
-      if (exportNode?.wrap) exportNode.wrap.remove();
-      btn.disabled = false;
-      btn.innerHTML = SAVE_ICON_HTML;
-    }
+  if (els.detailShotButton) els.detailShotButton.addEventListener("click", saveDetailImage);
+  document.addEventListener("click", function(event) {
+    if (event.target.closest("#save-poster")) savePosterImage();
+    if (event.target.closest("#detail-shot-button")) saveDetailImage();
   });
   if (els.detailCallButton) els.detailCallButton.addEventListener("click", function() {
     if (!state.detailBird) return;
@@ -1275,6 +1632,8 @@ function cacheElements() {
     entryLabel: $("#entry-label"),
     todayText: $("#today-text"),
     dailyStatus: $("#daily-status"),
+    ambientToggle: $("#ambient-toggle"),
+    ambientStatus: $("#ambient-status"),
     drawCard: $("#draw-card"),
     activeBirdImage: $("#active-bird-image"),
     activeBirdName: $("#active-bird-name"),
@@ -1288,10 +1647,6 @@ function cacheElements() {
     backHome: $("#back-home"),
     guideCount: $("#guide-count"),
     guideProgress: $("#guide-progress"),
-    recoveryPanel: $("#recovery-panel"),
-    recoveryCode: $("#recovery-code"),
-    restoreCodeInput: $("#restore-code-input"),
-    restoreCodeButton: $("#restore-code-button"),
     birdGrid: $("#bird-grid"),
     posterBackHome: $("#poster-back-home"),
     posterDate: $("#poster-date"),
@@ -1317,6 +1672,13 @@ function cacheElements() {
     detailChinaPopulation: $("#detail-china-population"),
     detailIucnStatus: $("#detail-iucn-status"),
     detailChinaStatus: $("#detail-china-status"),
+    installTip: $("#install-tip"),
+    installModal: $("#install-modal"),
+    installModalClose: $("#install-modal-close"),
+    installModalOk: $("#install-modal-ok"),
+    installNativeButton: $("#install-native-button"),
+    installSteps: $("#install-steps"),
+    installBrowserNote: $("#install-browser-note"),
     toast: $("#toast")
   });
 }
@@ -1332,9 +1694,6 @@ async function init() {
   state.recoveryCode = safeStorageGet(RECOVERY_CODE_KEY);
   loadDailyDraws();
   loadUnlockedBirdIds();
-
-  const cloudProgress = await fetchProgressByVisitor();
-  if (cloudProgress) applyProgress(cloudProgress);
 
   const storedBird = getStoredDailyBird();
   if (storedBird) {
@@ -1354,8 +1713,25 @@ async function init() {
   renderAll();
   bindEvents();
   startCountdownTimer();
-  syncProgress();
+  updateAmbientUi();
+  runAfterFirstPaint(function() {
+    fetchProgressByVisitor().then((cloudProgress) => {
+      if (!cloudProgress) return;
+      applyProgress(cloudProgress);
+      renderAll();
+      syncProgress();
+    });
+    syncProgress();
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(() => {});
+    }
+  });
 }
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+});
 
 init().catch((error) => {
   document.body.innerHTML = `
@@ -1363,7 +1739,7 @@ init().catch((error) => {
       <section class="error-state">
         <p class="eyebrow">页面加载失败</p>
         <h1>鸟签暂时没有落地</h1>
-        <p>${error.message}</p>
+        <p>请刷新页面再试一次。</p>
       </section>
     </main>
   `;

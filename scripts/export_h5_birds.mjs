@@ -125,7 +125,7 @@ const birds = await Promise.all(rawBirds
     socialText: stars(bird.social),
     meetingText: stars(bird.meeting),
     image: `assets/birds-final-webp/${bird.id}.webp`,
-    fallbackImage: `assets/birds-final/${bird.id}.png`,
+    fallbackImage: `assets/birds-final-webp/${bird.id}.webp`,
     call: `${callPath}?v=${callVersion}`
     };
   }));

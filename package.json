@@ -23,6 +23,7 @@
     "node": ">=20"
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
     "pg": "^8.13.1"
   }
 }

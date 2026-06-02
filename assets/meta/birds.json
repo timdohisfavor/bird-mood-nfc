@@ -22,7 +22,7 @@
     "socialText": "★★★★☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/sparrow.webp",
-    "fallbackImage": "assets/birds-final/sparrow.png",
+    "fallbackImage": "assets/birds-final-webp/sparrow.webp",
     "call": "assets/bird-calls/sparrow.mp3?v=8e7756705a10"
   },
   {
@@ -48,7 +48,7 @@
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/egret.webp",
-    "fallbackImage": "assets/birds-final/egret.png",
+    "fallbackImage": "assets/birds-final-webp/egret.webp",
     "call": "assets/bird-calls/egret.mp3?v=d68c69e180d5"
   },
   {
@@ -74,7 +74,7 @@
     "socialText": "★★☆☆☆",
     "meetingText": "★★★☆☆",
     "image": "assets/birds-final-webp/zebra-dove.webp",
-    "fallbackImage": "assets/birds-final/zebra-dove.png",
+    "fallbackImage": "assets/birds-final-webp/zebra-dove.webp",
     "call": "assets/bird-calls/zebra-dove.mp3?v=967385cf93b8"
   },
   {
@@ -100,7 +100,7 @@
     "socialText": "★★★☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/moorhen.webp",
-    "fallbackImage": "assets/birds-final/moorhen.png",
+    "fallbackImage": "assets/birds-final-webp/moorhen.webp",
     "call": "assets/bird-calls/moorhen.mp3?v=5a48e9520e6e"
   },
   {
@@ -126,7 +126,7 @@
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★★",
     "image": "assets/birds-final-webp/falco-subbuteo.webp",
-    "fallbackImage": "assets/birds-final/falco-subbuteo.png",
+    "fallbackImage": "assets/birds-final-webp/falco-subbuteo.webp",
     "call": "assets/bird-calls/falco-subbuteo.mp3?v=933a24ab63b9"
   },
   {
@@ -152,7 +152,7 @@
     "socialText": "★★★★★",
     "meetingText": "★☆☆☆☆",
     "image": "assets/birds-final-webp/long-tailed-tit.webp",
-    "fallbackImage": "assets/birds-final/long-tailed-tit.png",
+    "fallbackImage": "assets/birds-final-webp/long-tailed-tit.webp",
     "call": "assets/bird-calls/long-tailed-tit.mp3?v=df4c82561a42"
   },
   {
@@ -178,7 +178,7 @@
     "socialText": "★☆☆☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/snowy-owl.webp",
-    "fallbackImage": "assets/birds-final/snowy-owl.png",
+    "fallbackImage": "assets/birds-final-webp/snowy-owl.webp",
     "call": "assets/bird-calls/snowy-owl.mp3?v=e108c40a4dad"
   },
   {
@@ -204,7 +204,7 @@
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/red-billed-leiothrix.webp",
-    "fallbackImage": "assets/birds-final/red-billed-leiothrix.png",
+    "fallbackImage": "assets/birds-final-webp/red-billed-leiothrix.webp",
     "call": "assets/bird-calls/red-billed-leiothrix.mp3?v=f0ca5127318e"
   },
   {
@@ -230,7 +230,7 @@
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★★",
     "image": "assets/birds-final-webp/golden-eagle.webp",
-    "fallbackImage": "assets/birds-final/golden-eagle.png",
+    "fallbackImage": "assets/birds-final-webp/golden-eagle.webp",
     "call": "assets/bird-calls/golden-eagle.mp3?v=2878477fe7a2"
   },
   {
@@ -256,7 +256,7 @@
     "socialText": "★☆☆☆☆",
     "meetingText": "★★★☆☆",
     "image": "assets/birds-final-webp/night-heron.webp",
-    "fallbackImage": "assets/birds-final/night-heron.png",
+    "fallbackImage": "assets/birds-final-webp/night-heron.webp",
     "call": "assets/bird-calls/night-heron.mp3?v=699cf9c2f582"
   },
   {
@@ -282,7 +282,7 @@
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★★",
     "image": "assets/birds-final-webp/swan.webp",
-    "fallbackImage": "assets/birds-final/swan.png",
+    "fallbackImage": "assets/birds-final-webp/swan.webp",
     "call": "assets/bird-calls/swan.mp3?v=7f127076a5cb"
   },
   {
@@ -308,7 +308,7 @@
     "socialText": "★☆☆☆☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/blackbird.webp",
-    "fallbackImage": "assets/birds-final/blackbird.png",
+    "fallbackImage": "assets/birds-final-webp/blackbird.webp",
     "call": "assets/bird-calls/blackbird.mp3?v=096eefc3f8b3"
   },
   {
@@ -334,7 +334,7 @@
     "socialText": "★★☆☆☆",
     "meetingText": "★☆☆☆☆",
     "image": "assets/birds-final-webp/white-headed-duck.webp",
-    "fallbackImage": "assets/birds-final/white-headed-duck.png",
+    "fallbackImage": "assets/birds-final-webp/white-headed-duck.webp",
     "call": "assets/bird-calls/white-headed-duck.mp3?v=6e5c73af15e6"
   },
   {
@@ -360,7 +360,7 @@
     "socialText": "★★★★★",
     "meetingText": "★★★☆☆",
     "image": "assets/birds-final-webp/large-billed-crow.webp",
-    "fallbackImage": "assets/birds-final/large-billed-crow.png",
+    "fallbackImage": "assets/birds-final-webp/large-billed-crow.webp",
     "call": "assets/bird-calls/large-billed-crow.mp3?v=b0b10b50207d"
   },
   {
@@ -386,7 +386,7 @@
     "socialText": "★★★★☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/red-eared-bulbul.webp",
-    "fallbackImage": "assets/birds-final/red-eared-bulbul.png",
+    "fallbackImage": "assets/birds-final-webp/red-eared-bulbul.webp",
     "call": "assets/bird-calls/red-eared-bulbul.mp3?v=b5fe603f67e6"
   },
   {
@@ -412,7 +412,7 @@
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/scarlet-ibis.webp",
-    "fallbackImage": "assets/birds-final/scarlet-ibis.png",
+    "fallbackImage": "assets/birds-final-webp/scarlet-ibis.webp",
     "call": "assets/bird-calls/scarlet-ibis.mp3?v=b8e573ce555b"
   },
   {
@@ -438,7 +438,7 @@
     "socialText": "★★★★★",
     "meetingText": "★☆☆☆☆",
     "image": "assets/birds-final-webp/red-headed-tit.webp",
-    "fallbackImage": "assets/birds-final/red-headed-tit.png",
+    "fallbackImage": "assets/birds-final-webp/red-headed-tit.webp",
     "call": "assets/bird-calls/red-headed-tit.mp3?v=06f33c4d5efe"
   },
   {
@@ -464,7 +464,7 @@
     "socialText": "★★★★☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/silver-throated-tit.webp",
-    "fallbackImage": "assets/birds-final/silver-throated-tit.png",
+    "fallbackImage": "assets/birds-final-webp/silver-throated-tit.webp",
     "call": "assets/bird-calls/silver-throated-tit.mp3?v=8d7df754c81e"
   },
   {
@@ -490,7 +490,7 @@
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★★",
     "image": "assets/birds-final-webp/goshawk.webp",
-    "fallbackImage": "assets/birds-final/goshawk.png",
+    "fallbackImage": "assets/birds-final-webp/goshawk.webp",
     "call": "assets/bird-calls/goshawk.mp3?v=76b88319397e"
   },
   {
@@ -516,7 +516,7 @@
     "socialText": "★★★☆☆",
     "meetingText": "★☆☆☆☆",
     "image": "assets/birds-final-webp/common-kingfisher.webp",
-    "fallbackImage": "assets/birds-final/common-kingfisher.png",
+    "fallbackImage": "assets/birds-final-webp/common-kingfisher.webp",
     "call": "assets/bird-calls/common-kingfisher.mp3?v=c8eb905acb72"
   },
   {
@@ -542,7 +542,7 @@
     "socialText": "★★★★★",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/cockatoo.webp",
-    "fallbackImage": "assets/birds-final/cockatoo.png",
+    "fallbackImage": "assets/birds-final-webp/cockatoo.webp",
     "call": "assets/bird-calls/cockatoo.mp3?v=bc1cee83e9dd"
   },
   {
@@ -568,7 +568,7 @@
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/bee-eater.webp",
-    "fallbackImage": "assets/birds-final/bee-eater.png",
+    "fallbackImage": "assets/birds-final-webp/bee-eater.webp",
     "call": "assets/bird-calls/bee-eater.mp3?v=8faeb71cdab3"
   },
   {
@@ -594,7 +594,7 @@
     "socialText": "★★★★☆",
     "meetingText": "★★★☆☆",
     "image": "assets/birds-final-webp/dai-sheng.webp",
-    "fallbackImage": "assets/birds-final/dai-sheng.png",
+    "fallbackImage": "assets/birds-final-webp/dai-sheng.webp",
     "call": "assets/bird-calls/dai-sheng.mp3?v=33ff5b5c0703"
   },
   {
@@ -620,7 +620,7 @@
     "socialText": "★★★☆☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/white-wagtail.webp",
-    "fallbackImage": "assets/birds-final/white-wagtail.png",
+    "fallbackImage": "assets/birds-final-webp/white-wagtail.webp",
     "call": "assets/bird-calls/white-wagtail.mp3?v=700c78597958"
   },
   {
@@ -646,7 +646,7 @@
     "socialText": "★★★☆☆",
     "meetingText": "★☆☆☆☆",
     "image": "assets/birds-final-webp/mallard.webp",
-    "fallbackImage": "assets/birds-final/mallard.png",
+    "fallbackImage": "assets/birds-final-webp/mallard.webp",
     "call": "assets/bird-calls/mallard.mp3?v=9ad9c0aa1467"
   },
   {
@@ -672,7 +672,7 @@
     "socialText": "★★☆☆☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/red-tailed-shrike.webp",
-    "fallbackImage": "assets/birds-final/red-tailed-shrike.png",
+    "fallbackImage": "assets/birds-final-webp/red-tailed-shrike.webp",
     "call": "assets/bird-calls/red-tailed-shrike.mp3?v=7d1ded86f6dd"
   },
   {
@@ -698,7 +698,7 @@
     "socialText": "★★☆☆☆",
     "meetingText": "★★★★★",
     "image": "assets/birds-final-webp/sparrowhawk.webp",
-    "fallbackImage": "assets/birds-final/sparrowhawk.png",
+    "fallbackImage": "assets/birds-final-webp/sparrowhawk.webp",
     "call": "assets/bird-calls/sparrowhawk.mp3?v=6570ce6b1c93"
   },
   {
@@ -724,7 +724,7 @@
     "socialText": "★☆☆☆☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/spotted-owlet.webp",
-    "fallbackImage": "assets/birds-final/spotted-owlet.png",
+    "fallbackImage": "assets/birds-final-webp/spotted-owlet.webp",
     "call": "assets/bird-calls/spotted-owlet.mp3?v=d9fb03d3a918"
   },
   {
@@ -750,7 +750,7 @@
     "socialText": "★★★★☆",
     "meetingText": "★★★★☆",
     "image": "assets/birds-final-webp/horned-lark.webp",
-    "fallbackImage": "assets/birds-final/horned-lark.png",
+    "fallbackImage": "assets/birds-final-webp/horned-lark.webp",
     "call": "assets/bird-calls/horned-lark.mp3?v=1a3086c61a66"
   },
   {
@@ -776,7 +776,7 @@
     "socialText": "★★★☆☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/brown-headed-bunting.webp",
-    "fallbackImage": "assets/birds-final/brown-headed-bunting.png",
+    "fallbackImage": "assets/birds-final-webp/brown-headed-bunting.webp",
     "call": "assets/bird-calls/brown-headed-bunting.mp3?v=506f12e78fb8"
   },
   {
@@ -802,7 +802,7 @@
     "socialText": "★★★★☆",
     "meetingText": "★★☆☆☆",
     "image": "assets/birds-final-webp/yellow-rumped-warbler.webp",
-    "fallbackImage": "assets/birds-final/yellow-rumped-warbler.png",
+    "fallbackImage": "assets/birds-final-webp/yellow-rumped-warbler.webp",
     "call": "assets/bird-calls/yellow-rumped-warbler.mp3?v=fe7dda7ffa0d"
   },
   {
@@ -828,7 +828,7 @@
     "socialText": "★★★★☆",
     "meetingText": "★☆☆☆☆",
     "image": "assets/birds-final-webp/chestnut-flanked-white-eye.webp",
-    "fallbackImage": "assets/birds-final/chestnut-flanked-white-eye.png",
+    "fallbackImage": "assets/birds-final-webp/chestnut-flanked-white-eye.webp",
     "call": "assets/bird-calls/chestnut-flanked-white-eye.mp3?v=b38175973c94"
   },
   {
@@ -854,7 +854,7 @@
     "socialText": "★★★☆☆",
     "meetingText": "★★★★★",
     "image": "assets/birds-final-webp/brown-shrike.webp",
-    "fallbackImage": "assets/birds-final/brown-shrike.png",
+    "fallbackImage": "assets/birds-final-webp/brown-shrike.webp",
     "call": "assets/bird-calls/brown-shrike.mp3?v=5d0b970758a7"
   },
   {
@@ -880,7 +880,7 @@
     "socialText": "★★★★☆",
     "meetingText": "★★★☆☆",
     "image": "assets/birds-final-webp/robin.webp",
-    "fallbackImage": "assets/birds-final/robin.png",
+    "fallbackImage": "assets/birds-final-webp/robin.webp",
     "call": "assets/bird-calls/robin.mp3?v=b2d7f19ee336"
   }
 ]

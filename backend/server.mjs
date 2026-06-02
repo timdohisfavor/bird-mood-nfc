@@ -28,6 +28,11 @@ function sendJson(res, statusCode, payload) {
   res.end(body);
 }
 
+function sendInternalError(res, error) {
+  console.error(error);
+  sendJson(res, 500, { error: "Internal server error" });
+}
+
 function readBody(req) {
   return new Promise((resolve, reject) => {
     let body = "";
@@ -41,6 +46,19 @@ function readBody(req) {
     req.on("end", () => resolve(body));
     req.on("error", reject);
   });
+}
+
+function parseJsonPayload(rawBody) {
+  if (!rawBody) return {};
+  try {
+    return JSON.parse(rawBody);
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      error.statusCode = 400;
+      error.publicMessage = "Malformed JSON";
+    }
+    throw error;
+  }
 }
 
 async function ensureDatabase() {
@@ -82,15 +100,15 @@ async function ensureDatabase() {
         from (
           select
             item->>'id' as id,
-            coalesce((item->>'unlockedAt')::bigint, 0) as unlocked_at
+            (item->>'unlockedAt')::bigint as unlocked_at
           from jsonb_array_elements(coalesce(existing, '[]'::jsonb)) as item
           union all
           select
             item->>'id' as id,
-            coalesce((item->>'unlockedAt')::bigint, 0) as unlocked_at
+            (item->>'unlockedAt')::bigint as unlocked_at
           from jsonb_array_elements(coalesce(incoming, '[]'::jsonb)) as item
         ) all_items
-        where id is not null and id <> ''
+        where id is not null and id <> '' and unlocked_at is not null
         group by id
       ) merged
     $$;
@@ -168,7 +186,7 @@ async function handleRequest(req, res) {
 
     if (req.method === "PUT") {
       const rawBody = await readBody(req);
-      const payload = rawBody ? JSON.parse(rawBody) : {};
+      const payload = parseJsonPayload(rawBody);
       const visitorId = cleanId(payload.visitorId);
 
       if (!visitorId) {
@@ -218,7 +236,7 @@ async function handleRequest(req, res) {
     }
 
     const rawBody = await readBody(req);
-    const payload = rawBody ? JSON.parse(rawBody) : {};
+    const payload = parseJsonPayload(rawBody);
     const eventType = typeof payload.type === "string" ? payload.type : "unknown";
 
     const result = await pool.query(
@@ -279,6 +297,7 @@ function normalizeDailyDraws(value) {
     Object.entries(value)
       .map(([date, id]) => [String(date).slice(0, 20), cleanId(id)])
       .filter(([date, id]) => date && id)
+      .sort(([a], [b]) => a.localeCompare(b))
       .slice(-366)
   );
 }
@@ -300,7 +319,11 @@ await ensureDatabase().catch((error) => {
 
 const server = http.createServer((req, res) => {
   handleRequest(req, res).catch((error) => {
-    sendJson(res, 500, { error: error.message });
+    if (error.statusCode && error.publicMessage) {
+      sendJson(res, error.statusCode, { error: error.publicMessage });
+      return;
+    }
+    sendInternalError(res, error);
   });
 });
 

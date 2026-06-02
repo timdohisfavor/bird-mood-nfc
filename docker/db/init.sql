@@ -29,15 +29,15 @@ as $$
     from (
       select
         item->>'id' as id,
-        coalesce((item->>'unlockedAt')::bigint, 0) as unlocked_at
+        (item->>'unlockedAt')::bigint as unlocked_at
       from jsonb_array_elements(coalesce(existing, '[]'::jsonb)) as item
       union all
       select
         item->>'id' as id,
-        coalesce((item->>'unlockedAt')::bigint, 0) as unlocked_at
+        (item->>'unlockedAt')::bigint as unlocked_at
       from jsonb_array_elements(coalesce(incoming, '[]'::jsonb)) as item
     ) all_items
-    where id is not null and id <> ''
+    where id is not null and id <> '' and unlocked_at is not null
     group by id
   ) merged
 $$;

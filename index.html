@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#0d1a12" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="今日鸟签" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <script>
       if (location.protocol !== "file:") {
         document.write('<base href="/" />');
@@ -11,7 +14,10 @@
     </script>
     <title>NFC 今日鸟签</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="./styles.css?v=20260601-bg-option-6" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <link rel="apple-touch-icon" href="./assets/unopened-bird-egg.png" />
+    <link rel="preload" as="image" href="./assets/backgrounds/forest-bg-option-6.webp" fetchpriority="high" />
+    <link rel="stylesheet" href="./styles.css?v=20260602-perf" />
   </head>
   <body>
     <div class="habitat-bg" aria-hidden="true">
@@ -35,6 +41,18 @@
           <h1>今日鸟签</h1>
           <p class="subcopy">每天翻开一张鸟签，查看你的好运指南</p>
         </header>
+
+        <section class="ambient-player" aria-label="首页轻音乐">
+          <button id="ambient-toggle" class="ambient-toggle" type="button" aria-pressed="false">
+            <svg class="ambient-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 18V6l10-2v12" />
+              <circle cx="7" cy="18" r="3" />
+              <circle cx="17" cy="16" r="3" />
+            </svg>
+            <span id="ambient-status">轻音乐待播放</span>
+          </button>
+          <span class="ambient-tag">轻快晨间</span>
+        </section>
 
         <section class="draw-stage" aria-label="抽取今日鸟签">
           <div class="stage-topline">
@@ -120,13 +138,18 @@
           </div>
         </section>
 
+        <button id="install-tip" class="install-tip" type="button" aria-haspopup="dialog" aria-label="查看添加到主屏幕方法">
+          <span class="install-tip-icon" aria-hidden="true">+</span>
+          <p>建议添加到手机桌面或主屏幕，下次可以直接点开今日鸟签。</p>
+        </button>
+
         <section class="home-note preview-only" aria-label="今日鸟签说明">
           <div>
             <span id="progress-label">云端记录</span>
             <strong id="unlock-count">0 / 34</strong>
           </div>
-          <p id="progress-note">每天固定一签，翻开过的鸟会自动收录；换设备可用恢复码找回。</p>
-          <a class="brand-pill" href="https://xhslink.com/m/7SGBBG2ZVDv" target="_blank" rel="noopener"><img class="brand-pill-icon" src="./assets/icons/xhs-logo.png" alt="小红书" width="20" height="10" /><span>去JOYI小红书许愿</span><svg class="brand-pill-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <p id="progress-note">每天固定一签，翻开过的鸟会自动收录。</p>
+          <a class="brand-pill" href="https://xhslink.com/m/7OuFlKW6LG7" target="_blank" rel="noopener"><img class="brand-pill-icon" src="./assets/icons/xhs-logo.png" alt="小红书" width="20" height="10" /><span>去JOYI小红书许愿</span><svg class="brand-pill-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           <div class="preview-tools" aria-label="本地预览工具">
             <button id="reset-preview-button" class="preview-reset" type="button">重置预览状态</button>
             <button id="unlock-all-button" class="preview-reset preview-unlock-all" type="button">一键揭开所有鸟</button>
@@ -146,7 +169,7 @@
             </svg>
           </button>
           <div>
-            <p class="eyebrow">已入窝的鸟团团</p>
+            <p class="eyebrow">已入窝的小鸟</p>
             <h1>小鸟自留地</h1>
           </div>
         </header>
@@ -157,17 +180,7 @@
             <strong id="guide-count">0</strong>
           </div>
           <p>可收录的鸟团团会定期更新</p>
-          <div id="recovery-panel" class="recovery-panel" aria-label="进度恢复">
-            <div class="recovery-code-row">
-              <span>恢复码</span>
-              <strong id="recovery-code">生成中</strong>
-            </div>
-            <div class="recovery-form">
-              <input id="restore-code-input" type="text" inputmode="text" autocomplete="off" placeholder="输入恢复码" aria-label="输入恢复码" />
-              <button id="restore-code-button" type="button">恢复进度</button>
-            </div>
-          </div>
-          <a class="brand-pill" href="https://xhslink.com/m/7SGBBG2ZVDv" target="_blank" rel="noopener"><img class="brand-pill-icon" src="./assets/icons/xhs-logo.png" alt="小红书" width="20" height="10" /><span>去JOYI小红书许愿</span><svg class="brand-pill-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a class="brand-pill" href="https://xhslink.com/m/7OuFlKW6LG7" target="_blank" rel="noopener"><img class="brand-pill-icon" src="./assets/icons/xhs-logo.png" alt="小红书" width="20" height="10" /><span>去JOYI小红书许愿</span><svg class="brand-pill-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
           <div class="progress-track">
             <span id="guide-progress"></span>
           </div>
@@ -305,10 +318,30 @@
       <button class="tab active" data-screen="home" type="button">今日</button>
       <button class="tab" data-screen="nest" type="button">鸟窝</button>
     </nav>
+    <aside id="install-modal" class="install-modal" aria-hidden="true" role="dialog" aria-label="添加到主屏幕步骤">
+      <div class="install-sheet">
+        <button id="install-modal-close" class="install-close" type="button" aria-label="关闭添加到主屏幕说明">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+        <p class="install-kicker">添加到主屏幕</p>
+        <h2>把今日鸟签留在手机桌面</h2>
+        <p class="install-copy">浏览器需要你手动确认，网页不能直接替你完成添加。按下面几步操作就好。</p>
+        <ol id="install-steps" class="install-steps">
+          <li><span>1</span><p>在 Safari 底部工具栏点“分享”按钮。</p></li>
+          <li><span>2</span><p>选择“添加到主屏幕”。</p></li>
+          <li><span>3</span><p>确认名称为“今日鸟签”，打开“作为网页 App”。</p></li>
+          <li><span>4</span><p>点右上角“添加”，以后从桌面图标进入。</p></li>
+        </ol>
+        <p id="install-browser-note" class="install-browser-note"></p>
+        <button id="install-native-button" class="install-native" type="button" hidden>让浏览器添加</button>
+        <button id="install-modal-ok" class="install-ok" type="button">知道了</button>
+      </div>
+    </aside>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <script src="./assets/meta/birds-data.js?v=20260531-audio-hash"></script>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="./assets/meta/birds-data.js?v=20260602-perf" defer></script>
     <script src="./script.js?v=20260601-bg-options" defer></script>
   </body>
 </html>

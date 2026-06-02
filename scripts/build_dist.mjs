@@ -36,6 +36,37 @@ async function copyAudioAssets() {
   }
 }
 
+async function copyAmbientAudioAssets() {
+  await copyIfExists(path.join(rootDir, "assets/audio"), path.join(distDir, "assets/audio"));
+}
+
+async function copyBackgroundAssets() {
+  const sourceDir = path.join(rootDir, "assets/backgrounds");
+  const targetDir = path.join(distDir, "assets/backgrounds");
+  const publishableNames = new Set([
+    "forest-bg-option-6.webp",
+    "forest-bg-option-6-lqip.jpg"
+  ]);
+
+  try {
+    const files = await fs.readdir(sourceDir, { withFileTypes: true });
+    const publishableImages = files.filter((file) => file.isFile() && publishableNames.has(file.name));
+    if (!publishableImages.length) return;
+
+    await fs.mkdir(targetDir, { recursive: true });
+    await Promise.all(publishableImages.map((file) => fs.copyFile(path.join(sourceDir, file.name), path.join(targetDir, file.name))));
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
+  }
+}
+
+async function copyVendorAssets() {
+  const source = path.join(rootDir, "node_modules/html2canvas/dist/html2canvas.esm.js");
+  const target = path.join(distDir, "assets/vendor/html2canvas.esm.js");
+  await fs.mkdir(path.dirname(target), { recursive: true });
+  await fs.copyFile(source, target);
+}
+
 const birds = JSON.parse(await fs.readFile(path.join(rootDir, "assets/meta/birds.json"), "utf8"));
 await fs.writeFile(
   path.join(rootDir, "assets/meta/birds-data.js"),
@@ -50,12 +81,14 @@ await Promise.all([
   fs.copyFile(path.join(rootDir, "index.html"), path.join(distDir, "index.html")),
   fs.copyFile(path.join(rootDir, "styles.css"), path.join(distDir, "styles.css")),
   fs.copyFile(path.join(rootDir, "script.js"), path.join(distDir, "script.js")),
-  fs.copyFile(path.join(rootDir, "assets/unopened-bird-egg.png"), path.join(distDir, "assets/unopened-bird-egg.png")),
-  copyIfExists(path.join(rootDir, "assets/birds-final"), path.join(distDir, "assets/birds-final")),
+  fs.copyFile(path.join(rootDir, "site.webmanifest"), path.join(distDir, "site.webmanifest")),
+  fs.copyFile(path.join(rootDir, "sw.js"), path.join(distDir, "sw.js")),
   copyIfExists(path.join(rootDir, "assets/birds-final-webp"), path.join(distDir, "assets/birds-final-webp")),
-  copyIfExists(path.join(rootDir, "assets/backgrounds"), path.join(distDir, "assets/backgrounds")),
+  copyBackgroundAssets(),
+  copyAmbientAudioAssets(),
   copyIfExists(path.join(rootDir, "assets/icons"), path.join(distDir, "assets/icons")),
   copyIfExists(path.join(rootDir, "assets/meta"), path.join(distDir, "assets/meta")),
+  copyVendorAssets(),
   copyAudioAssets()
 ]);
 

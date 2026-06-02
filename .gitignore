@@ -47,3 +47,7 @@ outputs/
 
 # Local Netlify folder
 .netlify
+
+# Local agent/tooling state
+.codex/
+.minimax/
