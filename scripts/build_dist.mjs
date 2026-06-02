@@ -83,6 +83,7 @@ await Promise.all([
   fs.copyFile(path.join(rootDir, "script.js"), path.join(distDir, "script.js")),
   fs.copyFile(path.join(rootDir, "site.webmanifest"), path.join(distDir, "site.webmanifest")),
   fs.copyFile(path.join(rootDir, "sw.js"), path.join(distDir, "sw.js")),
+  fs.copyFile(path.join(rootDir, "assets/unopened-bird-egg.png"), path.join(distDir, "assets/unopened-bird-egg.png")),
   copyIfExists(path.join(rootDir, "assets/birds-final-webp"), path.join(distDir, "assets/birds-final-webp")),
   copyBackgroundAssets(),
   copyAmbientAudioAssets(),
