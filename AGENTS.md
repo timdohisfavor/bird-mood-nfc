@@ -63,3 +63,17 @@ Users draw a bird card each day that describes their mental state.
 - Node >= 20
 - Python 3 with Pillow (see requirements.txt)
 - ImageMagick for WebP conversion
+
+## Release Lessons: 2026-06-17 Birds 35-38
+
+- **正式地址保持干净**: 对外和 NFC 只使用 `https://nfc.joyibird.cn`。`?v=...` 仅用于本地/线上缓存验证，不能当成正式地址或写入 NFC。
+- **Service Worker 缓存会误导预览**: 如果改了入口 JS/CSS 后页面仍显示旧逻辑，优先怀疑 service worker 缓存。必要时更换版本化文件名，例如 `script-YYYYMMDD-xxx.js`，并同步更新 `index.html`、`sw.js`、`scripts/build_dist.mjs`、`scripts/check_dist_publish.mjs`。
+- **换端口验证缓存问题**: 当某个本地端口被旧 service worker 污染时，直接启用新端口做干净验证，不要在旧端口反复判断应用逻辑。
+- **详情长图不要依赖 DOM 截图**: `html2canvas` 可能不报错但生成错位废图，catch 兜底不会触发。详情页“保存到相册”应走稳定 canvas 绘制；如果后续改动分享长图，必须实际保存图片检查尺寸、排版、鸟图裁切、档案区和鸟鸣区。
+- **首页海报和详情长图分开处理**: 首页海报可以继续使用 DOM 截图，但详情长图要求完整长图结构，不要为了复用而把两条路径混在一起。
+- **首页海报保存也要警惕 html2canvas**: 如果用户反馈“调起分享面板慢/无反应”或生成图变成简化样式，通常是 DOM 截图慢或掉入 fallback。优先改成稳定 canvas 海报，并用旧版海报截图对齐尺寸、纹理、鸟图大小、签文卡片和小红书 logo。
+- **vendor 资源要同时支持本地根目录和 dist**: 动态导入资源如 `assets/vendor/html2canvas.esm.js`，本地预览根目录和 `dist/` 都要能返回 200；若加入 service worker 缓存，也要写进 `STATIC_ASSETS`。
+- **发布前做资源级验证**: 至少确认 `assets/meta/birds.json` 和 `dist/assets/meta/birds.json` 数量一致；新增鸟的 WebP、PNG、音频在本地和 `dist/` 都存在；线上发布后再用 `curl -I` 查新 JS、新鸟图、新鸟声是否 200。
+- **线上发布命令**: 当前发布目标仍是阿里云香港 ECS。先 `npm run build`，再 `rsync -avz --delete dist/ root@47.243.252.80:/var/www/joyibird-nfc/`。服务器密码不要写入文件、命令历史、提交或文档。
+- **发布后验证**: 检查 `https://nfc.joyibird.cn/` 的 HTML 是否加载新脚本；检查 `assets/meta/birds.json` 是否为预期鸟数；检查 HTTP 是否 301 到 HTTPS。
+- **脏工作区提交边界**: 本项目经常同时有 H5、小程序、后台、宠物资产等多线改动。提交前必须用 `git diff --cached --name-only` 和 `git status --short` 复核，只提交本次任务文件，不要把无关改动混进发布提交。

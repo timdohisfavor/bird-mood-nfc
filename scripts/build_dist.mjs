@@ -86,6 +86,7 @@ await Promise.all([
   fs.copyFile(path.join(rootDir, "script.js"), path.join(distDir, "script-20260617-rank-sort.js")),
   fs.copyFile(path.join(rootDir, "script.js"), path.join(distDir, "script-20260617-share-fix.js")),
   fs.copyFile(path.join(rootDir, "script.js"), path.join(distDir, "script-20260617-detail-canvas.js")),
+  fs.copyFile(path.join(rootDir, "script.js"), path.join(distDir, "script-20260617-poster-canvas.js")),
   fs.copyFile(path.join(rootDir, "site.webmanifest"), path.join(distDir, "site.webmanifest")),
   fs.copyFile(path.join(rootDir, "sw.js"), path.join(distDir, "sw.js")),
   fs.copyFile(path.join(rootDir, "assets/unopened-bird-egg.png"), path.join(distDir, "assets/unopened-bird-egg.png")),

@@ -25,6 +25,7 @@ const allowedRootFiles = new Set([
   "script-20260617-rank-sort.js",
   "script-20260617-share-fix.js",
   "script-20260617-detail-canvas.js",
+  "script-20260617-poster-canvas.js",
   "styles.css",
   "styles-20260617-home-fit.css",
   "styles-20260617-share-fix.css",
