@@ -1,9 +1,9 @@
-const CACHE_NAME = "bird-sign-static-20260617-poster-canvas";
+const CACHE_NAME = "bird-sign-static-20260617-detail-layout";
 const STATIC_ASSETS = [
   "/",
   "/index.html",
   "/styles-20260617-share-fix.css",
-  "/script-20260617-poster-canvas.js",
+  "/script-20260617-detail-layout.js",
   "/assets/vendor/html2canvas.esm.js",
   "/assets/meta/birds-data.js",
   "/assets/backgrounds/forest-bg-option-6.webp",
