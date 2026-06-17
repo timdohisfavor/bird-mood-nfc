@@ -751,5 +751,93 @@
     "fish": 3,
     "social": 4,
     "meeting": 3
+  },
+  {
+    "id": "bee-hummingbird",
+    "rank": 35,
+    "name": "吸蜜蜂鸟",
+    "heat": "48万",
+    "rarity": "热榜 35",
+    "look": "玫红喉、翠绿背、极小身",
+    "palette": [
+      "#21a875",
+      "#e7337c",
+      "#f2eadb",
+      "#162034",
+      "#5db7c6",
+      "#ffffff"
+    ],
+    "featureClass": "hummingbird tiny iridescent rose-throat hovering",
+    "line": "蜂鸟科。世界上最小的鸟，体长仅5-6厘米，体重不到2克。雄性喉部呈玫瑰红色，身体闪烁翠绿和蓝色的金属光泽。",
+    "quote": "【今日宜蜂芒】\n世界大到看不见我，但谁规定发光的一定要很大？",
+    "fish": 5,
+    "social": 3,
+    "meeting": 4
+  },
+  {
+    "id": "european-bee-eater",
+    "rank": 36,
+    "name": "黄喉蜂虎",
+    "heat": "45万",
+    "rarity": "热榜 36",
+    "look": "黄喉、蓝腹、栗色翅",
+    "palette": [
+      "#d66a2b",
+      "#f0c84b",
+      "#21a6b8",
+      "#72a94e",
+      "#1d2328",
+      "#ffffff"
+    ],
+    "featureClass": "bee-eater rainbow yellow-throat blue-belly long-bill",
+    "line": "佛法僧目蜂虎科。拥有彩虹般的羽毛：棕色头顶、黄色喉部、翠绿背部、蓝色腹部和栗色翅膀，色彩极为艳丽。",
+    "quote": "【今日宜蜂虎】\n以为是青铜，谁想到是王者",
+    "fish": 3,
+    "social": 4,
+    "meeting": 4
+  },
+  {
+    "id": "golden-headed-manakin",
+    "rank": 37,
+    "name": "金头娇鹟",
+    "heat": "42万",
+    "rarity": "热榜 37",
+    "look": "金黄头、黑身体、白眼圈",
+    "palette": [
+      "#f0b81d",
+      "#10161a",
+      "#263f50",
+      "#72813b",
+      "#efe8d1",
+      "#ffffff"
+    ],
+    "featureClass": "manakin golden-head black-body eye-ring compact",
+    "line": "雀形目娇鹟科。雄性拥有耀眼的金黄色头部，与乌黑的身体形成强烈对比，翅膀和尾部带有橄榄绿色。",
+    "quote": "【今日宜傲娇】\n黑身是打工的保护色，金头是周末的本命色",
+    "fish": 2,
+    "social": 5,
+    "meeting": 3
+  },
+  {
+    "id": "tropical-parula",
+    "rank": 38,
+    "name": "热带森莺",
+    "heat": "39万",
+    "rarity": "热榜 38",
+    "look": "蓝灰背、黄胸、白眼圈",
+    "palette": [
+      "#668aac",
+      "#f0c52d",
+      "#f5efe4",
+      "#89933b",
+      "#2f3f4d",
+      "#ffffff"
+    ],
+    "featureClass": "warbler tropical blue-gray yellow-chest eye-ring rounded",
+    "line": "雀形目森莺科。背部呈蓝灰色，喉部和胸部为明亮的黄色，腹部白色，眼睛周围有白色眼圈。",
+    "quote": "【今日宜圆润】\n做一只毛茸小球，遇事先滚为上",
+    "fish": 4,
+    "social": 3,
+    "meeting": 2
   }
 ]

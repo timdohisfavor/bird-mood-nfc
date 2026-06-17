@@ -51,7 +51,11 @@ const habitatByBirdId = {
   "yellow-rumped-warbler": "林地枝头",
   "chestnut-flanked-white-eye": "花园林缘",
   "brown-shrike": "灌丛农田",
-  robin: "花园林地"
+  robin: "花园林地",
+  "bee-hummingbird": "古巴花林",
+  "european-bee-eater": "河谷沙坡",
+  "golden-headed-manakin": "热带林下",
+  "tropical-parula": "附生林地"
 };
 
 const conservationByBirdId = {
@@ -88,7 +92,11 @@ const conservationByBirdId = {
   "yellow-rumped-warbler": { iucn: "LC", protectionLevel: "-", chinaPopulation: "数百万只", chinaStatus: "安全" },
   "chestnut-flanked-white-eye": { iucn: "LC", protectionLevel: "二级", chinaPopulation: "数万只", chinaStatus: "安全" },
   "brown-shrike": { iucn: "LC", protectionLevel: "三有", chinaPopulation: "常见", chinaStatus: "安全" },
-  robin: { iucn: "LC", protectionLevel: "-", chinaPopulation: "极少", chinaStatus: "非本地" }
+  robin: { iucn: "LC", protectionLevel: "-", chinaPopulation: "极少", chinaStatus: "非本地" },
+  "bee-hummingbird": { iucn: "NT", protectionLevel: "-", chinaPopulation: "非本地", chinaStatus: "非本地" },
+  "european-bee-eater": { iucn: "LC", protectionLevel: "-", chinaPopulation: "非本地", chinaStatus: "非本地" },
+  "golden-headed-manakin": { iucn: "LC", protectionLevel: "-", chinaPopulation: "非本地", chinaStatus: "非本地" },
+  "tropical-parula": { iucn: "LC", protectionLevel: "-", chinaPopulation: "非本地", chinaStatus: "非本地" }
 };
 
 const missingHabitats = rawBirds.filter((bird) => !habitatByBirdId[bird.id]);

@@ -431,177 +431,6 @@ function loadCanvasImage(src) {
   });
 }
 
-function drawCanvasTexture(ctx, width, height) {
-  ctx.save();
-  ctx.globalAlpha = 0.16;
-  ctx.strokeStyle = "rgba(125, 105, 61, 0.12)";
-  ctx.lineWidth = 1;
-  for (var x = 28; x < width; x += 22) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x + Math.sin(x) * 5, height);
-    ctx.stroke();
-  }
-  ctx.restore();
-}
-
-function drawCanvasBirdImage(ctx, image, width, y, size) {
-  if (!image) return;
-  var imgX = (width - size) / 2;
-  ctx.drawImage(image, imgX, y, size, size);
-}
-
-function drawSoundOrb(ctx, cx, cy) {
-  for (var i = 0; i < 112; i++) {
-    var angle = (Math.PI * 2 * i) / 112;
-    var inner = 96;
-    var outer = 170 + 22 * Math.sin(i * 0.53);
-    ctx.strokeStyle = i % 3 === 0 ? "rgba(118, 190, 94, 0.3)" : "rgba(90, 139, 116, 0.16)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(cx + Math.cos(angle) * inner, cy + Math.sin(angle) * inner);
-    ctx.lineTo(cx + Math.cos(angle) * outer, cy + Math.sin(angle) * outer);
-    ctx.stroke();
-  }
-  var soundGradient = ctx.createRadialGradient(cx, cy, 12, cx, cy, 116);
-  soundGradient.addColorStop(0, "rgba(178, 246, 119, 0.88)");
-  soundGradient.addColorStop(0.52, "rgba(178, 246, 119, 0.42)");
-  soundGradient.addColorStop(1, "rgba(178, 246, 119, 0.08)");
-  ctx.fillStyle = soundGradient;
-  ctx.beginPath();
-  ctx.arc(cx, cy, 106, 0, Math.PI * 2);
-  ctx.fill();
-}
-
-async function createDetailShareCanvas(bird) {
-  var canvas = document.createElement("canvas");
-  var width = 900;
-  var height = 2200;
-  canvas.width = width;
-  canvas.height = height;
-  var ctx = canvas.getContext("2d");
-  var quote = parseQuoteParts(bird?.quote);
-  var conservation = bird?.conservation || {};
-  var image = await loadCanvasImage(bird?.image);
-
-  var bg = ctx.createLinearGradient(0, 0, 0, height);
-  bg.addColorStop(0, "#fbfbf3");
-  bg.addColorStop(0.45, "#f3f5e8");
-  bg.addColorStop(1, "#edf5e7");
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, width, height);
-  drawCanvasTexture(ctx, width, height);
-
-  var halo = ctx.createRadialGradient(width / 2, 250, 30, width / 2, 250, 310);
-  halo.addColorStop(0, "rgba(255,255,255,0.82)");
-  halo.addColorStop(1, "rgba(255,255,255,0)");
-  ctx.fillStyle = halo;
-  ctx.fillRect(0, 0, width, 620);
-
-  drawCanvasBirdImage(ctx, image, width, 70, 460);
-  ctx.fillStyle = "rgba(18, 50, 37, 0.1)";
-  drawRoundRect(ctx, 323, 487, 254, 24, 12);
-  ctx.fill();
-
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#66756b";
-  ctx.font = "800 24px sans-serif";
-  ctx.fillText("NO." + (bird?.rank || ""), width / 2, 615);
-  ctx.fillStyle = "#142019";
-  ctx.font = "900 64px sans-serif";
-  ctx.fillText(bird?.name || "今日鸟签", width / 2, 700);
-  ctx.fillStyle = "#2f6f45";
-  ctx.font = "850 28px sans-serif";
-  drawWrappedText(ctx, bird?.look || "", width / 2, 755, width - 220, 36, 2);
-
-  var quoteX = 110;
-  var quoteY = 830;
-  var quoteW = width - 220;
-  var quoteH = 190;
-  ctx.fillStyle = "rgba(255,255,255,0.64)";
-  drawRoundRect(ctx, quoteX, quoteY, quoteW, quoteH, 26);
-  ctx.fill();
-  ctx.strokeStyle = "rgba(130,108,64,0.14)";
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  ctx.fillStyle = "rgba(156, 44, 34, 0.56)";
-  ctx.font = "850 18px sans-serif";
-  ctx.fillText("JOYI BIRD", width / 2, quoteY + 48);
-  ctx.fillStyle = "#123225";
-  ctx.font = "900 32px sans-serif";
-  ctx.fillText(quote.title || "今日鸟签", width / 2, quoteY + 94);
-  ctx.fillStyle = "#263a2e";
-  ctx.font = "850 31px sans-serif";
-  drawWrappedText(ctx, quote.body || "", width / 2, quoteY + 142, quoteW - 90, 42, 2);
-
-  var fileY = 1135;
-  ctx.textAlign = "left";
-  ctx.fillStyle = "#123225";
-  ctx.font = "900 28px sans-serif";
-  ctx.fillText("鸟类档案", 110, fileY);
-  ctx.textAlign = "right";
-  ctx.fillStyle = "#66756b";
-  ctx.font = "800 24px sans-serif";
-  ctx.fillText("BIRD FILE", width - 110, fileY);
-
-  var items = [
-    ["保护级别", conservation.protectionLevel || "-"],
-    ["中国数量", conservation.chinaPopulation || "-"],
-    ["IUCN", conservation.iucn || "-"],
-    ["状态", conservation.chinaStatus || "-"]
-  ];
-  var cardW = 320;
-  var cardH = 126;
-  var gap = 26;
-  var gridX = 110;
-  var gridY = fileY + 36;
-  items.forEach(function(item, index) {
-    var col = index % 2;
-    var row = Math.floor(index / 2);
-    var x = gridX + col * (cardW + gap);
-    var y = gridY + row * (cardH + 24);
-    ctx.fillStyle = "rgba(255,255,255,0.62)";
-    drawRoundRect(ctx, x, y, cardW, cardH, 20);
-    ctx.fill();
-    ctx.strokeStyle = "rgba(130,108,64,0.13)";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#66756b";
-    ctx.font = "800 22px sans-serif";
-    ctx.fillText(item[0], x + cardW / 2, y + 45);
-    ctx.fillStyle = "#123225";
-    ctx.font = "900 32px sans-serif";
-    drawWrappedText(ctx, item[1], x + cardW / 2, y + 88, cardW - 40, 34, 1);
-  });
-
-  var habitatY = gridY + cardH * 2 + 120;
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#66756b";
-  ctx.font = "800 23px sans-serif";
-  ctx.fillText("栖息地", width / 2, habitatY);
-  ctx.fillStyle = "#123225";
-  ctx.font = "900 34px sans-serif";
-  ctx.fillText(bird?.habitat || "-", width / 2, habitatY + 52);
-  ctx.fillStyle = "#66756b";
-  ctx.font = "750 27px sans-serif";
-  drawWrappedText(ctx, bird?.line || "", width / 2, habitatY + 104, width - 230, 42, 3);
-
-  var callY = habitatY + 260;
-  ctx.textAlign = "left";
-  ctx.fillStyle = "#123225";
-  ctx.font = "900 28px sans-serif";
-  ctx.fillText("彩虹鸟鸣", 110, callY);
-  ctx.textAlign = "right";
-  ctx.fillStyle = "#66756b";
-  ctx.font = "800 24px sans-serif";
-  ctx.fillText("MORNING CALL", width - 110, callY);
-  drawSoundOrb(ctx, width / 2, callY + 270);
-
-  ctx.textAlign = "start";
-  return canvas;
-}
-
 async function createShareFallbackCanvas(bird, mode = "poster") {
   var canvas = document.createElement("canvas");
   var width = 900;
@@ -1716,7 +1545,8 @@ async function savePosterImage() {
 }
 
 async function saveDetailImage() {
-  if (!state.detailBird || !els.detailShotButton) {
+  var sheet = document.querySelector(".detail-sheet");
+  if (!sheet || !els.detailShotButton) {
     showToast("详情还没准备好");
     return;
   }
@@ -1724,11 +1554,26 @@ async function saveDetailImage() {
   var btn = els.detailShotButton;
   if (btn.disabled) return;
   btn.disabled = true;
+  var exportNode = null;
 
   try {
+    const html2canvas = await loadHtml2Canvas();
+    exportNode = createDetailExportNode(sheet);
+    await waitForImages(exportNode.sheet, 6000);
+    void exportNode.sheet.offsetHeight;
     btn.innerHTML = '<span>生成中…</span>';
+    var canvas = await withTimeout(html2canvas(exportNode.sheet, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#fbfbf3",
+      width: exportNode.sheet.offsetWidth,
+      height: exportNode.sheet.offsetHeight,
+      windowWidth: exportNode.sheet.scrollWidth,
+      windowHeight: exportNode.sheet.scrollHeight,
+      scrollX: 0,
+      scrollY: 0
+    }), 15000, "detail screenshot timed out");
     var bird = state.detailBird;
-    var canvas = await createDetailShareCanvas(bird);
     var name = bird ? bird.name : "bird";
     await saveCanvasBlob(canvas, "bird-sign-" + name + "-" + new Date().toISOString().slice(0, 10) + ".png", "今日鸟签");
   } catch (e) {
@@ -1744,6 +1589,7 @@ async function saveDetailImage() {
       }
     }
   } finally {
+    if (exportNode?.wrap) exportNode.wrap.remove();
     btn.disabled = false;
     btn.innerHTML = SAVE_ICON_HTML;
   }
