@@ -1,0 +1,27 @@
+<view class="page">
+  <view wx:if="{{loading}}"><t-loading text="小鸟正在叼来签文..." /></view>
+
+  <view wx:elif="{{!ready}}" class="card loading">{{errorText}}</view>
+
+  <view wx:else class="card sign-card">
+    <image class="bird-image" src="{{birdImage}}" mode="aspectFit" />
+    <view class="muted bird-attr">来自 {{pet.name}} · {{pet.bird.name}} 的今日鸟签</view>
+    <view class="muted">{{sign.date_key}}</view>
+    <view class="title">{{sign.sign_title}}</view>
+    <view class="sign-text">{{sign.sign_text}}</view>
+
+    <view class="block">
+      <view class="label">小鸟说</view>
+      <view>{{sign.pet_comment}}</view>
+    </view>
+    <view class="block">
+      <view class="label">今日适合</view>
+      <view>{{sign.action_tip}}</view>
+    </view>
+    <view class="block">
+      <view class="label">提醒</view>
+      <view>{{sign.reminder}}</view>
+    </view>
+  </view>
+
+</view>

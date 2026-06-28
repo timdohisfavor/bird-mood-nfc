@@ -1,0 +1,39 @@
+<view class="page">
+  <view class="title">小鸟设定</view>
+  <view class="subtitle">给它一个名字，也可以写下它之后和你说话的人设。</view>
+
+  <view wx:if="{{loading}}"><t-loading text="正在整理羽毛..." /></view>
+
+  <view wx:elif="{{!ready}}" class="card loading">
+    <view>{{errorText}}</view>
+    <t-button theme="default" block bindtap="enterHome">返回宠物主页</t-button>
+  </view>
+
+  <view wx:else class="card pet-card">
+    <image class="bird-image large" src="{{birdImage}}" mode="aspectFit" />
+    <view class="bird-name">{{pet.bird.name}}</view>
+    <view class="muted">{{pet.bird.look}}</view>
+    <view class="chip">{{pet.personality}}</view>
+
+    <view class="field">
+      <view class="label">宠物昵称</view>
+      <input value="{{draftName}}" maxlength="20" bindinput="onNameInput" placeholder="给小鸟取个名字" />
+    </view>
+
+    <view class="field">
+      <view class="label">小鸟人设 prompt</view>
+      <textarea
+        class="persona-input"
+        value="{{draftPersona}}"
+        maxlength="500"
+        bindinput="onPersonaInput"
+        placeholder="例如：你是一只很温柔、说话短短的小鸟，会先共情，再给一个很小的行动建议。"
+      />
+      <view class="field-hint">{{personaLength}}/500</view>
+    </view>
+
+    <t-button theme="default" block loading="{{saving}}" bindtap="saveProfile">保存修改</t-button>
+  </view>
+
+  <t-button wx:if="{{ready}}" theme="primary" block bindtap="enterHome">进入宠物主页</t-button>
+</view>

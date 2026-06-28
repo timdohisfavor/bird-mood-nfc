@@ -8,6 +8,14 @@
     "build": "node scripts/convert_bird_webp.mjs && node scripts/export_h5_birds.mjs && node scripts/build_dist.mjs && node scripts/check_dist_publish.mjs",
     "build:fast": "node scripts/export_h5_birds.mjs && node scripts/build_dist.mjs && node scripts/check_dist_publish.mjs",
     "check:dist": "node scripts/check_dist_publish.mjs",
+    "server": "node server/server.mjs",
+    "dev:v01": "node server/server.mjs",
+    "smoke:v01": "node scripts/smoke_miniprogram_v01.mjs",
+    "pets:hires:prompts": "python3 scripts/build_hires_pet_prompts.py",
+    "pets:hires:generate:seedream": "python3 scripts/generate_hires_pet_assets_seedream.py",
+    "pets:hires:process": "python3 scripts/process_hires_pet_assets.py",
+    "pets:hires:validate": "python3 scripts/validate_hires_pet_assets.py",
+    "pets:hires:promote": "python3 scripts/promote_hires_pet_assets.py",
     "serve:dist": "node scripts/serve_dist.mjs",
     "audio:optimize": "node scripts/optimize_bird_calls.mjs",
     "assets:webp": "node scripts/convert_bird_webp.mjs",
@@ -24,6 +32,7 @@
   },
   "dependencies": {
     "html2canvas": "^1.4.1",
-    "pg": "^8.13.1"
+    "pg": "^8.13.1",
+    "tdesign-miniprogram": "^1.15.1"
   }
 }

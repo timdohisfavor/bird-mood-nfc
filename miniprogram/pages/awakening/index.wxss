@@ -1,0 +1,51 @@
+.pet-card {
+  margin-top: 48rpx;
+  text-align: center;
+}
+
+.large {
+  width: 420rpx;
+  height: 420rpx;
+}
+
+.bird-name {
+  margin-top: 16rpx;
+  color: #14422d;
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.field {
+  margin: 36rpx 0 24rpx;
+  text-align: left;
+}
+
+.persona-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 220rpx;
+  border: 1rpx solid #dce6df;
+  border-radius: 16rpx;
+  background: #ffffff;
+  color: #17211c;
+  padding: 22rpx 24rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+
+.field-hint {
+  margin-top: 10rpx;
+  color: #8a9991;
+  font-size: 22rpx;
+  text-align: right;
+}
+
+.loading {
+  margin-top: 48rpx;
+  color: #66756d;
+  text-align: center;
+}
+
+.bottom-action {
+  margin-top: 36rpx;
+}

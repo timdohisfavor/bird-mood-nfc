@@ -1,0 +1,35 @@
+<view class="me-page">
+  <t-loading wx:if="{{loading}}" text="正在整理..." />
+
+  <block wx:else>
+    <t-cell-group title="用户">
+      <t-cell title="{{user.nickname}}" note="{{user.openid}}">
+        <t-avatar slot="left-icon" size="large">{{user.nickname[0]}}</t-avatar>
+      </t-cell>
+    </t-cell-group>
+
+    <t-cell-group wx:if="{{pet}}" title="我的小鸟">
+      <t-cell title="{{pet.name}}" note="{{pet.bird.name}} · {{pet.personality}}" image="{{petImage}}" />
+      <t-cell title="亲密度" note="-" />
+      <t-cell title="羽毛" note="-" />
+      <t-cell title="陪伴天数" note="-" />
+      <t-cell title="编辑昵称和人设" arrow bindtap="goEditPersona" />
+    </t-cell-group>
+
+    <t-cell-group wx:else title="我的小鸟">
+      <t-cell title="还没有唤醒小鸟" />
+      <view style="padding:24rpx"><t-button theme="primary" block bindtap="goRedeem">输入兑换码</t-button></view>
+    </t-cell-group>
+
+    <t-cell-group title="关于">
+      <t-cell title="版本" note="V0.1 内测版" />
+      <t-cell title="小红书" note="JOYI博物工作室" />
+    </t-cell-group>
+
+    <view style="padding:24rpx">
+      <t-button theme="default" block bindtap="logout">退出登录</t-button>
+    </view>
+  </block>
+
+  <t-dialog visible="{{logoutVisible}}" title="退出登录" content="退出后需要重新登录才能看到小鸟。" confirm-btn="退出" cancel-btn="取消" bind:confirm="onLogoutConfirm" bind:cancel="onLogoutCancel" />
+</view>

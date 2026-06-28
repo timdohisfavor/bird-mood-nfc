@@ -1,0 +1,15 @@
+Create one high-resolution standalone game pet asset for JOYIBIRD.
+
+Asset id: chestnut-flanked-white-eye/carrying
+Subject: one very cute round chestnut-flanked white-eye bird pet named 小青柠, archetype: lime jelly candy.
+Identity lock: lemon-yellow green body, white eye rings, warm cream belly, soft orange flank blush, small tan beak, leaf hat, tiny feet, glossy dark eyes.
+Action: carrying - proudly carrying a tiny fitting treasure in the beak, head held high, charming and showy.
+Allowed tiny prop/accessory guidance: tiny lime leaf, clear water droplet, small jelly-like treasure. Use a prop only when it supports the action; keep it attached to the bird, not floating.
+
+Style target: premium mobile game pet, 3D plush toy / soft vinyl toy, soft feather-fur texture, rounded chubby body, tiny feet, large readable cute face, same family style as the JOYIBIRD home.png assets.
+Quality target: native high resolution source suitable for a 720x720 transparent PNG export; smooth antialiased silhouette; clean soft alpha edge; no colored fringe; no jagged outline; no pixelated contact-sheet crop look.
+Composition: single full-body bird only, centered, generous padding on all sides, no cropping, no badge, no circular frame.
+
+Background for removal: perfectly flat solid #ff00ff chroma-key background only. The background must be one uniform color with no gradients, shadows, reflections, floor plane, texture, scenery, or lighting variation. Do not use #ff00ff anywhere in the bird, prop, highlights, shadows, or edge lighting.
+
+Avoid: magenta marks, losing the white eye rings, dark dull green, realistic bird anatomy, text, logo, watermark, UI, speech bubble, scene background, branch, nest, floor shadow, drop shadow, detached sparkles, motion lines, multiple birds, low-resolution edges, rough alpha, hard matte, colored outline.

@@ -1,0 +1,116 @@
+/* chat/index.wxss — JoyiBird 聊天页样式 */
+
+/* ── Page layout ── */
+.chat-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #F6F6F6;
+}
+
+.opening-card {
+  margin: 20rpx 24rpx 12rpx;
+  padding: 22rpx 24rpx;
+  border-radius: 24rpx;
+  background: #fffdf7;
+  border: 1rpx solid #eee5d2;
+}
+
+.opening-card.mood-sleepy { background: #f4eff8; border-color: #e4d8ef; }
+.opening-card.mood-bright { background: #fff7dc; border-color: #f0dfaa; }
+.opening-card.mood-quiet { background: #edf6fa; border-color: #d6e7ee; }
+.opening-card.mood-waiting { background: #fbf2e6; border-color: #eadbc4; }
+.opening-card.mood-messy { background: #fff0ef; border-color: #f1d7d4; }
+.opening-card.mood-cozy { background: #fff5ec; border-color: #ead8c5; }
+
+.opening-meta {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 10rpx;
+}
+
+.opening-mood,
+.opening-bond {
+  padding: 4rpx 12rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.74);
+  color: #5b604f;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.opening-text {
+  color: #2f3a2d;
+  font-size: 27rpx;
+  line-height: 1.55;
+}
+
+/* ── Footer / sender area ── */
+.chat-footer {
+  padding: 12rpx 32rpx;
+  padding-bottom: calc(12rpx + env(safe-area-inset-bottom));
+  background: #FFFFFF;
+  border-top: 1rpx solid #F0F0F0;
+}
+
+.chat-quota {
+  text-align: center;
+  margin-bottom: 8rpx;
+  font-size: 22rpx;
+}
+
+.bond-feedback {
+  margin-bottom: 10rpx;
+  padding: 12rpx 16rpx;
+  border-radius: 16rpx;
+  background: #fff5d8;
+  color: #7a551d;
+  text-align: center;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.muted { color: #999999; }
+
+/* ── Avatar sizing: 80rpx circular ── */
+/* TDesign chat-message uses .t-chat-message__avatar-image with var(--td-spacer-4, 64rpx) */
+/* Override via CSS variable + direct class targeting */
+.t-chat-message__avatar-image {
+  width: 80rpx !important;
+  height: 80rpx !important;
+  border-radius: 50% !important;
+}
+
+/* ── Message content styling ── */
+/* Assistant (bird) messages: left-aligned, no background */
+.t-chat-message.assistant .t-chat-content {
+  background: transparent;
+  color: #333333;
+}
+
+/* User messages: right-aligned, WeChat-green bubble */
+.t-chat-message.user .t-chat-content {
+  background: #07C160;
+  color: #FFFFFF;
+  border-radius: 24rpx 0 24rpx 24rpx;
+  padding: 24rpx 32rpx;
+}
+
+/* ── Sender textarea styling ── */
+.t-chat-sender__textarea--control {
+  background: #F6F6F6;
+  border-radius: 12rpx;
+}
+
+/* ── Name label ── */
+.t-chat-message__name {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+/* ── Time label ── */
+.t-chat-message__time {
+  font-size: 22rpx;
+  color: #BBBBBB;
+}

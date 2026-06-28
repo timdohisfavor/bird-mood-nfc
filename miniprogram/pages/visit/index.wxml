@@ -1,0 +1,53 @@
+<view class="page visit-page">
+  <view wx:if="{{loading}}" class="card loading">正在敲开朋友的鸟窝...</view>
+
+  <block wx:elif="{{isTabMode}}">
+    <view class="card share-card">
+      <view class="section-title">邀请朋友来串门</view>
+      <view class="muted">分享你的小鸟，朋友的小鸟也会来拜访。</view>
+      <t-button theme="primary" block open-type="share">分享我的小鸟</t-button>
+    </view>
+    <view wx:if="{{recentVisits.length > 0}}" class="card visits-card">
+      <view class="section-title">最近串门</view>
+      <view wx:for="{{recentVisits}}" wx:key="id" class="visit-row">
+        <view>{{item.fromPet.name}}</view>
+        <view class="muted">{{item.created_at}}</view>
+      </view>
+    </view>
+    <view wx:else class="card">
+      <view class="muted">还没有朋友的小鸟来串门。</view>
+    </view>
+  </block>
+
+  <view wx:else class="card visit-card">
+    <image class="bird-image large" src="{{hostImage}}" mode="aspectFit" />
+    <view class="title">{{hostPet.name}}</view>
+    <view class="subtitle">{{hostPet.bird.name}} 邀请你来玩</view>
+
+    <view wx:if="{{errorText}}" class="state">
+      <view class="muted">{{errorText}}</view>
+      <t-button theme="primary" block bindtap="goHome">回到我的宠物主页</t-button>
+    </view>
+
+    <view wx:elif="{{!loggedIn}}" class="state">
+      <view class="muted">登录后可以记录这次串门。</view>
+      <t-button theme="primary" block bindtap="goLogin">微信登录</t-button>
+    </view>
+
+    <view wx:elif="{{result && !result.visitorHasPet}}" class="state">
+      <view class="muted">你还没有唤醒自己的小鸟，可以先看看朋友的小鸟。</view>
+      <t-button theme="primary" block bindtap="goRedeem">输入兑换码</t-button>
+    </view>
+
+    <view wx:elif="{{result && result.visitorHasPet && result.relationshipCreated}}" class="state">
+      <view class="chip">串门成功</view>
+      <view class="muted">两只小鸟已经互相打过招呼。</view>
+      <t-button theme="primary" block bindtap="goHome">回到我的宠物主页</t-button>
+    </view>
+
+    <view wx:else class="state">
+      <view class="muted">暂时无法记录这次串门，请稍后再试。</view>
+      <t-button theme="primary" block bindtap="goHome">回到我的宠物主页</t-button>
+    </view>
+  </view>
+</view>

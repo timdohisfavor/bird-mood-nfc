@@ -1,6 +1,6 @@
 # 今日鸟签 NFC H5
 
-这是一个以 H5 为主的「今日鸟签」页面。Netlify 线上版本由根目录 H5 构建发布。
+这是一个以 H5 为主的「今日鸟签」页面。线上版本部署在 https://nfc.joyibird.cn/。
 
 ## 项目入口
 
@@ -26,9 +26,7 @@ npm run serve
 http://localhost:4173
 ```
 
-## 构建与发布
-
-Netlify 使用：
+## 构建
 
 ```sh
 npm run build
@@ -53,6 +51,12 @@ dist/
 ```sh
 npm run build:fast
 ```
+
+## 部署
+
+线上地址：https://nfc.joyibird.cn/
+
+构建完成后，将 `dist/` 目录内的静态文件部署到对应服务器即可。
 
 ## 数据与资产脚本
 

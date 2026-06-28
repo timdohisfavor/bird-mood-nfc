@@ -1,0 +1,15 @@
+Create one high-resolution standalone game pet asset for JOYIBIRD.
+
+Asset id: long-tailed-tit/talking
+Subject: one very cute round long-tailed tit bird pet named 云团, archetype: cloud-like shy soft ball.
+Identity lock: white and pale grey round body, soft pinkish-brown wing accents, tiny black dot eyes, very fluffy cotton-ball body, long thin tail pointing upward.
+Action: talking - head slightly tilted, tiny beak open as if talking or listening carefully.
+Allowed tiny prop/accessory guidance: tiny scarf, soft blush, shiny leaf or small petal when the action needs an object. Use a prop only when it supports the action; keep it attached to the bird, not floating.
+
+Style target: premium mobile game pet, 3D plush toy / soft vinyl toy, soft feather-fur texture, rounded chubby body, tiny feet, large readable cute face, same family style as the JOYIBIRD home.png assets.
+Quality target: native high resolution source suitable for a 720x720 transparent PNG export; smooth antialiased silhouette; clean soft alpha edge; no colored fringe; no jagged outline; no pixelated contact-sheet crop look.
+Composition: single full-body bird only, centered, generous padding on all sides, no cropping, no badge, no circular frame.
+
+Background for removal: perfectly flat solid #00ff00 chroma-key background only. The background must be one uniform color with no gradients, shadows, reflections, floor plane, texture, scenery, or lighting variation. Do not use #00ff00 anywhere in the bird, prop, highlights, shadows, or edge lighting.
+
+Avoid: large realistic bird beak, complex feather realism, heavy decorations that hide the long tail, text, logo, watermark, UI, speech bubble, scene background, branch, nest, floor shadow, drop shadow, detached sparkles, motion lines, multiple birds, low-resolution edges, rough alpha, hard matte, colored outline.

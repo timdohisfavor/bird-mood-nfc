@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JoyiBird V0.1 Ops</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7faf8;
+        --panel: #ffffff;
+        --ink: #17211c;
+        --muted: #66756d;
+        --line: #dce6df;
+        --green: #14422d;
+        --sage: #dde7e1;
+        --gold: #735b0e;
+        --red: #ba1a1a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+      }
+      aside {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: 240px;
+        padding: 28px 20px;
+        background: rgba(255, 255, 255, 0.88);
+        border-right: 1px solid var(--line);
+      }
+      main { margin-left: 240px; padding: 28px; }
+      h1, h2 { color: var(--green); margin: 0; }
+      h1 { font-size: 28px; }
+      h2 { font-size: 20px; }
+      nav { display: grid; gap: 8px; margin-top: 32px; }
+      nav a {
+        color: var(--muted);
+        text-decoration: none;
+        padding: 12px 14px;
+        border-radius: 8px;
+        font-weight: 700;
+      }
+      nav a.active, nav a:hover { background: var(--green); color: white; }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .search {
+        border: 1px solid var(--line);
+        background: white;
+        border-radius: 999px;
+        padding: 12px 18px;
+        min-width: 320px;
+      }
+      .grid { display: grid; gap: 16px; }
+      .kpis { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .two { grid-template-columns: 2fr 1fr; align-items: start; }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .panel-head {
+        padding: 18px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .panel-body { padding: 18px; }
+      .kpi { padding: 18px; }
+      .kpi strong { display: block; color: var(--green); font-size: 28px; margin-top: 8px; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; font-size: 14px; }
+      th { color: var(--muted); font-size: 12px; }
+      button {
+        border: 0;
+        border-radius: 8px;
+        background: var(--green);
+        color: white;
+        padding: 10px 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      button.secondary { background: var(--sage); color: var(--green); }
+      button.danger { background: #fff1ef; color: var(--red); }
+      input {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 12px;
+        width: 100%;
+      }
+      .tag {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 3px 8px;
+        background: var(--sage);
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .tag.red { background: #ffdad6; color: var(--red); }
+      .muted { color: var(--muted); }
+      .stack { display: grid; gap: 12px; }
+      section { scroll-margin-top: 20px; margin-bottom: 18px; }
+      @media (max-width: 980px) {
+        aside { position: static; width: auto; }
+        main { margin-left: 0; }
+        .kpis, .two { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <h1>JoyiBird</h1>
+      <p class="muted">V0.1 Beta Ops</p>
+      <nav>
+        <a class="active" href="#overview">总览</a>
+        <a href="#codes">兑换码管理</a>
+        <a href="#users">用户查询</a>
+        <a href="#pets">宠物管理</a>
+        <a href="#ai">AI 用量</a>
+        <a href="#visits">串门记录</a>
+        <a href="#logs">操作日志</a>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="top">
+        <div>
+          <h1>运营管理后台</h1>
+          <p class="muted">免费内测 · 兑换码解锁 · 熟人串门</p>
+        </div>
+        <input class="search" id="search" placeholder="搜索用户 ID、昵称或 4 位兑换码..." />
+      </div>
+
+      <section id="overview" class="grid kpis"></section>
+
+      <div class="grid two">
+        <section id="codes" class="panel">
+          <div class="panel-head">
+            <h2>兑换码管理</h2>
+            <div>
+              <button id="createCode">生成兑换码</button>
+              <button class="secondary" id="createBatch">批量生成</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <table>
+              <thead>
+                <tr><th>兑换码</th><th>状态</th><th>备注</th><th>兑换用户</th><th>兑换时间</th><th>操作</th></tr>
+              </thead>
+              <tbody id="codesBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="users" class="panel">
+          <div class="panel-head"><h2>用户查询</h2></div>
+          <div class="panel-body stack">
+            <input id="userSearch" placeholder="输入 user_id / openid / 昵称" />
+            <div id="usersBody" class="stack"></div>
+          </div>
+        </section>
+      </div>
+
+      <section id="pets" class="panel">
+        <div class="panel-head"><h2>宠物管理</h2></div>
+        <div class="panel-body">
+          <table><thead><tr><th>宠物</th><th>主人</th><th>鸟种</th><th>性格</th><th>口吻</th><th>操作</th></tr></thead><tbody id="petsBody"></tbody></table>
+        </div>
+      </section>
+
+      <div class="grid two">
+        <section id="ai" class="panel">
+          <div class="panel-head"><h2>AI 用量</h2></div>
+          <div class="panel-body">
+            <table><thead><tr><th>用户</th><th>日期</th><th>额度</th><th>已用</th><th>操作</th></tr></thead><tbody id="aiBody"></tbody></table>
+          </div>
+        </section>
+
+        <section id="visits" class="panel">
+          <div class="panel-head"><h2>串门记录</h2></div>
+          <div class="panel-body">
+            <p class="muted">小程序内不支持私信、玩家搜索或陌生人串门。</p>
+            <table><thead><tr><th>来访宠物</th><th>被访宠物</th><th>来源</th><th>时间</th></tr></thead><tbody id="visitsBody"></tbody></table>
+          </div>
+        </section>
+      </div>
+
+      <section id="logs" class="panel">
+        <div class="panel-head"><h2>操作日志</h2></div>
+        <div class="panel-body">
+          <table><thead><tr><th>操作人</th><th>行为</th><th>对象</th><th>时间</th></tr></thead><tbody id="logsBody"></tbody></table>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const api = (url, options) => fetch(url, options).then((res) => res.json());
+      const statusText = {
+        created: '已创建',
+        issued: '已发放',
+        redeemed: '已兑换',
+        void: '已作废',
+      };
+
+      document.querySelectorAll('nav a').forEach((link) => {
+        link.addEventListener('click', () => {
+          document.querySelectorAll('nav a').forEach((item) => item.classList.remove('active'));
+          link.classList.add('active');
+        });
+      });
+
+      async function load() {
+        const [summary, codes, users, pets, ai, visits, logs] = await Promise.all([
+          api('/admin/api/summary'),
+          api('/admin/api/redeem-codes'),
+          api('/admin/api/users'),
+          api('/admin/api/pets'),
+          api('/admin/api/ai-usage'),
+          api('/admin/api/visits'),
+          api('/admin/api/audit-logs'),
+        ]);
+        renderSummary(summary);
+        renderCodes(codes.redeemCodes || []);
+        renderUsers(users.users || []);
+        renderPets(pets.pets || []);
+        renderAi(ai.quotas || []);
+        renderVisits(visits.visits || []);
+        renderLogs(logs.auditLogs || []);
+      }
+
+      function renderSummary(summary) {
+        const items = [
+          ['用户数', summary.users],
+          ['兑换成功', summary.redeemed],
+          ['AI 回复', summary.aiMessages],
+          ['串门', summary.visits],
+          ['异常待处理', summary.issues],
+        ];
+        $('overview').innerHTML = items.map(([label, value]) => `<div class="panel kpi"><span class="muted">${label}</span><strong>${value}</strong></div>`).join('');
+      }
+
+      function renderCodes(codes) {
+        $('codesBody').innerHTML = codes.map((code) => `
+          <tr>
+            <td><strong>${code.code}</strong></td>
+            <td><span class="tag ${code.status === 'void' ? 'red' : ''}">${statusText[code.status] || code.status}</span></td>
+            <td>${code.issued_to_note || '-'}</td>
+            <td>${code.redeemed_user_id || '-'}</td>
+            <td>${code.redeemed_at || '-'}</td>
+            <td>
+              ${code.status === 'created' ? `<button class="secondary" onclick="updateCode('${code.id}', 'issued')">标记发放</button>` : ''}
+              ${code.status !== 'redeemed' && code.status !== 'void' ? `<button class="danger" onclick="updateCode('${code.id}', 'void')">作废</button>` : ''}
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      function renderUsers(users) {
+        $('usersBody').innerHTML = users.length ? users.map((user) => `
+          <div class="panel-body" style="border:1px solid var(--line); border-radius:12px;">
+            <strong>${user.nickname}</strong>
+            <p class="muted">${user.openid}</p>
+            <p class="muted">${user.id}</p>
+            <p>状态：${user.pet ? '<span class="tag">已解锁</span>' : '<span class="tag red">未解锁</span>'}</p>
+            <p>AI：${user.chat_disabled_at ? '<span class="tag red">已暂停</span>' : '<span class="tag">可对话</span>'}</p>
+            <p>宠物：${user.pet ? `${user.pet.name} / ${user.pet.bird?.name || user.pet.bird_id}` : '-'}</p>
+            ${user.pet ? '' : `<button class="secondary" onclick="manualUnlock('${user.id}')">人工解锁</button>`}
+            <button class="${user.chat_disabled_at ? 'secondary' : 'danger'}" onclick="toggleChat('${user.id}', ${user.chat_disabled_at ? 'false' : 'true'})">${user.chat_disabled_at ? '恢复 AI' : '暂停 AI'}</button>
+          </div>
+        `).join('') : '<p class="muted">暂无用户。先在小程序端登录并兑换。</p>';
+      }
+
+      function renderPets(pets) {
+        $('petsBody').innerHTML = pets.length ? pets.map((pet) => `
+          <tr>
+            <td><strong>${pet.name}</strong><br /><span class="muted">${pet.id}</span></td>
+            <td>${pet.owner_user_id}</td>
+            <td>${pet.bird?.name || pet.bird_id}</td>
+            <td>${pet.personality}</td>
+            <td>${pet.tone}</td>
+            <td><button class="secondary" onclick="renamePet('${pet.id}', '${pet.name.replace(/'/g, "\\'")}')">改名</button></td>
+          </tr>
+        `).join('') : '<tr><td colspan="6" class="muted">暂无宠物</td></tr>';
+      }
+
+      function renderAi(quotas) {
+        $('aiBody').innerHTML = quotas.length ? quotas.map((quota) => `
+          <tr>
+            <td>${quota.user_id}</td>
+            <td>${quota.date_key}</td>
+            <td>${quota.free_limit}</td>
+            <td>${quota.used_count}</td>
+            <td><button class="secondary" onclick="setQuota('${quota.user_id}', ${quota.free_limit + 5})">额度 +5</button></td>
+          </tr>
+        `).join('') : '<tr><td colspan="5" class="muted">暂无 AI 用量</td></tr>';
+      }
+
+      function renderVisits(visits) {
+        $('visitsBody').innerHTML = visits.length ? visits.map((visit) => `<tr><td>${visit.from_pet_id}</td><td>${visit.to_pet_id}</td><td>${visit.source}</td><td>${visit.created_at}</td></tr>`).join('') : '<tr><td colspan="4" class="muted">暂无串门记录</td></tr>';
+      }
+
+      function renderLogs(logs) {
+        $('logsBody').innerHTML = logs.length ? logs.map((log) => `<tr><td>${log.operator}</td><td>${log.action}</td><td>${log.target_type}:${log.target_id}</td><td>${log.created_at}</td></tr>`).join('') : '<tr><td colspan="4" class="muted">暂无操作日志</td></tr>';
+      }
+
+      async function updateCode(id, status) {
+        await api(`/admin/api/redeem-codes/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status }),
+        });
+        load();
+      }
+      window.updateCode = updateCode;
+
+      async function manualUnlock(userId) {
+        await api('/admin/api/manual-unlock', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId }),
+        });
+        load();
+      }
+      window.manualUnlock = manualUnlock;
+
+      async function toggleChat(userId, disabled) {
+        await api(`/admin/api/users/${userId}/chat-status`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ disabled }),
+        });
+        load();
+      }
+      window.toggleChat = toggleChat;
+
+      async function renamePet(petId, currentName) {
+        const name = prompt('输入新的宠物名字', currentName);
+        if (!name) return;
+        await api(`/admin/api/pets/${petId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name }),
+        });
+        load();
+      }
+      window.renamePet = renamePet;
+
+      async function setQuota(userId, freeLimit) {
+        await api(`/admin/api/chat-quotas/${userId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ free_limit: freeLimit }),
+        });
+        load();
+      }
+      window.setQuota = setQuota;
+
+      $('createCode').addEventListener('click', async () => {
+        await api('/admin/api/redeem-codes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ issued_to_note: '后台生成' }),
+        });
+        load();
+      });
+
+      $('createBatch').addEventListener('click', async () => {
+        const count = Number(prompt('批量生成数量，最多 100', '10') || 0);
+        if (!count) return;
+        await api('/admin/api/redeem-codes/batch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ count, issued_to_note: '后台批量生成' }),
+        });
+        load();
+      });
+
+      $('userSearch').addEventListener('input', async (event) => {
+        const query = event.target.value.trim().toLowerCase();
+        const users = (await api('/admin/api/users')).users || [];
+        renderUsers(users.filter((user) => JSON.stringify(user).toLowerCase().includes(query)));
+      });
+
+      load();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+.brand-logo {
+  width: 260rpx;
+  height: 260rpx;
+  margin-bottom: 24rpx;
+  border-radius: 24rpx;
+}
+
+.login-actions {
+  width: 100%;
+  margin-top: 96rpx;
+}
+
+.hint {
+  margin-top: 24rpx;
+  color: #8a968f;
+  font-size: 24rpx;
+  line-height: 1.6;
+}
+
+.policy {
+  margin-top: 96rpx;
+  color: #9aa7a0;
+  font-size: 22rpx;
+}

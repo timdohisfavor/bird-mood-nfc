@@ -1,0 +1,24 @@
+.sign-card {
+  display: grid;
+  gap: 24rpx;
+  margin-top: 24rpx;
+  text-align: center;
+}
+
+.sign-text {
+  color: #17211c;
+  font-size: 30rpx;
+  line-height: 1.7;
+}
+
+.block {
+  padding-top: 24rpx;
+  border-top: 1rpx solid #dce6df;
+  text-align: left;
+  line-height: 1.7;
+}
+
+.loading {
+  margin-top: 48rpx;
+  text-align: center;
+}

@@ -1,0 +1,10 @@
+<view class="center">
+  <image class="brand-logo" src="/assets/brand/joyi-logo.jpg" mode="aspectFit" />
+  <view class="title">JOYIBIRD</view>
+  <view class="subtitle">唤醒你的专属小鸟</view>
+  <view class="login-actions">
+    <t-button theme="primary" block loading="{{loading}}" bindtap="login">微信一键登录</t-button>
+    <view class="hint">通过 NFC 手机支架或专属兑换码解锁小鸟宠物。</view>
+  </view>
+  <view class="policy">登录即代表同意用户协议与隐私政策</view>
+</view>

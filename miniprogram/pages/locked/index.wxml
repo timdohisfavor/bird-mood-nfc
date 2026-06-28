@@ -1,0 +1,16 @@
+<view class="center">
+  <view class="logo" aria-label="JoyiBird">
+    <view class="logo-mark"></view>
+  </view>
+  <view class="title">探索尚未开启</view>
+  <view class="subtitle subtitle-text">
+    <text>JoyiBird 目前处于小鸟宠物内测阶段。
+需要专属兑换码，
+方可唤醒您的森林伙伴。</text>
+  </view>
+  <view class="actions">
+    <t-button theme="primary" block bindtap="goRedeem">输入兑换码</t-button>
+    <t-button theme="default" block bindtap="goLogin">返回登录</t-button>
+  </view>
+  <view class="buy-tip">还没有支架？前往小红书「JOYI博物工作室」购买 NFC 手机支架。</view>
+</view>

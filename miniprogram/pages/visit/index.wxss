@@ -1,0 +1,52 @@
+.visit-card {
+  margin-top: 48rpx;
+  text-align: center;
+}
+
+.large {
+  width: 420rpx;
+  height: 420rpx;
+}
+
+.state {
+  display: grid;
+  gap: 24rpx;
+  margin-top: 40rpx;
+}
+
+.loading {
+  margin-top: 48rpx;
+  text-align: center;
+}
+
+.visit-page {
+  display: grid;
+  gap: 24rpx;
+}
+
+.share-card {
+  text-align: center;
+}
+
+.share-card .muted {
+  margin-bottom: 32rpx;
+}
+
+.visits-card {
+  margin-top: 0;
+}
+
+.visit-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18rpx 0;
+  border-top: 1rpx solid var(--brand-line);
+}
+
+.section-title {
+  color: var(--brand-green);
+  font-size: 28rpx;
+  font-weight: 700;
+  margin-bottom: 18rpx;
+}

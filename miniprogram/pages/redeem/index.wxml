@@ -1,0 +1,10 @@
+<view class="page">
+  <view class="title">激活你的森林伙伴</view>
+  <view class="subtitle">输入专属兑换码，开启一段治愈的陪伴之旅。</view>
+  <view class="form-card card">
+    <view class="label">兑换码</view>
+    <input class="code-input" value="{{code}}" type="number" maxlength="4" bindinput="onInput" placeholder="1001" />
+    <view class="muted helper">输入 4 位数字兑换码</view>
+  </view>
+  <t-button theme="primary" block loading="{{loading}}" bindtap="redeem">确认唤醒</t-button>
+</view>

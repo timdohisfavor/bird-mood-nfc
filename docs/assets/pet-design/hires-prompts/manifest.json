@@ -1,0 +1,536 @@
+{
+  "source": "docs/miniprogram-pet-design-v0.2.md",
+  "rawDir": "docs/assets/pet-design/hires-generated/raw",
+  "outputDir": "miniprogram/assets/pets-hires",
+  "qualityBar": "Match home.png: native high resolution, smooth antialiased transparent edges, no contact-sheet upscale artifacts.",
+  "assets": [
+    {
+      "petId": "long-tailed-tit",
+      "action": "idle",
+      "prompt": "docs/assets/pet-design/hires-prompts/long-tailed-tit/idle.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/long-tailed-tit/idle.png",
+      "output": "miniprogram/assets/pets-hires/long-tailed-tit/idle.png",
+      "reference": "miniprogram/assets/pets/long-tailed-tit/home.png"
+    },
+    {
+      "petId": "long-tailed-tit",
+      "action": "happy",
+      "prompt": "docs/assets/pet-design/hires-prompts/long-tailed-tit/happy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/long-tailed-tit/happy.png",
+      "output": "miniprogram/assets/pets-hires/long-tailed-tit/happy.png",
+      "reference": "miniprogram/assets/pets/long-tailed-tit/home.png"
+    },
+    {
+      "petId": "long-tailed-tit",
+      "action": "talking",
+      "prompt": "docs/assets/pet-design/hires-prompts/long-tailed-tit/talking.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/long-tailed-tit/talking.png",
+      "output": "miniprogram/assets/pets-hires/long-tailed-tit/talking.png",
+      "reference": "miniprogram/assets/pets/long-tailed-tit/home.png"
+    },
+    {
+      "petId": "long-tailed-tit",
+      "action": "sleepy",
+      "prompt": "docs/assets/pet-design/hires-prompts/long-tailed-tit/sleepy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/long-tailed-tit/sleepy.png",
+      "output": "miniprogram/assets/pets-hires/long-tailed-tit/sleepy.png",
+      "reference": "miniprogram/assets/pets/long-tailed-tit/home.png"
+    },
+    {
+      "petId": "long-tailed-tit",
+      "action": "waiting",
+      "prompt": "docs/assets/pet-design/hires-prompts/long-tailed-tit/waiting.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/long-tailed-tit/waiting.png",
+      "output": "miniprogram/assets/pets-hires/long-tailed-tit/waiting.png",
+      "reference": "miniprogram/assets/pets/long-tailed-tit/home.png"
+    },
+    {
+      "petId": "long-tailed-tit",
+      "action": "reward",
+      "prompt": "docs/assets/pet-design/hires-prompts/long-tailed-tit/reward.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/long-tailed-tit/reward.png",
+      "output": "miniprogram/assets/pets-hires/long-tailed-tit/reward.png",
+      "reference": "miniprogram/assets/pets/long-tailed-tit/home.png"
+    },
+    {
+      "petId": "long-tailed-tit",
+      "action": "waking",
+      "prompt": "docs/assets/pet-design/hires-prompts/long-tailed-tit/waking.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/long-tailed-tit/waking.png",
+      "output": "miniprogram/assets/pets-hires/long-tailed-tit/waking.png",
+      "reference": "miniprogram/assets/pets/long-tailed-tit/home.png"
+    },
+    {
+      "petId": "long-tailed-tit",
+      "action": "carrying",
+      "prompt": "docs/assets/pet-design/hires-prompts/long-tailed-tit/carrying.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/long-tailed-tit/carrying.png",
+      "output": "miniprogram/assets/pets-hires/long-tailed-tit/carrying.png",
+      "reference": "miniprogram/assets/pets/long-tailed-tit/home.png"
+    },
+    {
+      "petId": "long-tailed-tit",
+      "action": "shy",
+      "prompt": "docs/assets/pet-design/hires-prompts/long-tailed-tit/shy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/long-tailed-tit/shy.png",
+      "output": "miniprogram/assets/pets-hires/long-tailed-tit/shy.png",
+      "reference": "miniprogram/assets/pets/long-tailed-tit/home.png"
+    },
+    {
+      "petId": "long-tailed-tit",
+      "action": "rainy",
+      "prompt": "docs/assets/pet-design/hires-prompts/long-tailed-tit/rainy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/long-tailed-tit/rainy.png",
+      "output": "miniprogram/assets/pets-hires/long-tailed-tit/rainy.png",
+      "reference": "miniprogram/assets/pets/long-tailed-tit/home.png"
+    },
+    {
+      "petId": "long-tailed-tit",
+      "action": "miss",
+      "prompt": "docs/assets/pet-design/hires-prompts/long-tailed-tit/miss.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/long-tailed-tit/miss.png",
+      "output": "miniprogram/assets/pets-hires/long-tailed-tit/miss.png",
+      "reference": "miniprogram/assets/pets/long-tailed-tit/home.png"
+    },
+    {
+      "petId": "common-kingfisher",
+      "action": "idle",
+      "prompt": "docs/assets/pet-design/hires-prompts/common-kingfisher/idle.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/common-kingfisher/idle.png",
+      "output": "miniprogram/assets/pets-hires/common-kingfisher/idle.png",
+      "reference": "miniprogram/assets/pets/common-kingfisher/home.png"
+    },
+    {
+      "petId": "common-kingfisher",
+      "action": "happy",
+      "prompt": "docs/assets/pet-design/hires-prompts/common-kingfisher/happy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/common-kingfisher/happy.png",
+      "output": "miniprogram/assets/pets-hires/common-kingfisher/happy.png",
+      "reference": "miniprogram/assets/pets/common-kingfisher/home.png"
+    },
+    {
+      "petId": "common-kingfisher",
+      "action": "talking",
+      "prompt": "docs/assets/pet-design/hires-prompts/common-kingfisher/talking.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/common-kingfisher/talking.png",
+      "output": "miniprogram/assets/pets-hires/common-kingfisher/talking.png",
+      "reference": "miniprogram/assets/pets/common-kingfisher/home.png"
+    },
+    {
+      "petId": "common-kingfisher",
+      "action": "sleepy",
+      "prompt": "docs/assets/pet-design/hires-prompts/common-kingfisher/sleepy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/common-kingfisher/sleepy.png",
+      "output": "miniprogram/assets/pets-hires/common-kingfisher/sleepy.png",
+      "reference": "miniprogram/assets/pets/common-kingfisher/home.png"
+    },
+    {
+      "petId": "common-kingfisher",
+      "action": "waiting",
+      "prompt": "docs/assets/pet-design/hires-prompts/common-kingfisher/waiting.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/common-kingfisher/waiting.png",
+      "output": "miniprogram/assets/pets-hires/common-kingfisher/waiting.png",
+      "reference": "miniprogram/assets/pets/common-kingfisher/home.png"
+    },
+    {
+      "petId": "common-kingfisher",
+      "action": "reward",
+      "prompt": "docs/assets/pet-design/hires-prompts/common-kingfisher/reward.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/common-kingfisher/reward.png",
+      "output": "miniprogram/assets/pets-hires/common-kingfisher/reward.png",
+      "reference": "miniprogram/assets/pets/common-kingfisher/home.png"
+    },
+    {
+      "petId": "common-kingfisher",
+      "action": "waking",
+      "prompt": "docs/assets/pet-design/hires-prompts/common-kingfisher/waking.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/common-kingfisher/waking.png",
+      "output": "miniprogram/assets/pets-hires/common-kingfisher/waking.png",
+      "reference": "miniprogram/assets/pets/common-kingfisher/home.png"
+    },
+    {
+      "petId": "common-kingfisher",
+      "action": "carrying",
+      "prompt": "docs/assets/pet-design/hires-prompts/common-kingfisher/carrying.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/common-kingfisher/carrying.png",
+      "output": "miniprogram/assets/pets-hires/common-kingfisher/carrying.png",
+      "reference": "miniprogram/assets/pets/common-kingfisher/home.png"
+    },
+    {
+      "petId": "common-kingfisher",
+      "action": "shy",
+      "prompt": "docs/assets/pet-design/hires-prompts/common-kingfisher/shy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/common-kingfisher/shy.png",
+      "output": "miniprogram/assets/pets-hires/common-kingfisher/shy.png",
+      "reference": "miniprogram/assets/pets/common-kingfisher/home.png"
+    },
+    {
+      "petId": "common-kingfisher",
+      "action": "rainy",
+      "prompt": "docs/assets/pet-design/hires-prompts/common-kingfisher/rainy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/common-kingfisher/rainy.png",
+      "output": "miniprogram/assets/pets-hires/common-kingfisher/rainy.png",
+      "reference": "miniprogram/assets/pets/common-kingfisher/home.png"
+    },
+    {
+      "petId": "common-kingfisher",
+      "action": "miss",
+      "prompt": "docs/assets/pet-design/hires-prompts/common-kingfisher/miss.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/common-kingfisher/miss.png",
+      "output": "miniprogram/assets/pets-hires/common-kingfisher/miss.png",
+      "reference": "miniprogram/assets/pets/common-kingfisher/home.png"
+    },
+    {
+      "petId": "brown-shrike",
+      "action": "idle",
+      "prompt": "docs/assets/pet-design/hires-prompts/brown-shrike/idle.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/brown-shrike/idle.png",
+      "output": "miniprogram/assets/pets-hires/brown-shrike/idle.png",
+      "reference": "miniprogram/assets/pets/brown-shrike/home.png"
+    },
+    {
+      "petId": "brown-shrike",
+      "action": "happy",
+      "prompt": "docs/assets/pet-design/hires-prompts/brown-shrike/happy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/brown-shrike/happy.png",
+      "output": "miniprogram/assets/pets-hires/brown-shrike/happy.png",
+      "reference": "miniprogram/assets/pets/brown-shrike/home.png"
+    },
+    {
+      "petId": "brown-shrike",
+      "action": "talking",
+      "prompt": "docs/assets/pet-design/hires-prompts/brown-shrike/talking.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/brown-shrike/talking.png",
+      "output": "miniprogram/assets/pets-hires/brown-shrike/talking.png",
+      "reference": "miniprogram/assets/pets/brown-shrike/home.png"
+    },
+    {
+      "petId": "brown-shrike",
+      "action": "sleepy",
+      "prompt": "docs/assets/pet-design/hires-prompts/brown-shrike/sleepy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/brown-shrike/sleepy.png",
+      "output": "miniprogram/assets/pets-hires/brown-shrike/sleepy.png",
+      "reference": "miniprogram/assets/pets/brown-shrike/home.png"
+    },
+    {
+      "petId": "brown-shrike",
+      "action": "waiting",
+      "prompt": "docs/assets/pet-design/hires-prompts/brown-shrike/waiting.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/brown-shrike/waiting.png",
+      "output": "miniprogram/assets/pets-hires/brown-shrike/waiting.png",
+      "reference": "miniprogram/assets/pets/brown-shrike/home.png"
+    },
+    {
+      "petId": "brown-shrike",
+      "action": "reward",
+      "prompt": "docs/assets/pet-design/hires-prompts/brown-shrike/reward.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/brown-shrike/reward.png",
+      "output": "miniprogram/assets/pets-hires/brown-shrike/reward.png",
+      "reference": "miniprogram/assets/pets/brown-shrike/home.png"
+    },
+    {
+      "petId": "brown-shrike",
+      "action": "waking",
+      "prompt": "docs/assets/pet-design/hires-prompts/brown-shrike/waking.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/brown-shrike/waking.png",
+      "output": "miniprogram/assets/pets-hires/brown-shrike/waking.png",
+      "reference": "miniprogram/assets/pets/brown-shrike/home.png"
+    },
+    {
+      "petId": "brown-shrike",
+      "action": "carrying",
+      "prompt": "docs/assets/pet-design/hires-prompts/brown-shrike/carrying.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/brown-shrike/carrying.png",
+      "output": "miniprogram/assets/pets-hires/brown-shrike/carrying.png",
+      "reference": "miniprogram/assets/pets/brown-shrike/home.png"
+    },
+    {
+      "petId": "brown-shrike",
+      "action": "shy",
+      "prompt": "docs/assets/pet-design/hires-prompts/brown-shrike/shy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/brown-shrike/shy.png",
+      "output": "miniprogram/assets/pets-hires/brown-shrike/shy.png",
+      "reference": "miniprogram/assets/pets/brown-shrike/home.png"
+    },
+    {
+      "petId": "brown-shrike",
+      "action": "rainy",
+      "prompt": "docs/assets/pet-design/hires-prompts/brown-shrike/rainy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/brown-shrike/rainy.png",
+      "output": "miniprogram/assets/pets-hires/brown-shrike/rainy.png",
+      "reference": "miniprogram/assets/pets/brown-shrike/home.png"
+    },
+    {
+      "petId": "brown-shrike",
+      "action": "miss",
+      "prompt": "docs/assets/pet-design/hires-prompts/brown-shrike/miss.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/brown-shrike/miss.png",
+      "output": "miniprogram/assets/pets-hires/brown-shrike/miss.png",
+      "reference": "miniprogram/assets/pets/brown-shrike/home.png"
+    },
+    {
+      "petId": "red-tailed-shrike",
+      "action": "idle",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-tailed-shrike/idle.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-tailed-shrike/idle.png",
+      "output": "miniprogram/assets/pets-hires/red-tailed-shrike/idle.png",
+      "reference": "miniprogram/assets/pets/red-tailed-shrike/home.png"
+    },
+    {
+      "petId": "red-tailed-shrike",
+      "action": "happy",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-tailed-shrike/happy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-tailed-shrike/happy.png",
+      "output": "miniprogram/assets/pets-hires/red-tailed-shrike/happy.png",
+      "reference": "miniprogram/assets/pets/red-tailed-shrike/home.png"
+    },
+    {
+      "petId": "red-tailed-shrike",
+      "action": "talking",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-tailed-shrike/talking.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-tailed-shrike/talking.png",
+      "output": "miniprogram/assets/pets-hires/red-tailed-shrike/talking.png",
+      "reference": "miniprogram/assets/pets/red-tailed-shrike/home.png"
+    },
+    {
+      "petId": "red-tailed-shrike",
+      "action": "sleepy",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-tailed-shrike/sleepy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-tailed-shrike/sleepy.png",
+      "output": "miniprogram/assets/pets-hires/red-tailed-shrike/sleepy.png",
+      "reference": "miniprogram/assets/pets/red-tailed-shrike/home.png"
+    },
+    {
+      "petId": "red-tailed-shrike",
+      "action": "waiting",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-tailed-shrike/waiting.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-tailed-shrike/waiting.png",
+      "output": "miniprogram/assets/pets-hires/red-tailed-shrike/waiting.png",
+      "reference": "miniprogram/assets/pets/red-tailed-shrike/home.png"
+    },
+    {
+      "petId": "red-tailed-shrike",
+      "action": "reward",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-tailed-shrike/reward.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-tailed-shrike/reward.png",
+      "output": "miniprogram/assets/pets-hires/red-tailed-shrike/reward.png",
+      "reference": "miniprogram/assets/pets/red-tailed-shrike/home.png"
+    },
+    {
+      "petId": "red-tailed-shrike",
+      "action": "waking",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-tailed-shrike/waking.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-tailed-shrike/waking.png",
+      "output": "miniprogram/assets/pets-hires/red-tailed-shrike/waking.png",
+      "reference": "miniprogram/assets/pets/red-tailed-shrike/home.png"
+    },
+    {
+      "petId": "red-tailed-shrike",
+      "action": "carrying",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-tailed-shrike/carrying.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-tailed-shrike/carrying.png",
+      "output": "miniprogram/assets/pets-hires/red-tailed-shrike/carrying.png",
+      "reference": "miniprogram/assets/pets/red-tailed-shrike/home.png"
+    },
+    {
+      "petId": "red-tailed-shrike",
+      "action": "shy",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-tailed-shrike/shy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-tailed-shrike/shy.png",
+      "output": "miniprogram/assets/pets-hires/red-tailed-shrike/shy.png",
+      "reference": "miniprogram/assets/pets/red-tailed-shrike/home.png"
+    },
+    {
+      "petId": "red-tailed-shrike",
+      "action": "rainy",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-tailed-shrike/rainy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-tailed-shrike/rainy.png",
+      "output": "miniprogram/assets/pets-hires/red-tailed-shrike/rainy.png",
+      "reference": "miniprogram/assets/pets/red-tailed-shrike/home.png"
+    },
+    {
+      "petId": "red-tailed-shrike",
+      "action": "miss",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-tailed-shrike/miss.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-tailed-shrike/miss.png",
+      "output": "miniprogram/assets/pets-hires/red-tailed-shrike/miss.png",
+      "reference": "miniprogram/assets/pets/red-tailed-shrike/home.png"
+    },
+    {
+      "petId": "red-headed-tit",
+      "action": "idle",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-headed-tit/idle.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-headed-tit/idle.png",
+      "output": "miniprogram/assets/pets-hires/red-headed-tit/idle.png",
+      "reference": "miniprogram/assets/pets/red-headed-tit/home.png"
+    },
+    {
+      "petId": "red-headed-tit",
+      "action": "happy",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-headed-tit/happy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-headed-tit/happy.png",
+      "output": "miniprogram/assets/pets-hires/red-headed-tit/happy.png",
+      "reference": "miniprogram/assets/pets/red-headed-tit/home.png"
+    },
+    {
+      "petId": "red-headed-tit",
+      "action": "talking",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-headed-tit/talking.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-headed-tit/talking.png",
+      "output": "miniprogram/assets/pets-hires/red-headed-tit/talking.png",
+      "reference": "miniprogram/assets/pets/red-headed-tit/home.png"
+    },
+    {
+      "petId": "red-headed-tit",
+      "action": "sleepy",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-headed-tit/sleepy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-headed-tit/sleepy.png",
+      "output": "miniprogram/assets/pets-hires/red-headed-tit/sleepy.png",
+      "reference": "miniprogram/assets/pets/red-headed-tit/home.png"
+    },
+    {
+      "petId": "red-headed-tit",
+      "action": "waiting",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-headed-tit/waiting.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-headed-tit/waiting.png",
+      "output": "miniprogram/assets/pets-hires/red-headed-tit/waiting.png",
+      "reference": "miniprogram/assets/pets/red-headed-tit/home.png"
+    },
+    {
+      "petId": "red-headed-tit",
+      "action": "reward",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-headed-tit/reward.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-headed-tit/reward.png",
+      "output": "miniprogram/assets/pets-hires/red-headed-tit/reward.png",
+      "reference": "miniprogram/assets/pets/red-headed-tit/home.png"
+    },
+    {
+      "petId": "red-headed-tit",
+      "action": "waking",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-headed-tit/waking.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-headed-tit/waking.png",
+      "output": "miniprogram/assets/pets-hires/red-headed-tit/waking.png",
+      "reference": "miniprogram/assets/pets/red-headed-tit/home.png"
+    },
+    {
+      "petId": "red-headed-tit",
+      "action": "carrying",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-headed-tit/carrying.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-headed-tit/carrying.png",
+      "output": "miniprogram/assets/pets-hires/red-headed-tit/carrying.png",
+      "reference": "miniprogram/assets/pets/red-headed-tit/home.png"
+    },
+    {
+      "petId": "red-headed-tit",
+      "action": "shy",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-headed-tit/shy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-headed-tit/shy.png",
+      "output": "miniprogram/assets/pets-hires/red-headed-tit/shy.png",
+      "reference": "miniprogram/assets/pets/red-headed-tit/home.png"
+    },
+    {
+      "petId": "red-headed-tit",
+      "action": "rainy",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-headed-tit/rainy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-headed-tit/rainy.png",
+      "output": "miniprogram/assets/pets-hires/red-headed-tit/rainy.png",
+      "reference": "miniprogram/assets/pets/red-headed-tit/home.png"
+    },
+    {
+      "petId": "red-headed-tit",
+      "action": "miss",
+      "prompt": "docs/assets/pet-design/hires-prompts/red-headed-tit/miss.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/red-headed-tit/miss.png",
+      "output": "miniprogram/assets/pets-hires/red-headed-tit/miss.png",
+      "reference": "miniprogram/assets/pets/red-headed-tit/home.png"
+    },
+    {
+      "petId": "chestnut-flanked-white-eye",
+      "action": "idle",
+      "prompt": "docs/assets/pet-design/hires-prompts/chestnut-flanked-white-eye/idle.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/chestnut-flanked-white-eye/idle.png",
+      "output": "miniprogram/assets/pets-hires/chestnut-flanked-white-eye/idle.png",
+      "reference": "miniprogram/assets/pets/chestnut-flanked-white-eye/home.png"
+    },
+    {
+      "petId": "chestnut-flanked-white-eye",
+      "action": "happy",
+      "prompt": "docs/assets/pet-design/hires-prompts/chestnut-flanked-white-eye/happy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/chestnut-flanked-white-eye/happy.png",
+      "output": "miniprogram/assets/pets-hires/chestnut-flanked-white-eye/happy.png",
+      "reference": "miniprogram/assets/pets/chestnut-flanked-white-eye/home.png"
+    },
+    {
+      "petId": "chestnut-flanked-white-eye",
+      "action": "talking",
+      "prompt": "docs/assets/pet-design/hires-prompts/chestnut-flanked-white-eye/talking.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/chestnut-flanked-white-eye/talking.png",
+      "output": "miniprogram/assets/pets-hires/chestnut-flanked-white-eye/talking.png",
+      "reference": "miniprogram/assets/pets/chestnut-flanked-white-eye/home.png"
+    },
+    {
+      "petId": "chestnut-flanked-white-eye",
+      "action": "sleepy",
+      "prompt": "docs/assets/pet-design/hires-prompts/chestnut-flanked-white-eye/sleepy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/chestnut-flanked-white-eye/sleepy.png",
+      "output": "miniprogram/assets/pets-hires/chestnut-flanked-white-eye/sleepy.png",
+      "reference": "miniprogram/assets/pets/chestnut-flanked-white-eye/home.png"
+    },
+    {
+      "petId": "chestnut-flanked-white-eye",
+      "action": "waiting",
+      "prompt": "docs/assets/pet-design/hires-prompts/chestnut-flanked-white-eye/waiting.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/chestnut-flanked-white-eye/waiting.png",
+      "output": "miniprogram/assets/pets-hires/chestnut-flanked-white-eye/waiting.png",
+      "reference": "miniprogram/assets/pets/chestnut-flanked-white-eye/home.png"
+    },
+    {
+      "petId": "chestnut-flanked-white-eye",
+      "action": "reward",
+      "prompt": "docs/assets/pet-design/hires-prompts/chestnut-flanked-white-eye/reward.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/chestnut-flanked-white-eye/reward.png",
+      "output": "miniprogram/assets/pets-hires/chestnut-flanked-white-eye/reward.png",
+      "reference": "miniprogram/assets/pets/chestnut-flanked-white-eye/home.png"
+    },
+    {
+      "petId": "chestnut-flanked-white-eye",
+      "action": "waking",
+      "prompt": "docs/assets/pet-design/hires-prompts/chestnut-flanked-white-eye/waking.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/chestnut-flanked-white-eye/waking.png",
+      "output": "miniprogram/assets/pets-hires/chestnut-flanked-white-eye/waking.png",
+      "reference": "miniprogram/assets/pets/chestnut-flanked-white-eye/home.png"
+    },
+    {
+      "petId": "chestnut-flanked-white-eye",
+      "action": "carrying",
+      "prompt": "docs/assets/pet-design/hires-prompts/chestnut-flanked-white-eye/carrying.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/chestnut-flanked-white-eye/carrying.png",
+      "output": "miniprogram/assets/pets-hires/chestnut-flanked-white-eye/carrying.png",
+      "reference": "miniprogram/assets/pets/chestnut-flanked-white-eye/home.png"
+    },
+    {
+      "petId": "chestnut-flanked-white-eye",
+      "action": "shy",
+      "prompt": "docs/assets/pet-design/hires-prompts/chestnut-flanked-white-eye/shy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/chestnut-flanked-white-eye/shy.png",
+      "output": "miniprogram/assets/pets-hires/chestnut-flanked-white-eye/shy.png",
+      "reference": "miniprogram/assets/pets/chestnut-flanked-white-eye/home.png"
+    },
+    {
+      "petId": "chestnut-flanked-white-eye",
+      "action": "rainy",
+      "prompt": "docs/assets/pet-design/hires-prompts/chestnut-flanked-white-eye/rainy.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/chestnut-flanked-white-eye/rainy.png",
+      "output": "miniprogram/assets/pets-hires/chestnut-flanked-white-eye/rainy.png",
+      "reference": "miniprogram/assets/pets/chestnut-flanked-white-eye/home.png"
+    },
+    {
+      "petId": "chestnut-flanked-white-eye",
+      "action": "miss",
+      "prompt": "docs/assets/pet-design/hires-prompts/chestnut-flanked-white-eye/miss.txt",
+      "raw": "docs/assets/pet-design/hires-generated/raw/chestnut-flanked-white-eye/miss.png",
+      "output": "miniprogram/assets/pets-hires/chestnut-flanked-white-eye/miss.png",
+      "reference": "miniprogram/assets/pets/chestnut-flanked-white-eye/home.png"
+    }
+  ]
+}

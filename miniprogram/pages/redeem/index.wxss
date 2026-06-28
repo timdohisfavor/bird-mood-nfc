@@ -1,0 +1,26 @@
+.form-card {
+  margin: 72rpx 0 40rpx;
+}
+
+.label {
+  color: #66756d;
+  font-size: 24rpx;
+  margin-bottom: 14rpx;
+}
+
+.code-input {
+  height: 96rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid #dce6df;
+  background: #f7faf8;
+  color: #14422d;
+  font-size: 32rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+  padding: 0 24rpx;
+}
+
+.helper {
+  margin-top: 18rpx;
+  font-size: 24rpx;
+}

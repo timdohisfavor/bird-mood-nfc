@@ -1,0 +1,88 @@
+<view class="page home-page">
+  <view wx:if="{{loading}}"><t-loading text="正在进入鸟窝..." /></view>
+
+  <block wx:else>
+    <!-- Top: mood badge -->
+    <view class="mood-banner">
+      <view class="mood-pill mood-{{mood}}">
+        <text class="mood-emoji">{{mood === 'sleepy' ? '😴' : mood === 'bright' ? '✨' : mood === 'quiet' ? '🌧️' : mood === 'waiting' ? '🪟' : mood === 'messy' ? '🪶' : '🫧'}}</text>
+        <text class="mood-label">{{moodLabel}}</text>
+      </view>
+      <view class="mood-text">{{moodText}}</view>
+    </view>
+
+    <!-- Pet room: large bird + narration -->
+    <view class="pet-room">
+      <image class="pet-main" src="{{petImage}}" mode="aspectFit" />
+      <view class="pet-shadow"></view>
+      <view class="narration">{{moodStory}}</view>
+    </view>
+
+    <!-- Stats row: bond + feather -->
+    <view class="stats-row">
+      <view class="stat-item">
+        <text class="stat-label">熟悉度</text>
+        <text class="stat-value">{{bondName}}</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-label">羽毛</text>
+        <text class="stat-value">{{featherCount}}</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-label">记忆</text>
+        <text class="stat-value">{{memoryCount}}</text>
+      </view>
+    </view>
+
+    <!-- Today event -->
+    <view wx:if="{{todayEvent}}" class="event-card">
+      <text class="event-emoji">{{todayEvent.emoji}}</text>
+      <text class="event-text">{{todayEvent.text}}</text>
+    </view>
+
+    <view wx:if="{{latestMemory}}" class="memory-card">
+      <view class="memory-title">
+        <text>它记得一点点</text>
+        <text wx:if="{{lastInteractionText}}" class="memory-time">{{lastInteractionText}}</text>
+      </view>
+      <view class="memory-text">{{latestMemory.summary}}</view>
+    </view>
+
+    <!-- Today care status -->
+    <view class="care-row">
+      <view class="care-chip {{todayCare.sign_opened ? 'done' : ''}}">
+        <text>{{todayCare.sign_opened ? '✓' : '○'}} 鸟签</text>
+      </view>
+      <view class="care-chip {{todayCare.chat_done ? 'done' : ''}}">
+        <text>{{todayCare.chat_done ? '✓' : '○'}} 聊天</text>
+      </view>
+      <view wx:if="{{todayCare.care_done}}" class="care-chip done">
+        <text>💛 今日陪伴完成</text>
+      </view>
+    </view>
+
+    <!-- Actions -->
+    <view class="today-actions">
+      <t-button theme="primary" block variant="outline" class="action-card" bindtap="goSign">
+        <view class="action-title">查看今日鸟签</view>
+        <view class="action-sub">让小鸟叼来今天的一句话</view>
+      </t-button>
+      <t-button theme="default" block class="action-card" bindtap="goChat">
+        <view class="action-title">和小鸟说话</view>
+        <view class="action-sub">{{todayCare.chat_done ? '它更安心了一点' : '聊完亲密度会轻轻上涨'}}</view>
+      </t-button>
+    </view>
+
+    <!-- Visits -->
+    <view wx:if="{{recentVisits.length > 0}}" class="card visits">
+      <view class="section-title">串门提醒</view>
+      <view wx:for="{{recentVisits}}" wx:key="id" class="visit-row">
+        <view>{{item.fromPet.name}}</view>
+        <view class="muted">{{item.created_at}}</view>
+      </view>
+    </view>
+
+  </block>
+</view>

@@ -1,0 +1,164 @@
+# JoyiBird 小程序设计规范
+
+> 每次生成或修改代码前必须遵守。本文件硬编码为 agent 上下文。
+
+---
+
+## 1. 组件库
+
+### 强制使用 TDesign
+- **所有 UI 组件** 必须使用 `tdesign-miniprogram`（v1.15+）
+- 禁止手写基础 UI（按钮、输入框、弹窗、标签、加载、头像等），一律使用 TDesign 组件
+- 全局注册的组件统一在 `app.json` 的 `usingComponents` 中声明
+
+### Chat 组件族（聊天页专用）
+聊天相关页面必须使用 TDesign Chat 组件族，**禁止手写聊天气泡、输入框**：
+
+| 组件 | 路径 | 用途 |
+|------|------|------|
+| `t-chat` | `tdesign-miniprogram/chat-list/chat-list` | 消息列表容器 |
+| `t-chat-sender` | `tdesign-miniprogram/chat-sender/chat-sender` | 底部发送区 |
+| `t-chat-message` | `tdesign-miniprogram/chat-message/chat-message` | 单条消息气泡（由 t-chat 内部使用） |
+| `t-chat-loading` | `tdesign-miniprogram/chat-loading/chat-loading` | 加载状态（由 t-chat-message 内部使用） |
+
+**用法**：
+```xml
+<!-- 正确：data 驱动 -->
+<t-chat data="{{chatData}}" reverse="{{false}}" style="flex: 1" />
+<t-chat-sender value="{{input}}" bind:send="onSend" loading="{{sending}}" />
+
+<!-- 错误：手写气泡 -->
+<view class="chat-bubble">...</view>   <!-- ❌ 禁止 -->
+```
+
+**data 格式**：
+```js
+chatData: [
+  {
+    role: 'user',           // 'user' | 'assistant'
+    avatar: '...',          // 头像 URL
+    content: [
+      { type: 'text', data: '消息内容' }
+    ],
+    status: 'complete',     // 'pending' | 'complete'
+  }
+]
+```
+
+- `reverse="{{false}}"` 保证消息从上到下按时间正序排列
+- 用户消息自动右对齐（`placement: 'right'`），小鸟消息左对齐
+
+---
+
+## 2. 间距与圆角
+
+| 元素 | 值 |
+|------|-----|
+| 卡片圆角 | `16rpx` |
+| 卡片内边距 | `32rpx` |
+| 页面左右边距 | `32rpx` |
+| 按钮圆角 | `12rpx` |
+
+```css
+/* 标准卡片 */
+.card {
+  border-radius: 16rpx;
+  padding: 32rpx;
+  background: #FFFFFF;
+}
+
+/* 标准页面 */
+.page {
+  padding: 32rpx;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+```
+
+---
+
+## 3. 颜色
+
+| 用途 | 色值 | CSS 变量 |
+|------|------|----------|
+| 主色（品牌绿） | `#07C160` | `--brand-primary` |
+| 背景色 | `#F6F6F6` | `--brand-bg` |
+| 卡片背景 | `#FFFFFF` | `--brand-card` |
+| 主文本 | `#333333` | `--brand-text` |
+| 次要文本 | `#999999` | `--brand-muted` |
+
+```css
+page {
+  --brand-primary: #07C160;
+  --brand-bg: #F6F6F6;
+  --brand-card: #FFFFFF;
+  --brand-text: #333333;
+  --brand-muted: #999999;
+
+  background: var(--brand-bg);
+  color: var(--brand-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+}
+```
+
+---
+
+## 4. 底部 TabBar
+
+- **必须使用微信原生 tabBar 配置**，在 `app.json` 的 `tabBar` 字段中定义
+- **禁止自定义 tabBar 组件**（如 `custom-tab-bar` 目录）
+- 配置示例：
+
+```json
+{
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#07C160",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/home/index",   "text": "鸟宠", "iconPath": "...", "selectedIconPath": "..." },
+      { "pagePath": "pages/chat/index",   "text": "啾啾", "iconPath": "...", "selectedIconPath": "..." },
+      { "pagePath": "pages/visit/index",  "text": "串门", "iconPath": "...", "selectedIconPath": "..." },
+      { "pagePath": "pages/me/index",     "text": "我的", "iconPath": "...", "selectedIconPath": "..." }
+    ]
+  }
+}
+```
+
+---
+
+## 5. 代码风格
+
+- **WXML**：使用数据绑定和列表渲染，避免硬编码静态内容
+- **JS**：`Page({ data: {...} })` 模式，API 调用统一走 `utils/api.js` 的 `request()` 函数
+- **WXSS**：优先使用 CSS 变量，避免魔数色值
+- **组件注册**：仅在 `app.json` 注册页面直接使用的组件，TDesign 内部依赖由组件自身 json 解析
+- **标签闭合**：每次修改 WXML 后必须检查 `view`/`block` 标签配对
+- **语法检查**：每次修改 JS 后运行 `node -c` 检查语法
+
+---
+
+## 6. 文件结构
+
+```
+miniprogram/
+├── app.js              # 全局 App
+├── app.json            # 页面路由 + tabBar + global usingComponents
+├── app.wxss            # 全局样式 + CSS 变量
+├── pages/
+│   ├── home/           # 宠物主页（首页状态）
+│   ├── sign/           # 每日鸟签
+│   ├── chat/           # AI 对话（TDesign Chat 组件族）
+│   ├── visit/          # 串门/分享
+│   ├── me/             # 我的
+│   ├── login/          # 登录
+│   ├── locked/         # 未解锁
+│   ├── redeem/         # 兑换码
+│   └── awakening/      # 小鸟设定
+├── utils/
+│   └── api.js          # request / assetUrl / errorMessage
+├── assets/
+│   └── icons/          # tabBar 图标
+└── miniprogram_npm/    # TDesign 构建产物
+```

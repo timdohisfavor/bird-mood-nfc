@@ -1,0 +1,188 @@
+[
+  {
+    "id": "long-tailed-tit",
+    "species": "北长尾山雀",
+    "displayName": "云团",
+    "archetype": "云朵小团子",
+    "personality": [
+      "害羞",
+      "温柔",
+      "黏人"
+    ],
+    "colors": [
+      "#F8F4EA",
+      "#D8DDE2",
+      "#B67A70"
+    ],
+    "defaultMood": "soft",
+    "home": "/assets/pets/long-tailed-tit/home.png",
+    "assetSet": {
+      "idle": "/assets/pets/long-tailed-tit/idle.png",
+      "happy": "/assets/pets/long-tailed-tit/happy.png",
+      "talking": "/assets/pets/long-tailed-tit/talking.png",
+      "sleepy": "/assets/pets/long-tailed-tit/sleepy.png",
+      "waiting": "/assets/pets/long-tailed-tit/waiting.png",
+      "reward": "/assets/pets/long-tailed-tit/reward.png",
+      "waking": "/assets/pets/long-tailed-tit/waking.png",
+      "carrying": "/assets/pets/long-tailed-tit/carrying.png",
+      "shy": "/assets/pets/long-tailed-tit/shy.png",
+      "rainy": "/assets/pets/long-tailed-tit/rainy.png",
+      "miss": "/assets/pets/long-tailed-tit/miss.png"
+    }
+  },
+  {
+    "id": "common-kingfisher",
+    "species": "普通翠鸟",
+    "displayName": "小蓝",
+    "archetype": "小小冒险家",
+    "personality": [
+      "好奇",
+      "行动力强",
+      "爱探索"
+    ],
+    "colors": [
+      "#1B9CAE",
+      "#F28C28",
+      "#87D5E8"
+    ],
+    "defaultMood": "curious",
+    "home": "/assets/pets/common-kingfisher/home.png",
+    "assetSet": {
+      "idle": "/assets/pets/common-kingfisher/idle.png",
+      "happy": "/assets/pets/common-kingfisher/happy.png",
+      "talking": "/assets/pets/common-kingfisher/talking.png",
+      "sleepy": "/assets/pets/common-kingfisher/sleepy.png",
+      "waiting": "/assets/pets/common-kingfisher/waiting.png",
+      "reward": "/assets/pets/common-kingfisher/reward.png",
+      "waking": "/assets/pets/common-kingfisher/waking.png",
+      "carrying": "/assets/pets/common-kingfisher/carrying.png",
+      "shy": "/assets/pets/common-kingfisher/shy.png",
+      "rainy": "/assets/pets/common-kingfisher/rainy.png",
+      "miss": "/assets/pets/common-kingfisher/miss.png"
+    }
+  },
+  {
+    "id": "brown-shrike",
+    "species": "伯劳",
+    "displayName": "小守卫",
+    "archetype": "外冷内软的小守卫",
+    "personality": [
+      "嘴硬",
+      "可靠",
+      "保护欲强"
+    ],
+    "colors": [
+      "#F4E4C7",
+      "#B86F35",
+      "#1D1A18"
+    ],
+    "defaultMood": "steady",
+    "home": "/assets/pets/brown-shrike/home.png",
+    "assetSet": {
+      "idle": "/assets/pets/brown-shrike/idle.png",
+      "happy": "/assets/pets/brown-shrike/happy.png",
+      "talking": "/assets/pets/brown-shrike/talking.png",
+      "sleepy": "/assets/pets/brown-shrike/sleepy.png",
+      "waiting": "/assets/pets/brown-shrike/waiting.png",
+      "reward": "/assets/pets/brown-shrike/reward.png",
+      "waking": "/assets/pets/brown-shrike/waking.png",
+      "carrying": "/assets/pets/brown-shrike/carrying.png",
+      "shy": "/assets/pets/brown-shrike/shy.png",
+      "rainy": "/assets/pets/brown-shrike/rainy.png",
+      "miss": "/assets/pets/brown-shrike/miss.png"
+    }
+  },
+  {
+    "id": "red-tailed-shrike",
+    "species": "红尾水鸲",
+    "displayName": "小火苗",
+    "archetype": "蓝色小火苗",
+    "personality": [
+      "活泼",
+      "热心",
+      "容易兴奋"
+    ],
+    "colors": [
+      "#2359A6",
+      "#F06B22",
+      "#18345F"
+    ],
+    "defaultMood": "bright",
+    "home": "/assets/pets/red-tailed-shrike/home.png",
+    "assetSet": {
+      "idle": "/assets/pets/red-tailed-shrike/idle.png",
+      "happy": "/assets/pets/red-tailed-shrike/happy.png",
+      "talking": "/assets/pets/red-tailed-shrike/talking.png",
+      "sleepy": "/assets/pets/red-tailed-shrike/sleepy.png",
+      "waiting": "/assets/pets/red-tailed-shrike/waiting.png",
+      "reward": "/assets/pets/red-tailed-shrike/reward.png",
+      "waking": "/assets/pets/red-tailed-shrike/waking.png",
+      "carrying": "/assets/pets/red-tailed-shrike/carrying.png",
+      "shy": "/assets/pets/red-tailed-shrike/shy.png",
+      "rainy": "/assets/pets/red-tailed-shrike/rainy.png",
+      "miss": "/assets/pets/red-tailed-shrike/miss.png"
+    }
+  },
+  {
+    "id": "red-headed-tit",
+    "species": "红头长尾山雀",
+    "displayName": "小麻薯",
+    "archetype": "元气小麻薯",
+    "personality": [
+      "热情",
+      "黏人",
+      "话多"
+    ],
+    "colors": [
+      "#C65A3D",
+      "#EEDCC5",
+      "#2A211E"
+    ],
+    "defaultMood": "warm",
+    "home": "/assets/pets/red-headed-tit/home.png",
+    "assetSet": {
+      "idle": "/assets/pets/red-headed-tit/idle.png",
+      "happy": "/assets/pets/red-headed-tit/happy.png",
+      "talking": "/assets/pets/red-headed-tit/talking.png",
+      "sleepy": "/assets/pets/red-headed-tit/sleepy.png",
+      "waiting": "/assets/pets/red-headed-tit/waiting.png",
+      "reward": "/assets/pets/red-headed-tit/reward.png",
+      "waking": "/assets/pets/red-headed-tit/waking.png",
+      "carrying": "/assets/pets/red-headed-tit/carrying.png",
+      "shy": "/assets/pets/red-headed-tit/shy.png",
+      "rainy": "/assets/pets/red-headed-tit/rainy.png",
+      "miss": "/assets/pets/red-headed-tit/miss.png"
+    }
+  },
+  {
+    "id": "chestnut-flanked-white-eye",
+    "species": "红胁秀眼",
+    "displayName": "小青柠",
+    "archetype": "青柠软糖",
+    "personality": [
+      "清爽",
+      "机灵",
+      "轻快"
+    ],
+    "colors": [
+      "#CFE43D",
+      "#F5F0D9",
+      "#F0A14A"
+    ],
+    "defaultMood": "fresh",
+    "home": "/assets/pets/chestnut-flanked-white-eye/home.png",
+    "assetSet": {
+      "idle": "/assets/pets/chestnut-flanked-white-eye/idle.png",
+      "happy": "/assets/pets/chestnut-flanked-white-eye/happy.png",
+      "talking": "/assets/pets/chestnut-flanked-white-eye/talking.png",
+      "sleepy": "/assets/pets/chestnut-flanked-white-eye/sleepy.png",
+      "waiting": "/assets/pets/chestnut-flanked-white-eye/waiting.png",
+      "reward": "/assets/pets/chestnut-flanked-white-eye/reward.png",
+      "waking": "/assets/pets/chestnut-flanked-white-eye/waking.png",
+      "carrying": "/assets/pets/chestnut-flanked-white-eye/carrying.png",
+      "shy": "/assets/pets/chestnut-flanked-white-eye/shy.png",
+      "rainy": "/assets/pets/chestnut-flanked-white-eye/rainy.png",
+      "miss": "/assets/pets/chestnut-flanked-white-eye/miss.png"
+    }
+  }
+]

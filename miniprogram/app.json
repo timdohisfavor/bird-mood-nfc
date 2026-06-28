@@ -1,0 +1,63 @@
+{
+  "pages": [
+    "pages/login/index",
+    "pages/locked/index",
+    "pages/redeem/index",
+    "pages/awakening/index",
+    "pages/home/index",
+    "pages/sign/index",
+    "pages/chat/index",
+    "pages/visit/index",
+    "pages/me/index"
+  ],
+  "tabBar": {
+    "color": "#66756d",
+    "selectedColor": "#14422d",
+    "backgroundColor": "#f7faf8",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "鸟宠",
+        "iconPath": "assets/icons/bird-off.png",
+        "selectedIconPath": "assets/icons/bird.png"
+      },
+      {
+        "pagePath": "pages/chat/index",
+        "text": "啾啾",
+        "iconPath": "assets/icons/chat-off.png",
+        "selectedIconPath": "assets/icons/chat.png"
+      },
+      {
+        "pagePath": "pages/visit/index",
+        "text": "串门",
+        "iconPath": "assets/icons/visit-off.png",
+        "selectedIconPath": "assets/icons/visit.png"
+      },
+      {
+        "pagePath": "pages/me/index",
+        "text": "我的",
+        "iconPath": "assets/icons/me-off.png",
+        "selectedIconPath": "assets/icons/me.png"
+      }
+    ]
+  },
+  "window": {
+    "navigationBarTitleText": "JoyiBird",
+    "navigationBarBackgroundColor": "#f7faf8",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7faf8"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "t-cell": "tdesign-miniprogram/cell/cell",
+    "t-cell-group": "tdesign-miniprogram/cell-group/cell-group",
+    "t-avatar": "tdesign-miniprogram/avatar/avatar",
+    "t-dialog": "tdesign-miniprogram/dialog/dialog",
+    "t-chat-sender": "tdesign-miniprogram/chat-sender/chat-sender",
+    "t-chat": "tdesign-miniprogram/chat-list/chat-list"
+  }
+}

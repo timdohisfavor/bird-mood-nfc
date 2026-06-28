@@ -1,0 +1,15 @@
+{
+  "name": "miniprogram",
+  "version": "1.0.0",
+  "description": "原生微信小程序骨架，对应 `docs/miniprogram-v0.1-prd.md` 和 `docs/miniprogram-v0.1-dev-plan.md`。",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tdesign-miniprogram": "^1.15.1"
+  }
+}

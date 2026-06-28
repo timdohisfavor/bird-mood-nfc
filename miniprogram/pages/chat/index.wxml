@@ -1,0 +1,37 @@
+<!--
+  chat/index.wxml — JoyiBird 聊天页
+  使用 TDesign Chat 组件族：t-chat (chat-list) + t-chat-sender
+  消息气泡由 t-chat 内部通过 t-chat-message 渲染
+-->
+<view class="chat-page">
+  <view wx:if="{{opening}}" class="opening-card mood-{{opening.mood}}">
+    <view class="opening-meta">
+      <text class="opening-mood">{{opening.mood_label}}</text>
+      <text class="opening-bond">{{opening.bond_name}}</text>
+    </view>
+    <view class="opening-text">{{opening.text}}</view>
+  </view>
+
+  <!-- 消息列表：data 驱动，reverse=false 保证从上到下正序 -->
+  <t-chat
+    data="{{chatData}}"
+    reverse="{{false}}"
+    animation="moving"
+    style="flex: 1"
+  />
+
+  <!-- 底部发送区 -->
+  <view class="chat-footer">
+    <view wx:if="{{bondFeedback}}" class="bond-feedback">{{bondFeedback}}</view>
+    <view class="chat-quota" wx:if="{{!loading}}">
+      <text class="muted">今日剩余 {{remainingQuota}}/{{quota.free_limit}} 次</text>
+    </view>
+    <t-chat-sender
+      value="{{input}}"
+      placeholder="{{canSend ? '和小鸟说点什么...' : '今天次数用完了，明天再来'}}"
+      disabled="{{!canSend}}"
+      loading="{{sending}}"
+      bind:send="onSend"
+    />
+  </view>
+</view>

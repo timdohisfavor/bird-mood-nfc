@@ -28,8 +28,10 @@ ENV PORT=3000
 COPY package*.json ./
 RUN npm install --omit=dev
 
-COPY backend ./backend
+COPY server ./server
+COPY docker ./docker
 COPY --from=build /app/assets/meta ./assets/meta
+COPY --from=build /app/assets/pets ./assets/pets
 
 EXPOSE 3000
-CMD ["node", "backend/server.mjs"]
+CMD ["node", "server/server.mjs"]

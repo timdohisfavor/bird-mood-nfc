@@ -25,6 +25,7 @@ project.private.config.json
 
 # Generated and temporary artifacts
 tmp-*
+tmp/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -51,3 +52,7 @@ outputs/
 # Local agent/tooling state
 .codex/
 .minimax/
+.stitch/
+.workbuddy/
+graphify-out/
+videos/
